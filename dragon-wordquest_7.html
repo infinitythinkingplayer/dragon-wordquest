@@ -1672,23 +1672,14 @@ window.speakWork=function(i){ if(S.sentences[i]) speak(S.sentences[i].text,"en")
 let parentOK=false;
 function renderParent(){
   if(!parentOK){
-    if(!settings.ppw){
-      $("#main").innerHTML=`<h1 class="white" style="margin-bottom:14px">👪 Parent Zone</h1>
-      <div class="card center">
-        <div style="font-size:40px">🔐</div>
-        <h3 style="margin:8px 0">Set a parent password</h3>
-        <p class="mut" style="font-size:14px;margin-bottom:10px">First time here — choose a password only parents know (at least 4 characters).</p>
-        <input type="password" id="pw1" placeholder="New password" style="max-width:240px;margin:6px auto;display:block;text-align:center;font-size:18px">
-        <input type="password" id="pw2" placeholder="Type it again" style="max-width:240px;margin:6px auto 12px;display:block;text-align:center;font-size:18px">
-        <button class="btn wide" onclick="pSet()">Save password</button>
-      </div>`;
-      return;
-    }
+    const b=Math.floor(Math.random()*60)+17, a=Math.floor(Math.random()*60)+17;
+    window._pAns=b;
     $("#main").innerHTML=`<h1 class="white" style="margin-bottom:14px">👪 Parent Zone</h1>
     <div class="card center">
-      <div style="font-size:40px;cursor:pointer;user-select:none;-webkit-user-select:none" id="lockico" onclick="lockTap()">🔐</div>
-      <p class="mut" style="margin:8px 0 10px">Parents only — enter the password</p>
-      <input type="password" id="pin" style="max-width:240px;margin:0 auto 12px;display:block;text-align:center;font-size:20px" placeholder="Password">
+      <div style="font-size:40px">🔐</div>
+      <p class="mut" style="margin:8px 0 6px">Parents only — solve to enter</p>
+      <h2 style="font-size:30px">${a*b} ÷ ${a} = ?</h2>
+      <input type="number" id="pin" style="max-width:160px;margin:14px auto 12px;display:block;text-align:center;font-size:22px">
       <button class="btn wide" onclick="pCheck()">Enter</button>
     </div>`;
     return;
@@ -1729,9 +1720,13 @@ function renderParent(){
     <button class="btn small" style="margin-top:8px" onclick="doImport()">Restore from code</button>
   </div>
   <div class="card">
-    <h3 style="margin-bottom:8px">🔐 Parent password</h3>
-    <p class="mut" style="font-size:13px;margin-bottom:8px">Tap below to choose a new password (you will set it again on the next visit).</p>
-    <button class="btn ghost small" onclick="pReset()">Change password</button>
+    <h3 style="margin-bottom:8px">🛠 Restore / adjust progress</h3>
+    <p class="mut" style="font-size:13px;margin-bottom:10px">If progress was ever lost (browser data cleared, new device), set it back here. Badges and story unlocks recalculate automatically; today\'s quest stays playable.</p>
+    ${kids.map(([n,s],i)=>{const id=["carlos","lucas","other"][i];return `
+    <div class="prow" style="flex-wrap:wrap;gap:6px"><b style="min-width:70px">${esc(n)}</b>
+      <span style="font-size:14px">Words: <input type="number" id="rp_${id}" value="${s.learned}" min="0" max="${TOTAL}" style="width:80px;display:inline-block;padding:6px;font-size:16px"></span>
+      <span style="font-size:14px">Streak: <input type="number" id="rs_${id}" value="${s.streak}" min="0" max="999" style="width:70px;display:inline-block;padding:6px;font-size:16px"></span>
+      <button class="btn small" onclick="applyProg('${id}')">Apply</button></div>`;}).join("")}
   </div>
   <div class="card">
     <h3 style="margin-bottom:8px">⚠️ Reset</h3>
@@ -1740,29 +1735,21 @@ function renderParent(){
     ${settings.p3name?`<button class="btn ghost small" onclick="resetProfile('other')">Reset ${esc(settings.p3name)}</button>`:""}
   </div>`;
 }
-window.pSet=function(){
-  const a=$("#pw1").value, b=$("#pw2").value;
-  if(a.length<4){ sndWrong(); modal(`<h2>Too short</h2><p class="mut" style="margin:8px 0">Use at least 4 characters.</p><button class="btn wide" onclick="closeModal()">OK</button>`); return; }
-  if(a!==b){ sndWrong(); modal(`<h2>They don\'t match</h2><p class="mut" style="margin:8px 0">Please type the same password twice.</p><button class="btn wide" onclick="closeModal()">OK</button>`); return; }
-  settings.ppw=btoa(unescape(encodeURIComponent(a))); save("dwq_settings",settings);
-  parentOK=true; renderParent();
-};
 window.pCheck=function(){
-  const v=$("#pin").value;
-  if(settings.ppw && btoa(unescape(encodeURIComponent(v)))===settings.ppw){ parentOK=true; renderParent(); }
+  if(parseInt($("#pin").value,10)===window._pAns){ parentOK=true; renderParent(); }
   else { sndWrong(); $("#pin").value=""; }
 };
-window.pReset=function(){ settings.ppw=null; save("dwq_settings",settings); parentOK=false; renderParent(); };
-let _lockTaps=[];
-window.lockTap=function(){
-  const now=Date.now();
-  _lockTaps=_lockTaps.filter(t=>now-t<4000);
-  _lockTaps.push(now);
-  if(_lockTaps.length>=7){
-    _lockTaps=[];
-    settings.ppw=null; save("dwq_settings",settings); parentOK=false;
-    modal(`<div style="font-size:40px">🔓</div><h2>Password cleared</h2><p class="mut" style="margin:8px 0">Set a new parent password now.</p><button class="btn wide" onclick="closeModal();renderParent();">OK</button>`);
-  }
+window.applyProg=function(id){
+  const n=Math.max(0,Math.min(TOTAL,parseInt($("#rp_"+id).value,10)||0));
+  const sk=Math.max(0,Math.min(999,parseInt($("#rs_"+id).value,10)||0));
+  const st=load("dwq_"+id,defState());
+  st.learned=n; st.streak=sk;
+  if(sk>0 && st.lastDay!==todayStr()) st.lastDay=yesterdayStr();
+  if(sk===0 && st.lastDay!==todayStr()) st.lastDay=null;
+  while(st.surprises.length<surpriseCount(st)) st.surprises.push({n:st.surprises.length+1,text:"Earned earlier 🎁",redeemed:true,d:todayStr()});
+  save("dwq_"+id,st);
+  if(curId===id) S=st;
+  modal(`<h2>Progress restored ✓</h2><p class="mut" style="margin:8px 0">${esc(pname(id))}: ${n} words · 🔥${sk} streak · 🏅${badgeCount(st)} badges. Today\'s quest is ready to play.</p><button class="btn wide" onclick="closeModal();renderParent();">OK</button>`);
 };
 window.setDaily=function(x){ settings.daily=x; save("dwq_settings",settings); renderParent(); };
 window.saveSur=function(){
