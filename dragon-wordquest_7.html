@@ -1074,7 +1074,8 @@ const DEFAULT_SURPRISES = [
 function load(k,d){ try{const v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;} }
 function save(k,v){ try{localStorage.setItem(k,JSON.stringify(v));}catch(e){} }
 function defState(){ return {learned:0,days:[],streak:0,lastDay:null,xp:0,sentences:[],surprises:[]}; }
-let settings = load("dwq_settings",{daily:5,surprises:DEFAULT_SURPRISES.slice()});
+let settings = load("dwq_settings",{daily:7,surprises:DEFAULT_SURPRISES.slice()});
+if(!settings.v5){ settings.v5=1; settings.daily=7; save("dwq_settings",settings); }
 let curId = load("dwq_current",null);
 let S = null; // current profile state
 function loadProfile(id){ curId=id; save("dwq_current",id); S=load("dwq_"+id,defState()); }
@@ -1148,7 +1149,7 @@ function confetti(n){
 }
 
 /* ---------- helpers on state ---------- */
-function badgeCount(st){ return Math.floor(st.learned/7); }
+function badgeCount(st){ return Math.floor(st.learned/10); }
 function surpriseCount(st){ return Math.floor(badgeCount(st)/5); }
 function stageOf(learned){ let s=STAGES[0]; for(const st of STAGES){ if(learned>=st[0]) s=st; } return s; }
 function nextStage(learned){ for(const st of STAGES){ if(learned<st[0]) return st; } return null; }
@@ -1220,7 +1221,7 @@ window.setP3Name=function(){
 function renderHome(){
   const p=PROFILES[curId], stg=stageOf(S.learned), nxt=nextStage(S.learned);
   const bc=badgeCount(S), sc=surpriseCount(S);
-  const toNextBadge=7-(S.learned%7);
+  const toNextBadge=10-(S.learned%10);
   const done=doneToday();
   const dayN=Math.min(settings.daily, TOTAL-S.learned);
   const pct=nxt? Math.round((S.learned-stg[0])/(nxt[0]-stg[0])*100) : 100;
@@ -1247,7 +1248,7 @@ function renderHome(){
   <div class="card center">
     ${done
       ? `<div style="font-size:50px">✅</div><h2 style="margin:6px 0">Checked in today!</h2>
-         <p class="mut" style="margin-bottom:14px">${toNextBadge===7?0:toNextBadge} words until your next badge</p>
+         <p class="mut" style="margin-bottom:14px">${toNextBadge===10?0:toNextBadge} words until your next badge</p>
          <button class="btn green wide" onclick="startReview()">🔄 Bonus: Review Challenge</button>`
       : (S.learned>=TOTAL
         ? `<div style="font-size:50px">🏆</div><h2>All ${TOTAL} words complete!</h2><button class="btn green wide" style="margin-top:12px" onclick="startReview()">🔄 Review Challenge</button>`
@@ -1255,7 +1256,7 @@ function renderHome(){
            <p class="mut" style="margin-bottom:14px">Learn ${dayN} new words → Battle quiz → Sentence builder → Check in</p>
            <button class="btn gold wide" onclick="startSession()">🚀 Start Today\'s Adventure</button>`)}
   </div>
-  <p class="center white" style="opacity:.55;font-size:13px;font-weight:600">7 words = 1 badge · 5 badges = 1 mystery surprise 🎁</p>`;
+  <p class="center white" style="opacity:.55;font-size:13px;font-weight:600">10 words = 1 badge · 5 badges = 1 mystery surprise 🎁</p>`;
 }
 window.switchProfile=function(){ curId=null; save("dwq_current",null); render(); };
 
@@ -1413,17 +1414,92 @@ window.spellClear=function(){ sess.spell.filled=[]; drawSpell(); };
 /* ---- writing ---- */
 function showWrite(){
   const chips=sess.words.map(w=>`<button class="chip" data-w="${esc(w[0])}" onclick="insWord('${esc(w[0]).replace(/'/g,"\\'")}')">${esc(w[0])}</button>`).join("");
+  const examples=sess.words.map((w,i)=>`<div class="sent" style="margin-top:8px"><div class="en" style="font-size:16px">${hlWord(w[4],w[0])} <button class="spk" style="width:32px;height:32px;font-size:14px" onclick="speak(sess.words[${i}][4],'en')">🔊</button></div></div>`).join("");
   ov(`
   <div class="ovtop"><h2 class="white">✏️ Sentence Builder</h2><button class="xbtn" onclick="closeOv()">✕ Exit</button></div>
   <div class="card">
     <h3 style="margin-bottom:6px">Write 2-3 sentences using today\'s new words</h3>
     <p class="mut" style="font-size:14px;margin-bottom:10px">Use at least <b>2</b> of today\'s words (tap a word to insert it). Mum and Dad will read your writing!</p>
     <div style="margin-bottom:10px">${chips}</div>
-    <textarea id="wtext" placeholder="e.g. My brother is very energetic. He likes to compete with me at the beach..." oninput="wCheck()"></textarea>
+    <button class="btn ghost small" onclick="toggleEx()" id="exbtn">💡 Show example sentences</button>
+    <div id="exbox" style="display:none;margin-top:4px">${examples}</div>
+    <textarea id="wtext" style="margin-top:10px" placeholder="e.g. I caught a glimpse of a dragon. It gazed at me and I did not even flinch..." oninput="wCheck()"></textarea>
     <p id="whint" class="mut" style="font-size:14px;margin-top:8px">New words used: 0 / 2</p>
+  </div>
+  <div class="card">
+    <h3 style="margin-bottom:6px">✨ Writing Coach</h3>
+    <p class="mut" style="font-size:14px;margin-bottom:10px">Finished a draft? Get tips to level it up before you check in.</p>
+    <button class="btn small" onclick="runCoach()">✨ Coach my writing</button>
+    <div id="coachout" style="margin-top:10px"></div>
   </div>
   <button class="btn gold wide" id="wbtn" disabled onclick="submitWrite()">✅ Finish & Check In!</button>`);
 }
+window.toggleEx=function(){
+  const b=$("#exbox"); const show=b.style.display==="none";
+  b.style.display=show?"block":"none";
+  $("#exbtn").textContent=show?"🙈 Hide example sentences":"💡 Show example sentences";
+};
+
+/* ---- writing coach (runs on this iPad, no internet needed) ---- */
+const BORING={
+  "very":["truly","extremely","incredibly"],"good":["excellent","superb","impressive"],
+  "bad":["dreadful","terrible","awful"],"big":["enormous","gigantic","immense"],
+  "small":["tiny","minuscule","miniature"],"nice":["delightful","wonderful","charming"],
+  "happy":["delighted","elated","jubilant"],"sad":["gloomy","dejected","miserable"],
+  "scared":["terrified","petrified","anxious"],"angry":["furious","indignant","exasperated"],
+  "tired":["weary","exhausted","drowsy"],"funny":["hilarious","amusing","witty"],
+  "ran":["dashed","bolted","sprinted"],"run":["dash","bolt","sprint"],
+  "walked":["strolled","trudged","strode"],"walk":["stroll","trudge","stride"],
+  "said":["exclaimed","declared","muttered"],"looked":["glanced","gazed","peered"],
+  "went":["travelled","hurried","headed"],"got":["received","grabbed","earned"],
+  "pretty":["beautiful","exquisite","lovely"],"fun":["thrilling","exciting","delightful"]
+};
+const OPENERS=["Suddenly,","Later that day,","To my surprise,","Without warning,","Early that morning,","Meanwhile,","After a moment,"];
+window.runCoach=function(){
+  const text=$("#wtext").value.trim();
+  const out=$("#coachout");
+  if(!text){ out.innerHTML=`<p class="mut">Write something first, then I\'ll coach you! 🐉</p>`; return; }
+  const sents=(text.match(/[^.!?]+[.!?]*/g)||[]).map(s=>s.trim()).filter(Boolean);
+  const tips=[]; const wins=[];
+  // mechanics
+  if(sents.length<2) tips.push("📏 Aim for <b>2-3 sentences</b> — you have "+sents.length+" so far.");
+  const noCaps=sents.filter(s=>/^[a-z]/.test(s));
+  if(noCaps.length) tips.push("🔠 Start every sentence with a <b>CAPITAL letter</b> — check: <i>\""+esc(noCaps[0].slice(0,30))+"...\"</i>");
+  if(!/[.!?]$/.test(text)) tips.push("✋ Finish your last sentence with <b>. ! or ?</b>");
+  const longOnes=sents.filter(s=>s.split(/\s+/).length>22);
+  if(longOnes.length) tips.push("✂️ One sentence is very long ("+longOnes[0].split(/\s+/).length+" words). Try splitting it into two.");
+  // repeated openers
+  const starts=sents.map(s=>(s.split(/\s+/)[0]||"").toLowerCase().replace(/[^a-z']/g,""));
+  const dup=starts.find((s,i)=>s&&starts.indexOf(s)!==i);
+  if(dup) tips.push("🔄 More than one sentence starts with \"<b>"+esc(dup)+"</b>\". Vary your openers: <i>"+OPENERS.slice(0,3).join(" / ")+"</i>");
+  // boring word upgrades
+  const low=" "+text.toLowerCase().replace(/[^a-z' ]/g," ")+" ";
+  let bcount=0;
+  for(const k in BORING){
+    if(bcount>=3) break;
+    if(low.includes(" "+k+" ")){ tips.push("💪 Instead of \"<b>"+k+"</b>\", try: <b>"+BORING[k].join("</b> · <b>")+"</b>"); bcount++; }
+  }
+  // praise
+  const used=sess.words.filter(w=>textUsesWord(text,w[0])).length;
+  if(used>=3) wins.push("🌟 Superb — you used <b>"+used+" power words</b> in one go!");
+  else if(used>=2) wins.push("👍 Nice — "+used+" of today\'s words are in there.");
+  if(sents.length>=3) wins.push("📚 Three or more sentences — great stamina!");
+  if(!noCaps.length&&/[.!?]$/.test(text)) wins.push("✅ Capitals and punctuation look sharp.");
+  // upgrade ideas built from THEIR sentence
+  const pick=sents.reduce((a,b)=>b.split(/\s+/).length>a.split(/\s+/).length?b:a,sents[0]||"");
+  const core=pick.replace(/[.!?]+$/,"");
+  const ideas=[];
+  if(core){
+    ideas.push("🕐 <b>Add WHEN or WHERE:</b> <i>\""+esc(OPENERS[Math.floor(Math.random()*OPENERS.length)])+" "+esc(core.charAt(0).toLowerCase()+core.slice(1))+".\"</i>");
+    ideas.push("🔗 <b>Stretch the idea:</b> <i>\""+esc(core)+", which ...\"</i> — finish the thought yourself!");
+    ideas.push("🤔 <b>Give a reason:</b> <i>\""+esc(core)+" because ...\"</i>");
+  }
+  out.innerHTML=
+    (wins.length?`<div style="background:#e9fbf3;border-radius:14px;padding:12px;margin-bottom:8px">${wins.map(w=>`<p style="font-size:15px;margin:4px 0">${w}</p>`).join("")}</div>`:"")+
+    (tips.length?`<div style="background:#fff6e5;border-radius:14px;padding:12px;margin-bottom:8px"><p style="font-weight:800;font-size:14px;margin-bottom:4px">Level-up tips</p>${tips.map(t=>`<p style="font-size:15px;margin:6px 0">${t}</p>`).join("")}</div>`:"")+
+    (ideas.length?`<div style="background:#f0ecff;border-radius:14px;padding:12px"><p style="font-weight:800;font-size:14px;margin-bottom:4px">Try stretching YOUR sentence</p>${ideas.map(t=>`<p style="font-size:15px;margin:6px 0">${t}</p>`).join("")}</div>`:"");
+  if(!tips.length&&wins.length) out.innerHTML+=`<p style="font-size:15px;margin-top:6px">🏆 Hard to fault — a flawless entry for the portfolio!</p>`;
+};
 window.insWord=function(w){
   const t=$("#wtext"); t.value=(t.value?t.value.replace(/\s*$/," "):"")+w+" "; t.focus(); wCheck();
 };
@@ -1548,7 +1624,7 @@ window.wordPop=function(n,wi){
 /* ================= badges ================= */
 function renderBadges(){
   const bc=badgeCount(S), sc=surpriseCount(S);
-  const toNext=7-(S.learned%7);
+  const toNext=10-(S.learned%10);
   const bTo5=bc%5, toSurprise=5-bTo5;
   let grid="";
   const show=Math.max(bc+3,8);
@@ -1560,7 +1636,7 @@ function renderBadges(){
   <h1 class="white" style="margin-bottom:14px">🏅 ${esc(pname(curId))}\'s Hall of Fame</h1>
   <div class="card">
     <h3>🎁 Surprise Progress</h3>
-    <p class="mut" style="font-size:14px;margin:6px 0"><b style="color:#ff8c42">${toSurprise}</b> more badge${toSurprise>1?"s":""} (about ${toSurprise*7-(S.learned%7)} words) until the next surprise</p>
+    <p class="mut" style="font-size:14px;margin:6px 0"><b style="color:#ff8c42">${toSurprise}</b> more badge${toSurprise>1?"s":""} (about ${toSurprise*10-(S.learned%10)} words) until the next surprise</p>
     <div class="lvlbar"><i style="width:${bTo5/5*100}%"></i></div>
     ${S.surprises.length?`<div style="margin-top:14px">${S.surprises.map((s,i)=>`
       <div class="prow"><div><b>🎁 Surprise ${s.n}</b>: ${esc(s.text)} <span class="mut" style="font-size:12px">${s.d}</span></div>
@@ -1569,7 +1645,7 @@ function renderBadges(){
   </div>
   <div class="card">
     <h3 style="margin-bottom:4px">Badges (${bc})</h3>
-    <p class="mut" style="font-size:14px;margin-bottom:12px">1 badge for every 7 words · ${toNext===7?0:toNext} words until the next one</p>
+    <p class="mut" style="font-size:14px;margin-bottom:12px">1 badge for every 10 words · ${toNext===10?0:toNext} words until the next one</p>
     <div class="bgrid">${grid}</div>
   </div>`;
 }
@@ -1632,7 +1708,7 @@ function renderParent(){
     <div style="display:flex;gap:8px;flex-wrap:wrap">
       ${[5,6,7,8,9,10].map(x=>`<button class="btn small ${settings.daily===x?"":"ghost"}" onclick="setDaily(${x})">${x}</button>`).join("")}
     </div>
-    <p class="mut" style="font-size:13px;margin-top:8px">Start with 5 and increase once they settle in. More words = longer daily sessions.</p>
+    <p class="mut" style="font-size:13px;margin-top:8px">Default is 7. More words = longer daily sessions.</p>
   </div>
   <div class="card">
     <h3 style="margin-bottom:8px">🎁 Surprise rewards (one per line, drawn at random)</h3>
