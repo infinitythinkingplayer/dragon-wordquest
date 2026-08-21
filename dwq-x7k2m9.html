@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Dragon WordQuest 🐉</title>
+<title>陪伴龙 · 60天单词闯关 🐉</title>
 <style>
 :root{
   --bg:#0f1b3d; --bg2:#1a2b5c; --card:#ffffff; --ink:#22284a;
@@ -138,11 +138,22 @@ textarea:focus{border-color:var(--purple);}
 /* confetti */
 .cf{position:fixed;top:-20px;z-index:300;border-radius:3px;pointer-events:none;}
 @keyframes fall{to{transform:translateY(110vh) rotate(720deg);}}
+@keyframes guidepulse{0%,100%{box-shadow:0 0 0 0 rgba(255,216,107,.45);}50%{box-shadow:0 0 0 9px rgba(255,216,107,0);}}
 
 .mut{color:var(--muted);font-weight:600;}
 .center{text-align:center;}
 input[type=text],input[type=number]{border:3px solid #edeffb;border-radius:12px;padding:10px 12px;font-size:17px;outline:none;width:100%;user-select:text;-webkit-user-select:text;}
 .prow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid #f0f1fa;}
+
+/* ── Deskmate 交付版追加 ── */
+.cal{display:grid;grid-template-columns:repeat(10,1fr);gap:5px;margin-top:10px}
+.cal i{aspect-ratio:1;border-radius:8px;background:#eef0f8;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#a6adc6;font-style:normal}
+.cal i.done{background:linear-gradient(135deg,#ffd98a,#ff8c42);color:#7a3d00}
+.cal i.mile{box-shadow:inset 0 0 0 2px #ff8c42}
+.cal i.done.mile{box-shadow:none}
+.lvbtn{display:block;width:100%;text-align:left;background:#f6f7ff;border:2px solid #e4e6f4;border-radius:14px;padding:11px 14px;margin-top:8px;cursor:pointer;font-family:inherit}
+.lvbtn b{font-size:16px}.lvbtn small{display:block;color:#8a90ab;font-size:12px;margin-top:2px}
+.lvbtn.on{border-color:var(--purple);background:#f1eeff}
 </style>
 </head>
 <body>
@@ -155,7 +166,6 @@ input[type=text],input[type=number]{border:3px solid #edeffb;border-radius:12px;
     <button class="navbtn" data-v="home"><span class="ico">🏠</span>Home</button>
     <button class="navbtn" data-v="read"><span class="ico">📖</span>Read</button>
     <button class="navbtn" data-v="badges"><span class="ico">🏅</span>Badges</button>
-    <button class="navbtn" data-v="works"><span class="ico">✏️</span>Writing</button>
     <button class="navbtn" data-v="parent"><span class="ico">👪</span>Parents</button>
   </div>
 </div>
@@ -165,7 +175,137 @@ input[type=text],input[type=number]{border:3px solid #edeffb;border-radius:12px;
 // Dragon WordQuest v2 - 26-week vocabulary bank for native speakers (selective-entry prep)
 // Format per word: [english, chinese, pos, definition_en, sentence_en, sentence_zh]
 const VOCAB = [
-{n:1,t:"Ways of Looking & Speaking",tz:"看与说的高级词",words:[
+/* ═══ Foundation 基础档 · Kindy–Year 1 · PM 1–14 ═══ */
+{n:1,t:"Me & My Family",tz:"我和我的家",words:[
+["mum", "妈妈", "n.", "your mother", "Carlos gives Mum a big hug.", "Carlos给妈妈一个大大的拥抱。"],
+["dad", "爸爸", "n.", "your father", "Dad reads with Lucas at night.", "爸爸晚上和Lucas一起读书。"],
+["sister", "姐妹", "n.", "a girl in your family", "My sister likes to sing.", "我的姐妹喜欢唱歌。"],
+["brother", "兄弟", "n.", "a boy in your family", "Lucas is my little brother.", "Lucas是我的弟弟。"],
+["baby", "宝宝", "n.", "a very young child", "The baby sleeps all day.", "宝宝睡了一整天。"],
+["family", "家庭", "n.", "the people you live with and love", "Our family eats dinner together.", "我们一家人一起吃晚饭。"],
+["home", "家", "n.", "the place where you live", "We go home after school.", "放学后我们回家。"],
+["love", "爱", "v.", "to like someone very very much", "I love my mum and dad.", "我爱我的爸爸妈妈。"],
+["hug", "拥抱", "v.", "to put your arms around someone", "Carlos hugs the big teddy bear.", "Carlos抱住大泰迪熊。"],
+["kiss", "亲吻", "v.", "to touch with your lips to show love", "Mum kisses the baby goodnight.", "妈妈亲吻宝宝道晚安。"],
+["big", "大的", "adj.", "not small", "An elephant is very big.", "大象非常大。"],
+["little", "小的", "adj.", "small", "The little bird can sing.", "小鸟会唱歌。"],
+["tall", "高的", "adj.", "going up very high", "Dad is very tall.", "爸爸很高。"],
+["short", "矮的；短的", "adj.", "not tall or not long", "The puppy has short legs.", "小狗的腿短短的。"],
+["happy", "开心的", "adj.", "feeling good and smiling", "Lucas is happy at the party.", "Lucas在派对上很开心。"],
+["sad", "难过的", "adj.", "feeling like you want to cry", "Carlos felt sad in the rain.", "下雨天Carlos觉得难过。"],
+["run", "跑", "v.", "to move very fast with your legs", "Carlos can run very fast.", "Carlos跑得非常快。"],
+["jump", "跳", "v.", "to push your body up into the air", "The frog can jump high.", "青蛙能跳得很高。"],
+["walk", "走", "v.", "to move on your feet slowly", "We walk to school every day.", "我们每天走路上学。"],
+["sit", "坐", "v.", "to rest on a chair or the floor", "Please sit on the mat.", "请坐在垫子上。"],
+["stand", "站", "v.", "to be up on your feet", "Stand up and clap your hands.", "站起来拍拍手。"],
+["sleep", "睡觉", "v.", "to close your eyes and rest at night", "The cat likes to sleep in the sun.", "猫喜欢在太阳下睡觉。"],
+["eat", "吃", "v.", "to put food in your mouth", "Lucas eats an apple every day.", "Lucas每天吃一个苹果。"],
+["drink", "喝", "v.", "to take water or milk into your mouth", "Drink your milk, please.", "请把牛奶喝了。"],
+["play", "玩", "v.", "to have fun with toys or friends", "Carlos and Lucas play in the park.", "Carlos和Lucas在公园里玩。"],
+["laugh", "笑", "v.", "to make a happy sound like ha-ha", "The funny clown makes us laugh.", "滑稽的小丑逗得我们哈哈笑。"],
+["cry", "哭", "v.", "to have tears come from your eyes", "The baby will cry when hungry.", "宝宝饿了就会哭。"],
+["smile", "微笑", "v.", "to make a happy face", "Mum smiles at me every morning.", "妈妈每天早上对我微笑。"],
+["help", "帮助", "v.", "to do something good for someone", "Carlos helps Dad wash the car.", "Carlos帮爸爸洗车。"],
+["share", "分享", "v.", "to let others use your things too", "Lucas shares his toys with me.", "Lucas和我分享他的玩具。"]
+],article:{t:"A Happy Day at Home",tz:"在家开心的一天",en:"Carlos and Lucas are at home. Mum is tall and Dad is big. The baby is little.\nCarlos can run and jump. Lucas likes to play. They laugh and smile.\nMum says, \"Time to eat!\" They eat and drink. The food is good.\nAfter dinner, Carlos helps Dad. Lucas shares his toy with the baby.\nDad gives everyone a big hug. \"I love my family,\" says Carlos.\nNow it is time to sleep. Good night!",zh:"Carlos和Lucas在家里。妈妈高高的,爸爸大大的,宝宝小小的。\nCarlos会跑会跳,Lucas喜欢玩。他们又笑又乐。\n妈妈说:\"吃饭啦!\"他们又吃又喝,饭菜真香。\n晚饭后,Carlos帮爸爸做事,Lucas把玩具分享给宝宝。\n爸爸给每个人一个大大的拥抱。Carlos说:\"我爱我的家。\"\n现在该睡觉了。晚安!"}},
+{n:2,t:"Colours, Animals & Food",tz:"颜色·动物·食物",words:[
+["red", "红色的", "adj.", "the colour of a fire truck", "The apple is red and sweet.", "苹果又红又甜。"],
+["blue", "蓝色的", "adj.", "the colour of the sky", "The sky is big and blue.", "天空又大又蓝。"],
+["green", "绿色的", "adj.", "the colour of grass", "The frog is green.", "青蛙是绿色的。"],
+["yellow", "黄色的", "adj.", "the colour of the sun", "The duck is small and yellow.", "小鸭子黄黄的。"],
+["pink", "粉色的", "adj.", "a light red colour", "The pig has a pink nose.", "小猪的鼻子粉粉的。"],
+["black", "黑色的", "adj.", "the colour of the night sky", "The cat is black and white.", "这只猫黑白相间。"],
+["white", "白色的", "adj.", "the colour of snow", "Snow is soft and white.", "雪又软又白。"],
+["dog", "狗", "n.", "a pet that says woof", "The dog runs after the ball.", "狗追着球跑。"],
+["cat", "猫", "n.", "a pet that says meow", "The cat sleeps on the bed.", "猫在床上睡觉。"],
+["bird", "鸟", "n.", "an animal that can fly", "A little bird sings in the tree.", "一只小鸟在树上唱歌。"],
+["fish", "鱼", "n.", "an animal that swims in water", "The fish swims round and round.", "鱼儿游来游去。"],
+["duck", "鸭子", "n.", "a bird that swims and says quack", "The duck swims in the pond.", "鸭子在池塘里游泳。"],
+["pig", "猪", "n.", "a farm animal with a round nose", "The pig plays in the mud.", "猪在泥里玩。"],
+["cow", "奶牛", "n.", "a farm animal that gives us milk", "The cow eats green grass.", "奶牛吃绿草。"],
+["horse", "马", "n.", "a big animal you can ride", "The horse can run very fast.", "马跑得非常快。"],
+["apple", "苹果", "n.", "a round red or green fruit", "Carlos eats a big apple.", "Carlos吃了一个大苹果。"],
+["banana", "香蕉", "n.", "a long yellow fruit", "The monkey wants a banana.", "猴子想要一根香蕉。"],
+["egg", "鸡蛋", "n.", "food from a hen, round and white", "Dad cooks an egg for me.", "爸爸给我煮了一个鸡蛋。"],
+["milk", "牛奶", "n.", "a white drink from a cow", "Lucas drinks milk every morning.", "Lucas每天早上喝牛奶。"],
+["bread", "面包", "n.", "soft food you can make toast with", "I like bread with jam.", "我喜欢抹果酱的面包。"],
+["cake", "蛋糕", "n.", "a sweet food for birthdays", "The birthday cake is yummy.", "生日蛋糕真好吃。"],
+["rice", "米饭", "n.", "small white food you eat in a bowl", "We eat rice for dinner.", "我们晚饭吃米饭。"],
+["sweet", "甜的", "adj.", "tasting like sugar", "The cake is very sweet.", "蛋糕非常甜。"],
+["hot", "热的", "adj.", "very warm, like the sun", "The soup is too hot.", "汤太热了。"],
+["cold", "冷的", "adj.", "not warm, like ice", "The ice cream is cold.", "冰淇淋凉凉的。"],
+["yummy", "好吃的", "adj.", "tasting very good", "Mum makes yummy noodles.", "妈妈做的面条很好吃。"],
+["hungry", "饿的", "adj.", "wanting to eat", "Carlos is hungry after school.", "放学后Carlos饿了。"],
+["thirsty", "渴的", "adj.", "wanting to drink", "The dog is thirsty after running.", "狗跑完步渴了。"],
+["cook", "做饭", "v.", "to make food ready to eat", "Dad cooks dinner for us.", "爸爸给我们做晚饭。"],
+["carrot", "胡萝卜", "n.", "a long orange vegetable", "The rabbit eats a carrot.", "兔子吃胡萝卜。"]
+],article:{t:"The Hungry Little Cat",tz:"饿肚子的小猫",en:"A little cat is hungry. The cat is black and white.\nIt sees a red apple. \"No, cats do not eat apples.\"\nIt sees a yellow banana. \"No, that is for the monkey.\"\nIt sees bread and cake. \"No, no, no!\"\nThe cat walks to the pond. A duck swims by. A green frog jumps.\nThen Carlos comes with milk. The milk is cold and sweet.\nThe cat drinks and drinks. Yummy! Now the cat is happy.\nIt sleeps in the warm sun.",zh:"一只小猫饿了。小猫黑白相间。\n它看见一个红苹果。\"不行,猫不吃苹果。\"\n它看见一根黄香蕉。\"不行,那是猴子吃的。\"\n它看见面包和蛋糕。\"不行不行不行!\"\n小猫走到池塘边。一只鸭子游过去,一只绿青蛙跳起来。\n这时Carlos端着牛奶来了。牛奶又凉又甜。\n小猫喝呀喝。真好喝!现在小猫开心了。\n它在暖暖的太阳下睡着了。"}},
+{n:3,t:"School & Friends",tz:"学校和朋友",words:[
+["school", "学校", "n.", "the place where children learn", "Lucas likes going to school.", "Lucas喜欢上学。"],
+["teacher", "老师", "n.", "a person who helps you learn", "Our teacher is very kind.", "我们的老师很和蔼。"],
+["friend", "朋友", "n.", "someone you like to play with", "Carlos is my best friend.", "Carlos是我最好的朋友。"],
+["book", "书", "n.", "pages with words and pictures", "This book is about a dragon.", "这本书讲一条龙的故事。"],
+["read", "读", "v.", "to look at words and know them", "Mum reads a book to me.", "妈妈给我读书。"],
+["write", "写", "v.", "to make words with a pencil", "Lucas can write his name.", "Lucas会写自己的名字。"],
+["draw", "画", "v.", "to make a picture with a pencil", "Carlos draws a big dragon.", "Carlos画了一条大龙。"],
+["paint", "涂色；画画", "v.", "to make a picture with colours", "We paint with red and blue.", "我们用红色和蓝色画画。"],
+["count", "数数", "v.", "to say numbers one by one", "Can you count to ten?", "你能数到十吗?"],
+["number", "数字", "n.", "1, 2, 3 are these", "Seven is my lucky number.", "七是我的幸运数字。"],
+["letter", "字母", "n.", "A, B, C are these", "The word cat has three letters.", "cat这个词有三个字母。"],
+["word", "单词", "n.", "letters that mean something together", "Lucas learns a new word every day.", "Lucas每天学一个新单词。"],
+["name", "名字", "n.", "what people call you", "My name is on my bag.", "我的名字写在书包上。"],
+["desk", "书桌", "n.", "a table you work at", "My book is on the desk.", "我的书在书桌上。"],
+["chair", "椅子", "n.", "a seat with four legs", "Please sit on your chair.", "请坐到你的椅子上。"],
+["bag", "书包", "n.", "you carry your things in it", "Carlos puts the book in his bag.", "Carlos把书放进书包。"],
+["pencil", "铅笔", "n.", "you write and draw with it", "I draw with a yellow pencil.", "我用黄铅笔画画。"],
+["paper", "纸", "n.", "you write and draw on it", "Lucas folds the paper into a plane.", "Lucas把纸折成飞机。"],
+["colour", "颜色", "n.", "red, blue and green are these", "What colour do you like?", "你喜欢什么颜色?"],
+["ask", "问", "v.", "to say a question", "Ask the teacher if you don't know.", "不懂就问老师。"],
+["answer", "回答", "v.", "to speak back when asked", "Carlos puts up his hand to answer.", "Carlos举手回答。"],
+["listen", "听", "v.", "to use your ears carefully", "Listen to the story, please.", "请听故事。"],
+["talk", "说话", "v.", "to say words to someone", "We talk about our pets.", "我们聊自己的宠物。"],
+["sing", "唱歌", "v.", "to make music with your voice", "We sing a song every morning.", "我们每天早上唱一首歌。"],
+["dance", "跳舞", "v.", "to move your body to music", "Lucas loves to dance and jump.", "Lucas喜欢又跳舞又蹦跳。"],
+["game", "游戏", "n.", "something fun you play", "Let's play a word game.", "我们来玩单词游戏吧。"],
+["toy", "玩具", "n.", "a thing children play with", "The toy car is fast.", "玩具车跑得快。"],
+["win", "赢", "v.", "to be first in a game", "Carlos wants to win the race.", "Carlos想赢这场比赛。"],
+["kind", "善良的", "adj.", "nice and good to others", "Be kind to your friends.", "要对朋友友善。"],
+["new", "新的", "adj.", "not old", "Lucas has new shoes today.", "Lucas今天穿了新鞋。"]
+],article:{t:"My First Day at School",tz:"第一天上学",en:"Today Lucas goes to school. He has a new bag and a new pencil.\nThe teacher is kind. \"What is your name?\" she asks. Lucas answers.\nThe children sit on chairs. They listen to a story about a dragon.\nCarlos can read some words. Lucas can count to ten.\nThey draw and paint. Lucas draws a big green dragon.\nThen they sing a song and play a game. Lucas wins!\nSchool is fun. Lucas cannot wait for tomorrow.",zh:"今天Lucas去上学。他有新书包和新铅笔。\n老师很和蔼。\"你叫什么名字?\"她问。Lucas回答了。\n孩子们坐在椅子上,听一个关于龙的故事。\nCarlos能读一些单词,Lucas能数到十。\n他们又画画又涂色。Lucas画了一条大绿龙。\n然后他们唱歌、玩游戏。Lucas赢了!\n上学真有趣。Lucas等不及明天再来。"}},
+{n:4,t:"My World",tz:"我的世界",words:[
+["sun", "太阳", "n.", "the big bright light in the day sky", "The sun is warm and bright.", "太阳又暖又亮。"],
+["moon", "月亮", "n.", "the light in the night sky", "The moon comes out at night.", "月亮晚上出来。"],
+["star", "星星", "n.", "a tiny light in the night sky", "Carlos counts the stars.", "Carlos数星星。"],
+["sky", "天空", "n.", "the blue place above you", "Birds fly in the sky.", "鸟儿在天上飞。"],
+["rain", "雨", "n.", "water that falls from clouds", "The rain makes the grass wet.", "雨把草淋湿了。"],
+["wind", "风", "n.", "air that moves and blows", "The wind blows my hat away.", "风把我的帽子吹走了。"],
+["snow", "雪", "n.", "soft white bits that fall when cold", "We make a snowman in the snow.", "我们在雪里堆雪人。"],
+["tree", "树", "n.", "a tall plant with leaves", "The bird lives in the tree.", "鸟住在树上。"],
+["flower", "花", "n.", "the pretty part of a plant", "Mum likes the pink flower.", "妈妈喜欢那朵粉色的花。"],
+["grass", "草", "n.", "the green plant on the ground", "We sit on the soft grass.", "我们坐在软软的草地上。"],
+["water", "水", "n.", "what you drink and swim in", "Fish live in the water.", "鱼生活在水里。"],
+["sand", "沙子", "n.", "tiny bits on the beach", "Lucas digs in the sand.", "Lucas在沙子里挖呀挖。"],
+["sea", "大海", "n.", "the big blue water", "We swim in the sea.", "我们在大海里游泳。"],
+["hill", "小山", "n.", "ground that goes up high", "We roll down the hill.", "我们从小山上滚下来。"],
+["road", "马路", "n.", "cars drive on it", "Look both ways at the road.", "过马路要两边看。"],
+["car", "汽车", "n.", "it drives you places", "Dad drives the car to work.", "爸爸开车去上班。"],
+["bus", "公交车", "n.", "a big car that many people ride", "We take the bus to school.", "我们坐公交车上学。"],
+["bike", "自行车", "n.", "it has two wheels and you pedal it", "Carlos rides his bike fast.", "Carlos骑自行车骑得快。"],
+["boat", "船", "n.", "it takes you across water", "The boat sails on the sea.", "船在海上航行。"],
+["park", "公园", "n.", "a place with grass and swings", "We play in the park on Sunday.", "星期天我们在公园玩。"],
+["day", "白天", "n.", "when the sun is up", "We play outside in the day.", "白天我们在外面玩。"],
+["night", "夜晚", "n.", "when it is dark and you sleep", "The stars come out at night.", "星星在夜晚出来。"],
+["morning", "早上", "n.", "the first part of the day", "Lucas brushes his teeth every morning.", "Lucas每天早上刷牙。"],
+["look", "看", "v.", "to use your eyes", "Look at the rainbow!", "快看彩虹!"],
+["see", "看见", "v.", "to find with your eyes", "I can see a bird up there.", "我能看见上面有只鸟。"],
+["hear", "听见", "v.", "to find with your ears", "Can you hear the rain?", "你能听见雨声吗?"],
+["touch", "摸", "v.", "to feel with your fingers", "Do not touch the hot pot.", "不要摸热锅。"],
+["find", "找到", "v.", "to see something you looked for", "Carlos finds a shiny shell.", "Carlos找到一个亮亮的贝壳。"],
+["fast", "快的", "adj.", "moving very quickly", "The horse is fast.", "马跑得快。"],
+["slow", "慢的", "adj.", "not fast", "The snail is very slow.", "蜗牛非常慢。"]
+],article:{t:"A Walk in the Park",tz:"公园散步",en:"It is a sunny morning. The sky is blue. The sun is warm.\nCarlos and Lucas walk to the park. They see green grass and tall trees.\nA bird sings. A flower opens. \"Look!\" says Lucas. \"I can see a star... no, it is a plane!\"\nCarlos rides his bike fast. Lucas is slow on his little bike.\nThey hear the wind in the trees. They touch the soft grass.\nThen the rain comes! They run home fast.\nAt night, the moon and stars come out. What a happy day!",zh:"这是一个晴朗的早晨。天空蓝蓝的,太阳暖暖的。\nCarlos和Lucas走去公园。他们看见绿绿的草和高高的树。\n鸟儿在唱歌,花儿开了。\"快看!\"Lucas说,\"我看见一颗星星……不对,是飞机!\"\nCarlos骑自行车骑得快,Lucas骑小车慢慢的。\n他们听见风吹过树梢,摸到软软的草。\n突然下雨了!他们飞快地跑回家。\n夜晚,月亮和星星出来了。真是开心的一天!"}},
+/* ═══ 以下为原 26 周(Year 1–2 起) ═══ */
+{n:5,t:"Ways of Looking & Speaking",tz:"看与说的高级词",words:[
 ["glance","瞥一眼","v.","to take a quick look at something","Carlos took a quick glance at the clock and kept writing.","Carlos飞快地瞥了一眼时钟，继续写作。"],
 ["glare","怒视","v.","to stare at someone in an angry way","The coach glared at the players who arrived late.","教练怒视着迟到的队员们。"],
 ["gaze","凝视","v.","to look at something steadily for a long time","Lucas gazed at the stars until his neck ached.","Lucas凝视着星空，直到脖子发酸。"],
@@ -199,7 +339,7 @@ const VOCAB = [
 ],article:{t:"The Audition",tz:"试镜风波",
 en:"On the day of the school play auditions, Carlos peered through the curtain and caught a glimpse of the judges. He squinted at the audition list and groaned - he was first! \"You'll be brilliant,\" Lucas murmured, trying to coax his brother onto the stage. Carlos began well, but halfway through he started to stammer. A boy in the front row snickered, and another taunted, \"Forgot your lines?\" The drama teacher glared at them and bellowed, \"Silence!\" Carlos took a breath while the audience gasped, waiting. Then, instead of whining or pleading for another turn, he gazed straight ahead and delivered his final speech perfectly. \"Magnificent!\" the teacher exclaimed, and declared the audition a triumph. Later, Carlos confessed he had been terrified. \"I observed only one true star today,\" Lucas chuckled. \"And I insist - it was you.\"",
 zh:"学校话剧试镜那天，Carlos透过幕布仔细张望，瞥见了评委们。他眯眼看了看试镜名单，哀嚎一声——他排第一个！\"你会很棒的，\"Lucas低声说，努力哄哥哥上台。Carlos开头很顺利，但演到一半开始结巴。前排一个男孩窃笑起来，另一个奚落道：\"忘词啦？\"戏剧老师怒视着他们，大吼一声：\"安静！\"观众倒抽一口气屏息等待，Carlos深吸一口气。他没有发牢骚，也没有恳求重来，而是目视前方，完美地讲完了最后一段台词。\"太精彩了！\"老师惊呼，并宣布这次试镜大获成功。后来，Carlos坦白说自己当时吓坏了。\"我今天只观察到一位真正的明星，\"Lucas轻声笑道，\"我坚持认为——那就是你。\""}},
-{n:2,t:"Movement & Action",tz:"动作高级词",words:[
+{n:6,t:"Movement & Action",tz:"动作高级词",words:[
 ["dash","猛冲","v.","to run somewhere very quickly","Lucas dashed across the yard to catch the ball.","Lucas猛冲过院子去接球。"],
 ["bolt","飞奔逃走","v.","to run away suddenly and very fast","The startled horse bolted through the open gate.","受惊的马从敞开的大门飞奔而出。"],
 ["flee","逃离","v.","to run away from danger","The villagers fled before the flood reached them.","洪水到来之前，村民们逃离了家园。"],
@@ -233,7 +373,7 @@ zh:"学校话剧试镜那天，Carlos透过幕布仔细张望，瞥见了评委�
 ],article:{t:"The Great Backyard Obstacle Race",tz:"后院障碍大赛",
 en:"The brothers built an obstacle course and invited the neighbours to race. At the whistle, Carlos dashed to the rope wall while Lucas vaulted the old fence. Their dog Biscuit bolted after them, darting between their legs until Lucas stumbled and almost toppled the water buckets. \"Watch out!\" he yelled, as two racers collided near the trampoline and staggered sideways. Next they had to creep under a net, wriggle through a tunnel, and scramble over the woodpile. Carlos clutched the rope, swayed wildly, and plunged into the paddling pool with a mighty splash. At the last challenge - hurl a beanbag into a bin - his tired arms trembled, but he didn't flinch. He hurled it... and missed! Biscuit snatched the beanbag and pursued a butterfly instead. The boys laughed so hard they could only trudge to the finish line together, while the cat watched them prowl home, thoroughly unimpressed.",
 zh:"兄弟俩搭了一个障碍赛道，邀请邻居来比赛。哨声一响，Carlos猛冲向绳网墙，Lucas则翻越旧栅栏。他们的狗Biscuit飞奔着追上来，在他们腿间钻来钻去，害得Lucas绊了一下，差点撞倒水桶。\"小心！\"他大喊。这时两名选手在蹦床旁相撞，摇摇晃晃地歪向一边。接下来，他们要从网下蹑手蹑脚爬过，扭动着钻过隧道，再手脚并用地爬过柴堆。Carlos紧抓绳子，剧烈摇晃，最后扑通一声跳进充气泳池，溅起巨大的水花。最后一关是把沙包扔进桶里——他疲惫的手臂直发抖，但他毫不退缩。他用力一掷……没中！Biscuit一把叼走沙包，转头去追一只蝴蝶了。兄弟俩笑得直不起腰，只能拖着脚步一起走向终点，而猫咪看着他们慢吞吞地回家，一脸不屑。"}},
-{n:3,t:"Feelings & Moods",tz:"情绪高级词",words:[
+{n:7,t:"Feelings & Moods",tz:"情绪高级词",words:[
 ["anxious","焦虑的","adj.","worried and nervous about something","She felt anxious while waiting for the results.","等待结果时，她感到焦虑。"],
 ["dread","惧怕","v.","to feel great fear about something that will happen","I dread the dentist more than any exam.","比起任何考试，我更怕看牙医。"],
 ["fret","烦恼；焦虑","v.","to keep worrying about something","Don't fret over one small mistake.","别为一个小错误烦恼个不停。"],
@@ -267,7 +407,7 @@ zh:"兄弟俩搭了一个障碍赛道，邀请邻居来比赛。哨声一响，C
 ],article:{t:"The Longest Wednesday",tz:"最漫长的星期三",
 en:"On Wednesday, the competition results would be announced, and the brothers had been anxious all week. Carlos tried not to fret, but he woke feeling uneasy, and even Biscuit the dog looked forlorn. At breakfast Lucas was sullen and irritable, secretly dreading bad news. \"I loathe waiting,\" he groaned. Mum, calm and serene as always, said, \"Whatever happens, we cherish the effort you made.\" At school, Carlos felt envious of kids with nothing to wait for, and a little resentful that the letter was taking so long. By three o'clock he was exasperated; by four, utterly bewildered that time could move so slowly. Then the email arrived. The boys stared at the screen, baffled and flustered - then ecstatic! They had both passed the first round. Dejected feelings vanished; gloomy thoughts dissolved. Elated, they danced a gleeful, ridiculous dance around the kitchen. \"I adore Wednesdays,\" declared Lucas, feeling no remorse at all for his morning grumpiness. Now they were content - and they yearned for the next challenge.",
 zh:"星期三要公布比赛结果，兄弟俩焦虑了一整个星期。Carlos努力不去烦恼，但醒来还是觉得心神不宁，连狗狗Biscuit都显得孤零零的。早餐时，Lucas闷闷不乐、脾气暴躁，心里暗暗惧怕坏消息。\"我最厌恶等待了，\"他哀叹道。妈妈一如既往地平静安详：\"无论结果如何，我们都珍视你们付出的努力。\"在学校，Carlos羡慕那些什么都不用等的孩子，还有点埋怨信怎么来得这么慢。三点时他已经烦躁不已；到了四点，时间慢得让他彻底困惑不解。然后，邮件来了。兄弟俩盯着屏幕，先是一脸茫然、手忙脚乱——接着欣喜若狂！他们都通过了第一轮。沮丧一扫而空，阴郁烟消云散。两人兴高采烈，在厨房里跳起了滑稽的庆祝舞。\"我爱星期三，\"Lucas宣布，对自己早上的坏脾气毫无悔意。现在他们心满意足——并且渴望迎接下一个挑战。"}},
-{n:4,t:"Describing People",tz:"描写人物",words:[
+{n:8,t:"Describing People",tz:"描写人物",words:[
 ["scrawny","骨瘦如柴的","adj.","very thin and bony","The scrawny stray cat begged for scraps.","那只骨瘦如柴的流浪猫讨要剩饭。"],
 ["lanky","瘦高的","adj.","tall and thin, with long arms and legs","The lanky teenager tripped over his own feet.","那个瘦高的少年被自己的脚绊倒了。"],
 ["stout","矮胖结实的","adj.","rather fat and solid in build","A stout little man guarded the shop door.","一个矮胖结实的小个子男人守着店门。"],
@@ -301,7 +441,7 @@ zh:"星期三要公布比赛结果，兄弟俩焦虑了一整个星期。Carlos�
 ],article:{t:"The Family Reunion",tz:"家庭聚会众生相",
 en:"At the summer family reunion, the brothers played a secret game: describe every guest in one perfect word. Great-Uncle Joe was stout and jovial, telling jokes until everyone cried with laughter. Grandma, elegant in her silk scarf, kept her garden immaculate and her manners courteous. Cousin Mia was agile and nimble, cartwheeling across the lawn, while her lanky brother tripped over the sprinkler - hopelessly clumsy. The scrawny new kitten was timid at first, then bold enough to steal a sausage in one audacious raid. Aunty Rose arrived weary and dishevelled after her long flight, and soon looked drowsy in the hammock. Only Grandpa stayed alert and vigilant at the barbecue, guarding it from that kitten. A surly teenager sat aloof in the corner until Lucas, earnest and amiable as always, coaxed him into a game of handball. \"Observation complete,\" whispered Carlos with a solemn nod. \"Our family is officially the best show in town.\"",
 zh:"夏日家庭聚会上，兄弟俩玩起了一个秘密游戏：用一个最贴切的词形容每位客人。乔舅公矮胖结实、快活风趣，讲笑话逗得大家笑出眼泪。奶奶围着丝巾，优雅端庄，她的花园一尘不染，举止彬彬有礼。表妹Mia敏捷灵活，在草坪上侧手翻，而她瘦高的哥哥却被洒水器绊倒——笨拙得没救了。骨瘦如柴的新小猫起初很胆小，后来竟大胆到发动一次冒险突袭，偷走了一根香肠。Rose姨妈长途飞行后疲惫不堪、头发凌乱，很快就在吊床上昏昏欲睡。只有爷爷在烤架旁保持警觉、时刻警惕，防着那只小猫。一个坏脾气的少年冷淡地坐在角落，直到一向诚恳又和蔼的Lucas把他哄进了手球游戏。\"观察完毕，\"Carlos严肃地点点头，低声说，\"我们家正式成为镇上最好看的一台戏。\""}},
-{n:5,t:"Describing Places & Things",tz:"描写场景与事物",words:[
+{n:9,t:"Describing Places & Things",tz:"描写场景与事物",words:[
 ["vast","辽阔的","adj.","extremely large in area or size","A vast desert stretched to the horizon.","一片辽阔的沙漠一直延伸到地平线。"],
 ["immense","巨大的","adj.","extremely big in size or degree","Moving the piano took an immense effort.","搬那架钢琴花了极大的力气。"],
 ["colossal","庞大惊人的","adj.","gigantic; astonishingly large","A colossal statue guarded the harbour entrance.","一座庞大的雕像守卫着海港入口。"],
@@ -335,7 +475,7 @@ zh:"夏日家庭聚会上，兄弟俩玩起了一个秘密游戏：用一个最�
 ],article:{t:"Grandpa's Secret Valley",tz:"爷爷的秘密山谷",
 en:"Grandpa promised to show the boys a place no tourist had ever found. They drove far into the remote hills, past a dilapidated barn and a desolate, barren ridge where the wind howled. The track grew rugged, winding between jagged rocks above a murky creek. \"This part is treacherous,\" Grandpa warned, \"so walk exactly where I walk.\" Then, squeezing through a cramped gap between two colossal boulders, they stepped into a vast, secluded valley - and gasped. It was magnificent. Lush grass rolled towards a tranquil lake, fed by a dazzling waterfall that turned the fertile ground into a garden. A quaint stone hut, shabby outside but pristine inside, stood under a majestic old fig tree. On its door was carved an ornate dragon whose gleaming eyes seemed almost radiant in the afternoon light. \"Your great-grandfather built this,\" said Grandpa. Even the normally chaotic brothers stood in immense, minuscule-voiced awe: \"Can we live here forever?\"",
 zh:"爷爷答应带兄弟俩去一个从没有游客发现过的地方。他们的车开进偏远的山区，经过一座破败的谷仓和一道狂风呼啸、荒凉贫瘠的山脊。山路越来越崎岖，在浑浊小溪上方的嶙峋岩石间蜿蜒。\"这一段暗藏危险，\"爷爷提醒，\"我走哪儿你们就走哪儿。\"接着，他们从两块巨石之间狭窄的缝隙里挤过去，眼前豁然出现一个辽阔僻静的山谷——他们倒吸一口气。太壮丽了！茂盛的青草一直铺到一泓宁静的湖边，一道耀眼的瀑布浇灌着肥沃的土地，把这里变成了花园。一座古雅的石头小屋立在一棵雄伟的老无花果树下，外表破旧，里面却干净得一尘不染。屋门上刻着一条华丽的龙，闪亮的眼睛在午后阳光里熠熠生辉。\"这是你们的曾祖父建的，\"爷爷说。就连平时闹腾得鸡飞狗跳的兄弟俩也怀着无比的敬畏，用小得不能再小的声音站在那里问：\"我们能永远住在这里吗？\""}},
-{n:6,t:"Sound, Light & Weather",tz:"声音、光线与天气",words:[
+{n:10,t:"Sound, Light & Weather",tz:"声音、光线与天气",words:[
 ["deafening","震耳欲聋的","adj.","so loud you can hear nothing else","The thunder was deafening right overhead.","头顶的雷声震耳欲聋。"],
 ["piercing","刺耳的；尖锐的","adj.","very sharp, loud and high","A piercing alarm woke the whole street.","刺耳的警报吵醒了整条街。"],
 ["shrill","尖厉的","adj.","unpleasantly high and loud","The referee's shrill whistle stopped the game.","裁判尖厉的哨声叫停了比赛。"],
@@ -369,7 +509,7 @@ zh:"爷爷答应带兄弟俩去一个从没有游客发现过的地方。他们�
 ],article:{t:"The Night the Power Went Out",tz:"停电之夜",
 en:"It had been a sweltering, humid day that scorched the garden, but at dusk the sky turned overcast and strange. By twilight, a gale was bending the gum trees, and torrential rain began to drench the streets. Then - a brilliant, blinding flash! A deafening crack of thunder followed, and every light in the house died. In the sudden dark, the fridge's familiar drone stopped, and the silence felt enormous. \"Listen,\" whispered Lucas. A faint, muffled thump was barely audible upstairs... then a shrill screech! The boys froze, hearts pounding, until a piercing meow revealed the culprit: the cat, knocking pans down with a mighty clatter. The family lit candles that flickered on the walls, watched the luminous clock hands glow, and told stories while the wind howled and the windows rumbled. By morning the storm had passed. The wet lawn glistened, puddles shimmered, and the frigid change made them shiver - but the bleak, wild night had somehow been the best one all summer. \"Nothing left to thaw but my toes,\" said Carlos.",
 zh:"这一天闷热潮湿，骄阳把花园都烤焦了，但黄昏时天空变得阴沉而诡异。暮色中，大风吹弯了桉树，倾盆大雨把街道浇得湿透。突然——一道夺目、炫目的闪光！紧接着一声震耳欲聋的炸雷，屋里所有的灯瞬间熄灭。骤然而至的黑暗里，冰箱熟悉的嗡嗡声也停了，寂静大得吓人。\"听，\"Lucas小声说。楼上传来一声几乎听不见的、闷闷的撞击声……接着是一声尖厉的怪响！兄弟俩僵住了，心怦怦直跳，直到一声刺耳的猫叫揭晓了真凶：是猫把锅子哐哐当当全撞翻了。全家点起蜡烛，看烛光在墙上忽明忽暗，看时钟的夜光指针发亮，在风的嚎叫和窗户的隆隆声中讲故事。到了早晨，暴风雨过去了。湿漉漉的草坪闪着水光，水洼泛着微光，骤降的严寒让他们直打哆嗦——但这个阴冷狂野的夜晚，不知怎的成了整个夏天最棒的一夜。\"现在只剩我的脚趾头需要解冻了，\"Carlos说。"}},
-{n:7,t:"The Sea & Exploration",tz:"大海与探险",words:[
+{n:11,t:"The Sea & Exploration",tz:"大海与探险",words:[
 ["voyage","航行","n.","a long journey by sea or in space","The voyage to the island took three days.","去那座岛的航行花了三天。"],
 ["expedition","探险；远征","n.","an organised journey with a purpose","They joined an expedition to map the reef.","他们加入了一支绘制珊瑚礁地图的探险队。"],
 ["navigate","导航；找路","v.","to plan and follow a route","Sailors once navigated by the stars.","水手们曾经靠星星导航。"],
@@ -403,7 +543,7 @@ zh:"这一天闷热潮湿，骄阳把花园都烤焦了，但黄昏时天空变�
 ],article:{t:"The Castaway Game",tz:"漂流者游戏",
 en:"At sailing camp, the instructor announced the ultimate challenge: the Castaway Game. Each crew would navigate their little vessel across the bay, following a chart to a supposedly uninhabited cove, and survive one afternoon like true seafarers. The brothers' boat rode the gentle swell while Carlos watched the horizon and Lucas steered past a rusty beacon. Suddenly the wind turned turbulent - a mini tempest! Spray drenched them, the boat began to surge and tilt, and for one perilous moment they nearly capsized. \"We're buoyant, we're fine!\" Lucas yelled. They moored safely in the inlet, staggered ashore, and set up camp beside a pile of driftwood. Playing marooned castaways, they salvaged 'treasure' (their lunch box) from the 'wreckage' (an old crate), and pretended pirates might plunder it as the tide ebbed. When the rescue boat arrived, nobody could fathom why the boys pleaded to stay. \"Best expedition ever,\" sighed Carlos. \"Same voyage next week?\"",
 zh:"帆船营里，教练宣布了终极挑战：漂流者游戏。每组船员要驾驶自己的小船横渡海湾，按海图找到一个据说无人居住的小海湾，并像真正的航海者一样度过一个下午。兄弟俩的船随着轻柔的涌浪起伏，Carlos望着地平线，Lucas掌舵驶过一座生锈的灯标。突然，风变得狂暴起来——一场小型暴风雨！浪花把他们浇透，船开始猛冲、倾斜，有一个危险的瞬间差点倾覆。\"我们浮得住，没事！\"Lucas大喊。他们安全地把船系泊在水湾里，蹒跚上岸，在一堆浮木旁扎营。他们扮演被困孤岛的漂流者，从\"残骸\"（一个旧木箱）里抢救出\"宝藏\"（午餐盒），还假装海盗会趁退潮来掠夺。救援船到达时，谁也想不明白为什么兄弟俩恳求再多待一会儿。\"史上最棒的探险，\"Carlos感叹，\"下周还来一次同样的航行？\""}},
-{n:8,t:"The Bush & Wild Nature",tz:"丛林与野外",words:[
+{n:12,t:"The Bush & Wild Nature",tz:"丛林与野外",words:[
 ["undergrowth","灌木丛","n.","bushes and plants growing under trees","Something rustled in the thick undergrowth.","茂密的灌木丛里有什么东西在沙沙作响。"],
 ["canopy","树冠层","n.","the roof of leaves formed by treetops","Sunlight barely reached through the dense canopy.","阳光几乎穿不透茂密的树冠层。"],
 ["foliage","枝叶","n.","the leaves of plants and trees","Bright parrots hid among the foliage.","色彩鲜艳的鹦鹉藏在枝叶间。"],
@@ -437,7 +577,7 @@ zh:"帆船营里，教练宣布了终极挑战：漂流者游戏。每组船员�
 ],article:{t:"The Gorge at the End of the Map",tz:"地图尽头的峡谷",
 en:"The bushwalk began in a fragrant grove where the aroma of eucalyptus filled every breath. The track meandered through dense undergrowth, past a gnarled fig whose roots entwined an entire boulder. Brittle twigs snapped underfoot as the boys pushed through a thicket and burst into a sunlit glade. \"Look up,\" whispered Dad. High above, the canopy glowed green, and through the foliage they glimpsed a wedge-tailed eagle circling a crag. The land changed as they climbed: verdant gullies where ferns flourish and frogs thrive, then arid, rocky slopes where even tough grasses wilt and wither. At last they stood at the summit, on the edge of a breathtaking precipice. Far below, a torrent thundered through the gorge, and a silver cascade spilled into a pool - a hidden oasis in the sprawling wilderness. \"The map ends here,\" said Dad. Carlos grinned at Lucas above the roaring ravine: \"Then this is where our story begins.\"",
 zh:"丛林徒步从一片芳香的小树林开始，每一口呼吸都是桉树的香气。小路在浓密的灌木丛中蜿蜒，经过一棵多节瘤的无花果树，它的根缠绕着一整块巨石。兄弟俩踩着咔咔作响的脆枝，穿过一片密灌丛，闯进一块阳光洒落的林间空地。\"抬头看，\"爸爸小声说。高高的树冠层泛着绿光，透过枝叶，他们瞥见一只楔尾雕在岩崖上空盘旋。越往上爬，地貌不断变化：先是翠绿的溪谷，蕨类茁壮成长、青蛙繁衍兴旺；然后是干旱多石的山坡，连坚韧的草都蔫萎枯干。终于，他们登上峰顶，站在令人屏息的悬崖峭壁边缘。远远的下方，一股激流在峡谷中轰鸣，一道银色的小瀑布倾泻入潭——那是蔓延的荒野中一处隐秘的绿洲。\"地图到这里就结束了，\"爸爸说。Carlos在咆哮的溪谷上方朝Lucas咧嘴一笑：\"那我们的故事就从这里开始。\""}},
-{n:9,t:"Animals & Behaviour",tz:"动物与习性",words:[
+{n:13,t:"Animals & Behaviour",tz:"动物与习性",words:[
 ["predator","捕食者","n.","an animal that hunts other animals","The quoll is a small but fierce predator.","袋鼬是一种体型小却凶猛的捕食者。"],
 ["prey","猎物","n.","an animal hunted by another for food","The hawk circled, watching its prey.","鹰盘旋着，紧盯着猎物。"],
 ["carnivore","食肉动物","n.","an animal that eats meat","A crocodile is a patient carnivore.","鳄鱼是一种有耐心的食肉动物。"],
@@ -471,7 +611,7 @@ zh:"丛林徒步从一片芳香的小树林开始，每一口呼吸都是桉树�
 ],article:{t:"The Backyard Documentary",tz:"后院纪录片",
 en:"Armed with a tablet and endless patience, the brothers spent Sunday filming a wildlife documentary in the backyard. \"Observe the elusive blue-tongue lizard,\" Carlos narrated, \"a master of camouflage, dormant on this warm rock.\" Lucas filmed a swarm of bees, a colony of ants marching to their burrow, and a magpie with glossy plumage that landed to forage for worms. Their nocturnal star, a possum, was still asleep, so the cat became the documentary's predator: they filmed her as she stalked, pounced, and then - being utterly docile - flopped over for a tummy rub. \"A truly ferocious carnivore,\" Lucas laughed. Biscuit the dog played the lumbering herbivore, though he devoured a sausage and gnawed a bone, which rather ruined the science. By dusk the ravenous filmmakers went inside, guided by the instinct that dinner was ready. Their film ended with whales migrating across a hand-drawn ocean - and won two votes for best documentary, both from Mum.",
 zh:"周日，兄弟俩带着平板电脑和无限的耐心，在后院拍摄野生动物纪录片。\"请观察这只难以捉摸的蓝舌蜥蜴，\"Carlos解说道，\"伪装大师，正在温暖的岩石上休眠。\"Lucas拍下了一群蜜蜂、一队正往洞穴行进的蚂蚁，还有一只羽毛油亮的喜鹊落下来觅食蚯蚓。他们的夜行明星——负鼠——还在睡觉，于是猫成了纪录片里的捕食者：他们拍下她潜近、猛扑，然后——因为实在太温驯——干脆翻过身来求摸肚子。\"真是凶猛的食肉动物啊，\"Lucas大笑。狗狗Biscuit扮演行动笨重的食草动物，可他狼吞虎咽吃掉一根香肠、又啃了一根骨头，科学性大打折扣。黄昏时分，饥肠辘辘的电影人们凭着\"晚饭好了\"的本能回到屋里。他们的影片以鲸群迁徙过一片手绘海洋作为结尾——并赢得了\"最佳纪录片\"的两票，都来自妈妈。"}},
-{n:10,t:"Mystery & Suspense",tz:"悬疑与推理",words:[
+{n:14,t:"Mystery & Suspense",tz:"悬疑与推理",words:[
 ["sinister","阴森不祥的","adj.","seeming evil or threatening","A sinister shadow slid across the window.","一道阴森的影子滑过窗户。"],
 ["eerie","怪异吓人的","adj.","strange in a frightening way","An eerie glow came from the empty house.","空屋里透出怪异吓人的光。"],
 ["ominous","不祥的","adj.","suggesting something bad will happen","Ominous clouds gathered over the oval.","不祥的乌云在操场上空聚集。"],
@@ -505,7 +645,7 @@ zh:"周日，兄弟俩带着平板电脑和无限的耐心，在后院拍摄野�
 ],article:{t:"The Case of the Vanishing Trophy",tz:"奖杯失踪之谜",
 en:"On Monday, the school's gleaming trophy had vanished, and an ominous silence filled assembly. Detectives Carlos and Lucas took the case, though Carlos remained sceptical of the popular theory: a ghost. \"An eerie idea,\" he said, \"but every enigma has an answer.\" The clues were peculiar - a bizarre chalk arrow, an uncanny smell of mint, and a sinister note that took an hour to decipher: 'Look where champions rest.' The brothers snooped around the gym with stealthy steps, eavesdropped near the canteen, and watched a suspicious cleaner who, it turned out, had a perfect alibi. Was some cunning intruder trying to deceive them with a hoax? Was the note a forgery? A feeling of foreboding grew... until Lucas spotted mint-green paint concealed on the sports captain's sleeve. The sly culprit had 'borrowed' the trophy to polish it as a surprise - his devious scheme was actually kind! Nobody was apprehended, the trophy reappeared, and the sign above it now reads: 'Mystery solved by C & L, Detectives.'",
 zh:"星期一，学校闪闪发亮的奖杯不翼而飞，集会上一片不祥的寂静。Carlos和Lucas侦探接手了此案，不过Carlos对流行的\"鬼魂说\"持怀疑态度。\"这个想法挺吓人，\"他说，\"但每个谜团都有答案。\"线索很古怪——一个怪诞的粉笔箭头、一股离奇的薄荷味，还有一张阴森的字条，他们花了一小时才破译：\"去冠军休息的地方找。\"兄弟俩迈着悄无声息的步子在体育馆里侦查，在食堂附近偷听，还盯上了一位形迹可疑的清洁工——结果人家有完美的不在场证明。是某个狡猾的闯入者想用骗局欺骗他们？字条是伪造的？不祥的预感越来越强……直到Lucas发现体育队长袖子上藏着薄荷绿的油漆。这位狡黠的\"元凶\"是把奖杯\"借走\"抛光，想给大家一个惊喜——他的\"诡计\"其实是好意！没有人被逮捕，奖杯重新出现，而奖杯上方的牌子如今写着：\"此谜由C&L侦探侦破。\""}},
-{n:11,t:"Conflict & Courage",tz:"冲突与勇气",words:[
+{n:15,t:"Conflict & Courage",tz:"冲突与勇气",words:[
 ["adversary","对手","n.","an enemy or opponent","The chess champion faced her toughest adversary.","国际象棋冠军迎战她最强劲的对手。"],
 ["rival","竞争对手","n.","someone competing for the same prize","The two schools have been rivals for decades.","这两所学校几十年来一直是竞争对手。"],
 ["feud","长期不和","n.","a long-lasting, bitter quarrel","The neighbours' feud began over a lemon tree.","邻居间的积怨始于一棵柠檬树。"],
@@ -539,7 +679,7 @@ zh:"星期一，学校闪闪发亮的奖杯不翼而飞，集会上一片不祥�
 ],article:{t:"The Handball Kingdoms",tz:"手球王国之战",
 en:"At lunchtime, the playground becomes two kingdoms, and handball is war. Carlos's team faced their old rivals - a formidable squad whose captain, a dauntless girl named Priya, was his friendliest adversary. The first skirmish was fierce: serves flew like arrows, and a menacing black ball nearly toppled the bins. Nobody would yield. When Lucas was caught in a sneaky ambush behind the four-square line, his valiant teammates refused to retreat. \"We shall never surrender the court!\" Carlos declared, defying the odds as his gallant ally dived to save the point. The siege lasted all lunch. Finally the bell rang - the eternal foe of every game - before either side could vanquish the other. There was no wrath, no grudge, no feud: just two triumphant, intrepid armies sharing a water fountain. Priya proposed a truce, and the captains signed a solemn treaty on a serviette: 'Rematch tomorrow. Winners keep the good ball. Losers are NOT banished into exile - they bring the snacks.'",
 zh:"午餐时间，操场变成两个王国，手球就是战争。Carlos的队伍迎战老对手——一支令人生畏的劲旅，队长是无所畏惧的女孩Priya，也是他最友好的对手。第一场小冲突十分激烈：发球箭一般飞来飞去，一记来势汹汹的黑球差点掀翻垃圾桶。谁也不肯屈服。当Lucas在四方格线后遭到偷袭伏击时，他英勇的队友们拒绝撤退。\"我们绝不交出球场！\"Carlos宣告，逆着局势公然抗争，他勇敢仗义的盟友飞身救球。这场围困持续了整个午餐时间。最终，铃声——所有游戏永恒的敌人——响了，双方都没能击败对方。没有震怒，没有怨恨，没有世仇：只有两支得胜归来、勇猛无畏的大军共享一个饮水台。Priya提议休战，两位队长在餐巾纸上郑重签署条约：\"明日再战。赢家保管好球。输家不会被放逐流放——但要带零食。\""}},
-{n:12,t:"Character: Virtues & Flaws",tz:"品格：美德与缺点",words:[
+{n:16,t:"Character: Virtues & Flaws",tz:"品格：美德与缺点",words:[
 ["benevolent","仁慈的","adj.","kind, caring and generous to others","The benevolent baker gave leftover bread to the shelter.","仁慈的面包师把剩下的面包送给收容所。"],
 ["compassionate","有同情心的","adj.","feeling and showing care for those suffering","A compassionate nurse sat with the lonely patient.","一位富有同情心的护士陪伴着孤独的病人。"],
 ["empathy","同理心","n.","the ability to understand another's feelings","Empathy means imagining yourself in their shoes.","同理心就是设身处地为别人着想。"],
@@ -573,7 +713,7 @@ zh:"午餐时间，操场变成两个王国，手球就是战争。Carlos的队�
 ],article:{t:"The Fundraiser",tz:"义卖风波",
 en:"When bushfires struck up north, the school planned a charitable fundraiser, and every student's character showed its true colours. Diligent Lucas baked ninety biscuits; conscientious Carlos counted the float twice. Their gracious teacher thanked even the smallest helpers. But trouble lurked: a conceited Year Six boy boasted that his stall would beat everyone's, an arrogant pair refused to share their table, and one spiteful whisper claimed the twins' biscuits were shop-bought - a malicious and deceitful rumour! Gullible little kids almost believed it. The brothers stayed humble and refused to retaliate. \"Winning isn't the point,\" said Carlos with quiet integrity. \"Empathy is. Imagine losing your house.\" His sincere words spread; even the pompous boy donated his profits, suddenly selfless. By day's end the school had raised two thousand dollars for people they had never met. \"That,\" said the principal, \"is genuine compassion - the opposite of callous, the enemy of cowardly, and stronger than any obstinate pride.\"",
 zh:"北方发生山火后，学校策划了一场慈善义卖，每个学生的品格都显出了本色。勤奋的Lucas烤了九十块饼干；认真尽责的Carlos把零钱数了两遍。亲切有礼的老师连最小的帮手都一一道谢。但麻烦也在潜伏：一个自负的六年级男孩吹嘘他的摊位会碾压所有人，一对傲慢的搭档拒绝分享桌子，还有一句恶意的耳语说双胞胎的饼干是商店买的——一个恶毒又骗人的谣言！轻信的小孩子们差点信了。兄弟俩保持谦逊，拒绝报复。\"重点不是赢，\"Carlos带着安静的正直说，\"是同理心。想象一下失去自己的家。\"他真诚的话传开了；连那个自命不凡的男孩也突然无私起来，捐出了自己的收益。一天结束，学校为素不相识的人们筹到了两千澳元。\"这，\"校长说，\"就是真正的同情心——它是冷酷的反义词，是怯懦的天敌，比任何固执的骄傲都更强大。\""}},
-{n:13,t:"Time & Change",tz:"时间与变化",words:[
+{n:17,t:"Time & Change",tz:"时间与变化",words:[
 ["eternal","永恒的","adj.","lasting forever","The stars seem eternal in the night sky.","夜空中的星星仿佛是永恒的。"],
 ["perpetual","无休止的","adj.","continuing without ever stopping","The puppy is in perpetual motion all day.","小狗一整天都处于无休止的运动中。"],
 ["temporary","暂时的","adj.","lasting only a short time","The bridge closure is only temporary.","大桥封闭只是暂时的。"],
@@ -607,7 +747,7 @@ zh:"北方发生山火后，学校策划了一场慈善义卖，每个学生的�
 ],article:{t:"The Time Capsule",tz:"时间胶囊",
 en:"For the school's centenary, each class would bury a time capsule, to be opened in twenty-five years. The ceremony would commence at nine, so for once nobody dared be tardy. Lucas, who tended to procrastinate, had finished his letter at midnight; Carlos, punctual as ever, had been ready for days. \"What should we tell the future?\" the teacher asked. \"That childhood is fleeting,\" said one girl. \"That change is gradual, then abrupt,\" said another. Carlos wrote about their former house and how the suburb might evolve; Lucas drew Biscuit, hoping dogs would remain a perpetual joy. They anticipated hover-boards and tried to foresee robot teachers - an inevitable guess, everyone agreed. The burial itself was almost instantaneous, but the feeling lingered. Nobody dawdled back to class, yet everyone walked slowly, wanting to prolong the moment. \"Twenty-five years feels eternal,\" sighed Lucas. \"It will endure,\" smiled the teacher, \"and so will what you wrote. Time seldom feels important - except on days like this, when past and future are simultaneous.\"",
 zh:"为庆祝建校一百周年，每个班要埋一个时间胶囊，二十五年后开启。典礼九点开始，所以这一次没人敢迟到。爱拖延的Lucas半夜才写完他的信；一向守时的Carlos几天前就准备好了。\"我们该告诉未来什么？\"老师问。\"童年转瞬即逝，\"一个女孩说。\"变化是渐进的，然后突然降临，\"另一个说。Carlos写了他们从前的房子，以及这个社区将如何演变；Lucas画了Biscuit，希望狗狗永远是人类无尽的快乐。他们期待悬浮滑板，还试图预见机器人老师——大家一致认为这是不可避免的。掩埋本身几乎是一瞬间的事，但那种感觉久久萦绕。没有人磨蹭着回教室，但每个人都走得很慢，想把这一刻延长。\"二十五年感觉像永恒，\"Lucas感叹。\"它会留存下去，\"老师微笑着说，\"你们写下的东西也会。时间很少让人觉得重要——除了今天这样的日子，过去和未来同时出现在眼前。\""}},
-{n:14,t:"Food & the Senses",tz:"美食与感官",words:[
+{n:18,t:"Food & the Senses",tz:"美食与感官",words:[
 ["savoury","咸香的","adj.","tasting salty or spicy, not sweet","He prefers savoury snacks to sweet ones.","比起甜食，他更喜欢咸香的小吃。"],
 ["succulent","鲜嫩多汁的","adj.","juicy and delicious","The succulent roast disappeared in minutes.","鲜嫩多汁的烤肉几分钟就被吃光了。"],
 ["delectable","美味的","adj.","looking and tasting delightful","A delectable pavlova crowned the table.","一个美味的帕芙洛娃蛋糕是餐桌上的主角。"],
@@ -641,7 +781,7 @@ zh:"为庆祝建校一百周年，每个班要埋一个时间胶囊，二十五�
 ],article:{t:"The Night Market Feast",tz:"夜市盛宴",
 en:"The famished family arrived at the night market just as a hundred pans began to sizzle. The first whiff of garlic was so appetising that Biscuit (waiting at home) would have howled with envy. Stalls offered cuisine from everywhere: savoury dumplings, succulent skewers, tangy noodles and zesty lemon drinks to quench a parched throat. \"Don't guzzle,\" warned Mum, as Lucas gulped a mango smoothie. \"Savour it.\" They watched a chef simmer an aromatic curry, then garnish it like an artist; Carlos declared it gourmet and delectable, definitely not bland. Lucas dared Dad to try a morsel of chilli squid so hot it was barely edible. They learned that stale spring rolls turn soggy, that perishable treats melt fast on warm nights, and that one stand's 'mystery sauce' smelled suspiciously rancid - they walked politely past. Stuffed after their scrumptious banquet, the brothers nibbled one last honey puff each. \"I'll crave this forever,\" sighed Lucas. \"Same time next month?\" said Dad. The whole family answered with one simultaneous, satisfied burp. How elegant.",
 zh:"饿极了的一家人到达夜市时，上百口锅正好开始滋滋作响。第一缕蒜香扑鼻而来，令人食欲大开——要是在家等着的Biscuit闻到了，准会嫉妒得嚎叫。摊位上汇集了各地菜系：咸香的饺子、鲜嫩多汁的烤串、酸爽的拌面，还有风味浓烈的柠檬饮料，为干渴的喉咙解渴。\"别猛灌，\"妈妈提醒正大口吞芒果冰沙的Lucas，\"要细细品味。\"他们看一位大厨用文火慢炖香气扑鼻的咖喱，再像艺术家一样装点摆盘；Carlos宣布这是精致美食，绝对不寡淡。Lucas怂恿爸爸尝了一小口辣鱿鱼，辣得几乎没法下咽。他们还学到：不新鲜的春卷会变得软塌塌，易腐坏的甜品在温热的夜晚化得飞快，还有一个摊位的\"神秘酱汁\"闻起来有可疑的变质味——他们礼貌地绕道走开。这顿好吃极了的盛宴把大家撑得饱饱的，兄弟俩最后一人小口啃了一个蜂蜜泡芙。\"我会永远惦记这个味道，\"Lucas感叹。\"下个月同一时间再来？\"爸爸说。全家人用一个同时响起的满足饱嗝作答。多么优雅。"}},
-{n:15,t:"The City & Society",tz:"城市与社会",words:[
+{n:19,t:"The City & Society",tz:"城市与社会",words:[
 ["metropolis","大都市","n.","a very large, busy city","Sydney is a sparkling harbourside metropolis.","悉尼是一座海港边熠熠生辉的大都市。"],
 ["congested","拥堵的","adj.","overcrowded and blocked","The congested motorway crawled at walking pace.","拥堵的高速公路慢得像步行。"],
 ["derelict","废弃失修的","adj.","abandoned and falling into ruin","Artists transformed the derelict warehouse.","艺术家们改造了那座废弃的仓库。"],
@@ -675,7 +815,7 @@ zh:"饿极了的一家人到达夜市时，上百口锅正好开始滋滋作响�
 ],article:{t:"One Day in the Metropolis",tz:"大都市的一天",
 en:"The train glided into the populous heart of the metropolis, past congested streets and one derelict warehouse wearing a brand-new mural. The brothers pressed their noses to the glass: here was commerce in action - industrious vendors, busy merchants, and a flower stall scenting the whole thoroughfare. \"Every inhabitant has a story,\" said Mum. \"Some live in affluent towers; some struggle in poverty. A prosperous city should be a haven for everyone.\" They joined a throng of spectators lining the street for the New Year procession. Suddenly - commotion! A runaway alpaca (escaped from the petting zoo) trotted through the crowd, causing uproar, then pandemonium, until a calm bystander lured it back with a carrot. \"Better than television,\" declared Lucas. Later they visited the municipal library, a cool refuge from the heat, where a display explained civic life: how tenants rent dwellings, how the council fixes vandalism, and why the old ferry once had a night curfew. Riding home at dusk, Carlos yawned: \"The city is exhausting.\" \"That,\" said Dad, \"is why the suburbs exist.\"",
 zh:"火车滑入人口稠密的大都市中心，驶过拥堵的街道和一座画上了崭新壁画的废弃仓库。兄弟俩把鼻子贴在车窗上：这里是活生生的商业世界——勤劳的小贩、忙碌的商人，还有一个花摊让整条大道香气弥漫。\"每个居民都有自己的故事，\"妈妈说，\"有人住在富裕的高楼里，有人在贫困中挣扎。一座繁荣的城市应该是所有人的安全港。\"他们加入了街边等待新年游行队伍的人潮。突然——骚动！一只逃跑的羊驼（从宠物园溜出来的）小跑着穿过人群，先是引起一片哗然，接着演变成大混乱，直到一位镇定的旁观者用胡萝卜把它引了回去。\"比电视好看多了，\"Lucas宣布。随后他们参观了市政图书馆——躲避酷热的清凉避难所——那里的展览讲解城市生活：租户如何租住房屋，市政会如何修复被破坏的设施，以及老渡轮为什么曾经有夜间宵禁。黄昏时坐车回家，Carlos打着哈欠说：\"城市太累人了。\"\"所以，\"爸爸说，\"才有了郊区。\""}},
-{n:16,t:"Learning & the Mind",tz:"学习与思维",words:[
+{n:20,t:"Learning & the Mind",tz:"学习与思维",words:[
 ["comprehend","理解","v.","to fully understand something","It took a moment to comprehend the riddle.","他花了一会儿才理解那个谜语。"],
 ["ponder","沉思","v.","to think about something carefully","She pondered the question all the way home.","回家路上她一直在思考那个问题。"],
 ["contemplate","深思；考虑","v.","to think deeply about something","He contemplated the chessboard before moving.","他走棋前对着棋盘深思。"],
@@ -709,7 +849,7 @@ zh:"火车滑入人口稠密的大都市中心，驶过拥堵的街道和一座�
 ],article:{t:"The Quiz Championship",tz:"知识竞赛冠军之路",
 en:"The regional Quiz Championship was in one week, and the brothers began to train their intellect like athletes. Carlos, rational and astute, built a study plan; Lucas, inquisitive as ever, read everything from atlases to cereal boxes. They learned to scrutinise each question, deduce answers from clues, and infer meaning from tricky wording. \"Never assume,\" their teacher warned, \"and never presume a question is easy - that is how naive teams lose.\" Some evenings Lucas sat engrossed in practice cards while Carlos pondered, mulled and mused over one stubborn puzzle. On the big day, a dubious answer nearly cost them - 'Wombats can fly: true or false?' sounded absurd, but was it a trick? Logic said false; a perceptive glance at the smirking host confirmed it. In the final round, Carlos recollected a fact from Grandpa's war stories, and Lucas offered an ingenious guess based on their volcano hypothesis. The shrewd judges awarded full marks. Standing on stage, oblivious to the cameras, the champions could finally envision the trophy shelf at home - and the insight it would inspire: reading cereal boxes pays.",
 zh:"地区知识竞赛还有一周就要开始，兄弟俩开始像运动员一样训练自己的才智。理性又精明的Carlos制定了学习计划；一向好奇的Lucas什么都读，从地图册到麦片盒。他们学会仔细审查每道题目，从线索中推断答案，从刁钻的措辞里推测含义。\"永远不要想当然，\"老师提醒，\"也永远别擅自认定题目简单——天真的队伍就是这样输掉的。\"有些晚上，Lucas全神贯注地刷练习卡，Carlos则对着一道难题沉思、琢磨、若有所思。比赛当天，一道可疑的题目差点让他们栽跟头——\"袋熊会飞：对还是错？\"听起来很荒谬，但会不会是陷阱？逻辑说是错的；他们敏锐地瞥了一眼主持人偷笑的表情，得到了确认。决胜轮里，Carlos回想起爷爷战争故事里的一个史实，Lucas则基于他们的火山假说给出了一个巧妙的猜测。精明的评委给了满分。站在台上，兄弟俩对镜头浑然不觉，终于可以展望家里的奖杯架了——以及它带来的深刻启示：读麦片盒是有用的。"}},
-{n:17,t:"Speech & Argument",tz:"表达与论辩",words:[
+{n:21,t:"Speech & Argument",tz:"表达与论辩",words:[
 ["assert","坚定地宣称","v.","to state something firmly and confidently","She asserted that the plan would work.","她坚定地宣称这个计划会成功。"],
 ["contend","主张；争辩","v.","to argue that something is true","Some contend that homework should be banned.","有些人主张应该取消家庭作业。"],
 ["advocate","提倡","v.","to publicly support an idea","The doctor advocates more sleep for students.","那位医生提倡学生多睡觉。"],
@@ -743,7 +883,7 @@ zh:"地区知识竞赛还有一周就要开始，兄弟俩开始像运动员一�
 ],article:{t:"The Great Debate",tz:"大辩论",
 en:"The motion for the interschool debate was bold: 'Screens do more harm than good.' Carlos opened for the affirmative, articulate and calm. He asserted his case, emphasised the evidence, and gave three compelling reasons, each concise and coherent. The opposing captain rose to contradict him, contending that screens connect families across the world. \"We acknowledge that,\" Carlos replied smoothly, \"but I can refute the rest.\" Lucas, the second speaker, was eloquent - though he did embellish one statistic, which the sharp-eared adjudicator asked him to verify. The rival's final speaker turned verbose, then monotonous; a few rude spectators began to jeer, but the chairperson silenced them: \"Debate is not ridicule.\" No one stooped to flatter, insinuate or slander. In rebuttal, Lucas retorted brilliantly: \"My opponent implies that homework apps love us. My dog disputes this.\" Laughter erupted. The judges praised both teams for arguing without bias or prejudice - and awarded the trophy by a single point... to the brothers. That night at dinner, victory banter flowed, and even Mum conceded: \"Fine. Ten more minutes of screens. You've earned it - advocates of the year.\"",
 zh:"校际辩论赛的辩题很大胆：\"屏幕弊大于利。\"Carlos作为正方一辩开场，口齿清晰、沉着冷静。他坚定地陈述立场，强调证据，给出三个令人信服的理由，每一条都简明连贯。对方队长起身反驳，主张屏幕连接了世界各地的家庭。\"这一点我们承认，\"Carlos从容回应，\"但其余的我可以一一驳斥。\"二辩Lucas口才雄辩——不过他把一个数据添油加醋了一番，被耳朵灵敏的裁判要求当场核实。对方的最后一位辩手越讲越冗长，随后变得单调乏味；几个无礼的观众开始起哄嘲笑，但主席立刻制止：\"辩论不是嘲弄。\"没有人屈尊去奉承、含沙射影或诽谤。反驳环节，Lucas反唇相讥，妙语连珠：\"对方辩友暗示作业软件深爱着我们。我家的狗对此表示质疑。\"全场爆笑。评委们称赞两队辩论时不带偏向、不含成见——并以一分之差把奖杯颁给了……兄弟俩。当晚的餐桌上，胜利的打趣声此起彼伏，连妈妈都让步了：\"好吧，屏幕时间加十分钟。这是你们应得的——年度最佳辩手。\""}},
-{n:18,t:"Effort & Achievement",tz:"努力与成就",words:[
+{n:22,t:"Effort & Achievement",tz:"努力与成就",words:[
 ["endeavour","努力；事业","n.","a serious attempt or effort","Learning the violin is a worthy endeavour.","学小提琴是一项值得的努力。"],
 ["strive","奋力争取","v.","to try extremely hard to achieve something","Strive for progress, not perfection.","追求进步，而非完美。"],
 ["persevere","坚持不懈","v.","to keep trying despite difficulty","She persevered until the backflip was perfect.","她坚持不懈，直到后空翻做到完美。"],
@@ -777,7 +917,7 @@ zh:"校际辩论赛的辩题很大胆：\"屏幕弊大于利。\"Carlos作为正
 ],article:{t:"The Cross-Country",tz:"越野赛",
 en:"When Lucas announced he would run the cross-country championship, he was a complete novice at distance running. \"Then we train,\" said Carlos, whose zeal for coaching was slightly terrifying. Their endeavour began at dawn each day: strenuous hill sprints, arduous long runs, and gruelling core sessions that made them groan. Lucas had to sacrifice cartoons and devote his afternoons to practice, but his resolve stayed steadfast. Rain or shine, the brothers were unwavering; they would toil up the same hill until Biscuit refused to follow. Slowly, the novice began to excel. He grew adept at pacing, proficient at breathing, tenacious on climbs. Each week brought a new milestone, and each milestone built momentum. On race day, Lucas stood resolute at the start line, aspiring not to win but simply to finish - to attain what once seemed impossible. At kilometre four he wanted to stop; he persevered. At the final bend he found strength he never knew, and surpassed three runners to claim fifth place. \"An extraordinary feat,\" beamed the principal. Carlos hugged his exhausted brother: \"That's not just prowess. That's potential - and this is only the beginning of your mastery.\"",
 zh:"当Lucas宣布要参加越野锦标赛时，他还是个长跑的彻底新手。\"那就训练，\"Carlos说，他当教练的热忱简直有点吓人。他们的努力从每天黎明开始：费力的坡道冲刺、艰苦的长距离跑，还有让人叫苦连天、精疲力竭的核心训练。Lucas不得不牺牲动画片时间，把下午都投入训练，但他的决心坚定不移。无论晴雨，兄弟俩毫不动摇；他们在同一个山坡上一遍遍辛苦攀爬，直到Biscuit都拒绝跟着跑了。渐渐地，这个新手开始出类拔萃。他学会了熟练控制配速、娴熟调整呼吸，爬坡时顽强执着。每一周都是新的里程碑，每个里程碑都积蓄起新的势头。比赛当天，Lucas坚决地站上起跑线，他的志向不是夺冠，而只是完赛——达成那个曾经看似不可能的目标。第四公里时他想停下来；但他坚持住了。最后一个弯道，他迸发出自己都不知道的力量，连超三人，拿下第五名。\"一项了不起的壮举，\"校长笑逐颜开。Carlos抱住精疲力竭的弟弟：\"这不只是本领。这是潜力——而这仅仅是你走向精通的开始。\""}},
-{n:19,t:"Fear & Danger",tz:"恐惧与危险",words:[
+{n:23,t:"Fear & Danger",tz:"恐惧与危险",words:[
 ["hazard","危险；隐患","n.","something that could cause harm","Loose gravel is a hazard for cyclists.","松散的碎石对骑车人是个隐患。"],
 ["catastrophe","大灾难","n.","a sudden terrible disaster","Losing the picnic basket was a catastrophe - for the ants.","丢了野餐篮真是场大灾难——对蚂蚁来说。"],
 ["calamity","灾祸","n.","an event causing great damage or distress","The flood was the worst calamity in decades.","那场洪水是几十年来最严重的灾祸。"],
@@ -811,7 +951,7 @@ zh:"当Lucas宣布要参加越野锦标赛时，他还是个长跑的彻底新�
 ],article:{t:"The Storm on Blackwood Ridge",tz:"黑木岭上的风暴",
 en:"The forecast had promised sunshine, so the family set off along Blackwood Ridge with light hearts and a flimsy picnic blanket. But by noon, a looming wall of cloud crept over the summit, and Dad's face turned grave. \"That sky is a real hazard,\" he said. \"We evacuate. Now.\" Apprehensive but calm, the boys packed quickly, feeling the first cold gusts. The descent was precarious; one slope was so slippery that Lucas winced with every step, and Carlos shuddered as thunder cracked overhead. Biscuit, whose storm phobia was legendary, cowered and had to be carried. Halfway down they met hikers in genuine distress - a girl had twisted her ankle, leaving her group in a real predicament. \"No one gets left in this plight,\" said Dad. Taking turns supporting her, they finally reached the ranger station - a warm, dry sanctuary. Safe at last, they watched the tempest lash the windows, aghast at its power yet giggling at Biscuit's frantic hiding spot (a teapot cupboard). \"A grand ordeal,\" declared Lucas. \"Practically a catastrophe!\" \"A calamity,\" agreed Carlos solemnly, \"survived with snacks. Nobody perished. Ten out of ten - would panic again.\"",
 zh:"天气预报说是晴天，于是全家人带着轻松的心情和一条不结实的野餐毯出发，沿黑木岭远足。但到了中午，一堵迫近的云墙悄悄爬过峰顶，爸爸的脸色变得凝重。\"那片天色是真正的危险，\"他说，\"我们撤离。现在就走。\"兄弟俩忐忑但镇定，迅速收拾行装，感到第一阵冷风袭来。下山的路岌岌可危；有一段山坡滑得Lucas每走一步都龇牙咧嘴，头顶炸雷时Carlos吓得直打战栗。狗狗Biscuit有出了名的暴风雨恐惧症，吓得蜷缩成一团，只好被抱着走。半山腰，他们遇到几位真正陷入危难的远足者——一个女孩扭伤了脚踝，让她的队伍陷入窘境。\"不能把任何人丢在这种困境里，\"爸爸说。大家轮流搀扶着她，终于抵达护林员站——一个温暖干燥的庇护所。终于安全了，他们看着暴风雨抽打窗户，为它的威力惊骇不已，又忍不住笑Biscuit发狂找的藏身处（茶壶柜）。\"一场了不起的磨难，\"Lucas宣布，\"简直算得上大灾难！\"\"一场灾祸，\"Carlos郑重地表示同意，\"靠零食挺过来了。无人丧生。十分满分——下次还愿意再慌一次。\""}},
-{n:20,t:"Joy & Wonder",tz:"喜悦与惊叹",words:[
+{n:24,t:"Joy & Wonder",tz:"喜悦与惊叹",words:[
 ["marvel","奇迹；惊叹","n.","an amazing thing, or to be filled with wonder","The Harbour Bridge is a marvel of engineering.","海港大桥是工程学的奇迹。"],
 ["astound","使震惊","v.","to amaze someone completely","The magician's final trick astounded everyone.","魔术师的压轴戏法让所有人目瞪口呆。"],
 ["awe","敬畏","n.","wonder mixed with respect and amazement","They watched the whales in silent awe.","他们怀着无声的敬畏看着鲸群。"],
@@ -845,7 +985,7 @@ zh:"天气预报说是晴天，于是全家人带着轻松的心情和一条不�
 ],article:{t:"The Festival of Lights",tz:"灯光节",
 en:"Once a year, the harbour city transforms into a wondrous gallery of light, and this year the family finally went. The ferry ride alone was breathtaking: sails of the Opera House glowing like exquisite shells, skyscrapers wrapped in ribbons of colour, the whole skyline a marvel. The brothers stood spellbound at the rail, then euphoric on the crowded quay, where street performers and festivity filled every corner with merriment. A whimsical installation - giant glowing jellyfish that danced when you clapped - was so mesmerising that Lucas clapped for twenty minutes straight. They watched a captivating shadow play, revelled in the enchanting music, and basked in the warm night air. When the drone show began, ten thousand lights formed a phoenix, then a whale, then a dragon that astounded the jubilant crowd. \"Sublime,\" whispered Carlos, in genuine awe. \"Phenomenal,\" agreed Lucas, in rapture. \"Miraculous,\" said Mum. Dad, exuberant, simply rejoiced: \"And the parking was free!\" They sailed home through the idyllic, picturesque night, hearts full of splendour. Some experiences are exhilarating; some are gratifying. This one, they all agreed, was both - an enthralling memory to cherish forever.",
 zh:"每年一次，这座海港城市会变成一座奇妙的灯光画廊，今年全家终于去了。单是渡轮之旅就已经令人惊艳：歌剧院的\"风帆\"像精美绝伦的贝壳般发光，摩天大楼裹着彩色的光带，整条天际线就是一个奇迹。兄弟俩扶着栏杆看得如痴如醉，随后在热闹的码头上兴奋若狂——街头艺人和节日欢庆让每个角落都充满欢声笑语。一个异想天开的装置——拍手就会跳舞的巨型发光水母——让人看得入迷，Lucas足足拍了二十分钟的手。他们看了一场引人入胜的皮影戏，尽情享受迷人的音乐，沐浴在温暖的夜风里。无人机表演开始时，一万盏灯先组成一只凤凰，再变成一头鲸，最后化作一条龙，让欢腾的人群目瞪口呆。\"超凡脱俗，\"Carlos带着真正的敬畏低语。\"太惊人了，\"Lucas狂喜地附和。\"奇迹般的，\"妈妈说。热情洋溢的爸爸只顾欢呼：\"而且停车还免费！\"他们穿过田园诗般、风景如画的夜色乘船回家，心中装满壮丽辉煌。有些经历令人振奋，有些令人欣慰。而这一次，大家一致认为两者兼具——一段令人着迷、值得永远珍藏的记忆。"}},
-{n:21,t:"Quantity, Size & Degree",tz:"数量、大小与程度",words:[
+{n:25,t:"Quantity, Size & Degree",tz:"数量、大小与程度",words:[
 ["abundant","丰富充裕的","adj.","existing in large amounts","The rock pools held abundant sea life.","岩石潮池里有丰富的海洋生物。"],
 ["scarce","稀缺的","adj.","hard to find; not enough","Firewood grew scarce by mid-winter.","到隆冬时柴火变得稀缺。"],
 ["ample","充足的","adj.","more than enough","There is ample time to finish the project.","完成这个项目的时间绰绰有余。"],
@@ -879,7 +1019,7 @@ zh:"每年一次，这座海港城市会变成一座奇妙的灯光画廊，今�
 ],article:{t:"The Great Bake Sale Stocktake",tz:"义卖大盘点",
 en:"To raise funds for new library books, the twins ran the school bake sale - and learned that business is mathematics wearing an apron. Supplies looked abundant at dawn: trays brimming with brownies, copious cookies, a substantial mountain of muffins. But demand was boundless. By recess the cupcakes had begun to dwindle; by lunch the lamingtons were scarce, and their famous honey slice was utterly depleted. \"We have a deficit of donuts and a surplus of bran biscuits,\" reported Carlos, whose notes were meticulous. \"Interest in bran,\" sighed Lucas, \"is negligible.\" A myriad of small buyers arrived with meagre budgets and utmost seriousness, counting five-cent coins. The queue escalated from sparse to teeming; noise amplified; excitement intensified. When the last plentiful tray sold out, takings had accumulated to a considerable sum - $214.65, augmented by one teacher's generous tip. \"Ample for thirty new books!\" announced the librarian. The profit margin on bran biscuits remained, in sheer honesty, minute; a moderate lesson in economics. But the twins' pride? Immeasurable - with scant room for doubt.",
 zh:"为了给图书馆筹钱买新书，双胞胎负责学校的烘焙义卖——并由此学到：生意就是系着围裙的数学。清晨时货源看起来非常充裕：布朗尼摆得满满当当，饼干堆积如山，玛芬蛋糕垒成一座可观的小山。但需求是无边无际的。课间休息时纸杯蛋糕开始逐渐减少；到午餐时间拉明顿蛋糕已经稀缺，他们招牌的蜂蜜切块更是被彻底抢购一空。\"我们的甜甜圈出现短缺，麸皮饼干却过剩，\"Carlos汇报道，他的记录一丝不苟。\"大家对麸皮饼干的兴趣，\"Lucas叹气，\"微乎其微。\"无数小买家揣着少得可怜的预算和极其认真的态度前来，一枚一枚数着五分硬币。队伍从稀稀拉拉逐步升级为人山人海；喧闹声不断放大；热度持续加剧。当最后一盘充足的点心售罄时，收入已累积到一笔可观的数目——214.65澳元，还有一位老师慷慨的小费加成。\"给三十本新书绰绰有余！\"图书管理员宣布。说句大实话，麸皮饼干的利润仍旧微乎其微——这是一堂关于经济学的适度小课。但双胞胎的自豪感？无法计量——几乎没有任何怀疑的余地。"}},
-{n:22,t:"Truth, Justice & Rules",tz:"真相、公正与规则",words:[
+{n:26,t:"Truth, Justice & Rules",tz:"真相、公正与规则",words:[
 ["verdict","裁决","n.","the final decision in a trial or contest","The jury returned its verdict after an hour.","陪审团一小时后作出了裁决。"],
 ["testimony","证词","n.","a formal statement about what you saw or know","Her testimony matched the security footage.","她的证词与监控录像相符。"],
 ["accuse","指控","v.","to say someone has done something wrong","Never accuse a friend without proof.","没有证据不要指控朋友。"],
@@ -913,7 +1053,7 @@ zh:"为了给图书馆筹钱买新书，双胞胎负责学校的烘焙义卖—�
 ],article:{t:"The Trial of the Missing Pencil Case",tz:"铅笔盒失踪审判案",
 en:"When Priya's glitter pencil case disappeared, Room 12 held a proper classroom trial - with a judge (the teacher), an impartial jury (six students who barely knew Priya), and strict rules everyone must abide by. \"We comply with real court procedure,\" announced Judge Chen, \"and I will enforce it. Perjury is prohibited. Bribes\" - she eyed a boy holding chocolate - \"are forbidden.\" A witness alleged that Marcus had been seen near Priya's desk, and the class was quick to accuse him. But Carlos, defence lawyer for the day, argued it would be unjust to convict without proof. \"My client has a legitimate alibi,\" he said, presenting testimony from the canteen lady. Lucas, the prosecutor, remained stern but fair: he would not condemn an innocent boy. Then the janitor arrived holding the pencil case - found behind a heater, where it had slipped. The jury's verdict: accident! Marcus was acquitted, the false accusers repented, and Priya graciously pardoned everyone. Judge Chen issued a final decree: \"This court will always uphold one rule above all - facts before fury. Court adjourned. Nobody is exempt from cleaning up the courtroom, and I shall compensate you all with early mark.\"",
 zh:"Priya亮晶晶的铅笔盒不见了，12班随即举行了一场正式的\"教室审判\"——有法官（老师）、不偏不倚的陪审团（六位和Priya不太熟的同学），还有人人必须遵守的严格规则。\"我们遵循真正的法庭程序，\"陈法官宣布，\"而且我会严格执行。伪证是被禁止的。贿赂\"——她瞟了一眼拿着巧克力的男孩——\"也是被禁止的。\"一位证人声称有人看到Marcus在Priya课桌附近出现过，全班立刻纷纷指控他。但当天的辩护律师Carlos辩称，没有证据就定罪是不公正的。\"我的当事人有正当的不在场证明，\"他说着，出示了食堂阿姨的证词。担任检察官的Lucas严厉却公道：他绝不冤枉一个无辜的男孩。这时，校工拿着铅笔盒走了进来——在暖气片后面找到的，原来是自己滑落进去的。陪审团的裁决：意外！Marcus被宣判无罪，乱指控的同学纷纷悔过，Priya大度地原谅了所有人。陈法官颁布了最后的\"法令\"：\"本法庭将永远维护一条至高规则——先讲事实，再谈情绪。休庭。打扫\"法庭\"人人有责、无人豁免，而我将用提前放学来补偿大家。\""}},
-{n:23,t:"Science & Discovery",tz:"科学与发现",words:[
+{n:27,t:"Science & Discovery",tz:"科学与发现",words:[
 ["pioneer","先驱；开拓","n.","one of the first people to do something new","She was a pioneer of solar-powered flight.","她是太阳能飞行的先驱。"],
 ["innovate","创新","v.","to introduce new ideas or methods","Great inventors innovate instead of copying.","伟大的发明家创新而不抄袭。"],
 ["devise","设计出；想出","v.","to invent a clever plan or method","They devised a way to water plants automatically.","他们设计出一种自动浇花的方法。"],
@@ -947,7 +1087,7 @@ zh:"Priya亮晶晶的铅笔盒不见了，12班随即举行了一场正式的\"�
 ],article:{t:"The Invention Fair",tz:"发明展",
 en:"For the school Invention Fair, the brothers vowed to innovate, not imitate. Their plan: a rubber-band rocket car. Carlos, meticulous as a watchmaker, wrote out the procedure and arranged the apparatus; Lucas, the ideas man, devised the launch mechanism from a peg and a party popper. The first prototype was a glorious failure: instead of racing forward, the contraption spun in circles, emitting an alarming squeak as friction corroded their hopes. \"Interesting phenomenon,\" noted Carlos. \"Our trajectory is a doughnut.\" They studied how rubber bands generate force, how wheels propel a chassis, and how a streamlined shape helps velocity. Version two absorbed every lesson. On fair day, judges paused at their table, where a poster explained combustion engines (banned at school) versus elastic power (approved). Lucas pressed the trigger. The car shot forward with breathtaking precision, crossed the gym in three seconds, and knocked over a replica volcano - which erupted on a startled specimen of Year One. The judges declared it a breakthrough. \"Like true pioneers,\" beamed the science teacher, \"you failed, measured, and transmitted your findings. First prize!\" The trophy now sits beside a microscopic dent in Mum's favourite vase. Nobody has dissected that mystery aloud.",
 zh:"为了参加学校发明展，兄弟俩发誓要创新而不是模仿。他们的计划：一辆橡皮筋火箭车。Carlos像钟表匠一样一丝不苟，写好步骤、摆好器材；点子王Lucas用一个衣夹和一个派对拉炮设计出发射装置。第一代原型机是一场光荣的失败：那台新奇装置没有向前冲，而是原地打转，摩擦声吱吱作响，仿佛在腐蚀他们的希望。\"有趣的现象，\"Carlos记录道，\"我们的轨迹是个甜甜圈。\"他们研究了橡皮筋如何产生力量、轮子如何推动车身、流线型如何提升速度。第二代吸收了所有教训。展会当天，评委在他们的桌前驻足，海报上对比了内燃机（学校禁止）与弹力驱动（获得批准）。Lucas按下发射键。小车以惊人的精确度笔直冲出，三秒钟穿过体育馆，撞倒了一座火山复制品——它喷发在一位吓了一跳的一年级\"样本\"身上。评委宣布这是一项重大突破。\"像真正的先驱一样，\"科学老师笑容满面，\"你们经历失败、认真测量、并把发现传递给大家。一等奖！\"如今奖杯就摆在妈妈最心爱的花瓶旁——花瓶上有一个显微镜级别的小凹痕。至今没人敢公开解剖这个谜团。"}},
-{n:24,t:"Precision Words & Deep Feelings",tz:"精准描述与深层情感",words:[
+{n:28,t:"Precision Words & Deep Feelings",tz:"精准描述与深层情感",words:[
 ["profound","深刻的","adj.","very deep and meaningful","The old book left a profound impression on her.","那本旧书给她留下了深刻的印象。"],
 ["subtle","微妙的","adj.","delicate and not obvious","There was a subtle difference between the twins' smiles.","双胞胎的微笑之间有着微妙的差别。"],
 ["intricate","错综复杂的","adj.","having many small, connected details","The watch's intricate gears amazed the boys.","手表里错综复杂的齿轮让兄弟俩惊叹。"],
@@ -981,7 +1121,7 @@ zh:"为了参加学校发明展，兄弟俩发誓要创新而不是模仿。他�
 ],article:{t:"The Antique Shop",tz:"古董店奇遇",
 en:"Sheltering from the rain, the family wandered into an obscure antique shop run by an eccentric old man with an impeccable bow tie and one red sock. The shop was a museum of the intricate and the elaborate: music boxes with subtle mechanisms, maps of renowned voyages, and a distinctive brass dragon with a conspicuous missing eye. \"Everything here is authentic,\" the owner declared, \"except that counterfeit crown - a notorious fake, but a superior story.\" Carlos examined a flawless pocket watch, clearly superior to the mediocre plastic ones at the market, though its price made Dad's eyebrows achieve unprecedented height. Lucas asked about an ambiguous label: 'Slightly magical. Probably.' The old man smiled with gentle melancholy. \"That belonged to my brother. Trivial to strangers - indispensable to me.\" He spoke of the past with such nostalgia that the shop seemed to hold its breath, and his words left a profound mark on the boys. Buying the whole shop was not feasible, and haggling proved futile, but Mum found solace in one small purchase: a crucial gift for Grandpa's collection - a versatile, exceptional, prominent... teapot. The dragon, they all agreed, would wait for their return.",
 zh:"为了躲雨，一家人走进一家鲜为人知的古董店，店主是位古怪的老人，系着无可挑剔的领结，只穿一只红袜子。这家店是精巧与繁复的博物馆：装着微妙机关的八音盒、记录着著名航海的地图，还有一条独特的黄铜龙，缺了一只眼，格外显眼。\"这里的每一件都是真品，\"店主宣布，\"除了那顶伪造的王冠——一件臭名昭著的赝品，但故事更精彩。\"Carlos端详一块完美无瑕的怀表，它显然远胜市场上那些平庸的塑料货，不过价格让爸爸的眉毛达到了史无前例的高度。Lucas问起一个模棱两可的标签：\"略有魔力。大概吧。\"老人带着淡淡的忧伤微笑：\"那是我弟弟的。对陌生人来说微不足道——对我却不可或缺。\"他满怀怀旧地讲起过去，整间店仿佛都屏住了呼吸，他的话在兄弟俩心里留下深刻的印记。买下整间店并不可行，讨价还价也徒劳无功，但妈妈在一件小小的购买中找到了慰藉：给爷爷的收藏添一件至关重要的礼物——一把多用途的、出类拔萃的、格外醒目的……茶壶。至于那条龙，大家一致同意：它会等他们回来的。"}},
-{n:25,t:"Exam & Academic Verbs",tz:"考试与学术动词",words:[
+{n:29,t:"Exam & Academic Verbs",tz:"考试与学术动词",words:[
 ["evaluate","评估","v.","to judge the value or quality of something","Evaluate both plans before choosing one.","先评估两个方案，再做选择。"],
 ["interpret","解读","v.","to explain the meaning of something","How do you interpret the poem's last line?","你怎么解读这首诗的最后一行？"],
 ["illustrate","举例说明；配图","v.","to explain using examples or pictures","Illustrate your answer with one clear example.","用一个清楚的例子来说明你的答案。"],
@@ -1015,7 +1155,7 @@ zh:"为了躲雨，一家人走进一家鲜为人知的古董店，店主是位�
 ],article:{t:"Building the Ultimate Study Guide",tz:"打造终极学习指南",
 en:"With the entrance exam approaching, the brothers decided to compile the Ultimate Study Guide. First, they gathered a term's worth of notes, and Carlos began to categorise them by subject while Lucas worked to classify the tricky words by theme. \"We must prioritise our weak spots,\" said Carlos, \"so let's assess last month's practice papers and evaluate every error.\" They learned to interpret graphs, distinguish fact from opinion, and paraphrase long passages instead of copying - citing sources like proper scholars, because their teacher had warned them to cite honestly. Lucas drew diagrams to illustrate tricky maths and to depict story mountains; a tiny dragon in the corner symbolised courage. Together they would formulate a rule, derive examples, then refine and modify their answers until they could demonstrate each method perfectly. Every evening they would summarise one topic, clarify anything fuzzy, and integrate new cards into the box. Green ticks came to signify mastery; red dots would indicate 'revise again'. On Sunday, Mum critiqued their essays, trying to convey one final secret: \"Neat work and steady sleep correlate with top marks. You two now exemplify a beautiful truth - preparation, not luck, and please specify: whose sock is on the study desk?\"",
 zh:"入学考试临近，兄弟俩决定汇编一本《终极学习指南》。他们先收齐了一学期的笔记，Carlos按科目分类，Lucas按主题给难词归类。\"我们必须优先攻克薄弱环节，\"Carlos说，\"来评定上个月的练习卷，评估每一个错误。\"他们学会了解读图表、区分事实与观点、用改述代替抄写——并像真正的学者一样注明出处，因为老师提醒过要诚实引用。Lucas画图来说明难懂的数学题、描绘故事结构图；角落里的一条小龙象征勇气。他们一起制定规则、推导例题，再不断完善、修改答案，直到能把每种方法完美演示出来。每天晚上，他们概括一个专题，把模糊之处阐明，再把新卡片整合进卡片盒。绿勾逐渐意味着掌握；红点则表示\"需要再复习\"。周日，妈妈点评了他们的作文，并努力传达最后一个秘诀：\"工整的作业和规律的睡眠与高分密切相关。你们俩现在就是一个美好真理的典范——靠准备，不靠运气。另外请明确说明：书桌上那只袜子是谁的？\""}},
-{n:26,t:"Champion Challenge",tz:"冠军挑战周",words:[
+{n:30,t:"Champion Challenge",tz:"冠军挑战周",words:[
 ["charismatic","有个人魅力的","adj.","having charm that inspires and attracts people","The charismatic captain made everyone believe.","富有魅力的队长让每个人都充满信心。"],
 ["diplomatic","有分寸的；外交的","adj.","tactful and careful not to offend","Her diplomatic answer pleased both teams.","她得体的回答让两队都满意。"],
 ["pragmatic","务实的","adj.","dealing with things practically, not just ideas","A pragmatic camper packs for rain, not hope.","务实的露营者按下雨准备行李，而不是靠指望天晴。"],
@@ -1054,15 +1194,26 @@ zh:"经过二十五周的每日闯关，兄弟俩终于面对Dragon WordQuest的
 const TOTAL = VOCAB.reduce((s,w)=>s+w.words.length,0);
 const FLAT = []; VOCAB.forEach(wk=>wk.words.forEach(w=>FLAT.push({wk:wk.n,w})));
 
-const PROFILES = {
-  carlos:{name:"Carlos", emoji:"🔥", color:"linear-gradient(135deg,#ff8c42,#ff5d73)"},
-  lucas:{name:"Lucas", emoji:"⚡", color:"linear-gradient(135deg,#38b6ff,#7c5cff)"},
-  other:{name:"New Player", emoji:"🌟", color:"linear-gradient(135deg,#2ecc8f,#1aab74)"}
-};
-function pname(id){ return id==="other" ? (settings.p3name||"New Player") : PROFILES[id].name; }
+const KID_EMOJIS=["🐉","🔥","⚡","🌟","🦄","🚀","🐯","🌈","🐼","🦖"];
+const KID_COLORS=["linear-gradient(135deg,#ff8c42,#ff5d73)","linear-gradient(135deg,#38b6ff,#7c5cff)",
+  "linear-gradient(135deg,#2ecc8f,#1aab74)","linear-gradient(135deg,#f5b544,#e2971f)",
+  "linear-gradient(135deg,#a55cff,#ff5da2)","linear-gradient(135deg,#00b8a9,#3aa5ff)"];
+const CHALLENGE=60, MILESTONES=[3,7,14,21,30,40,50,60];
+const LEVELS=[
+  {start:0,  label:"Kindy–Year 1 · PM 1–14", ex:"mum · big · run"},
+  {start:120,label:"Year 1–2 · PM 15–22",  ex:"glance · dash · anxious"},
+  {start:240,label:"Year 3 · PM 23–26",  ex:"vast · voyage · predator"},
+  {start:390,label:"Year 4 · PM 27–30",  ex:"sinister · integrity · fleeting"},
+  {start:540,label:"Year 5 · PM 30+",    ex:"metropolis · scrutinise · endeavour"},
+  {start:690,label:"Year 6 / advanced",  ex:"abundant · verdict · meticulous"}
+];
+function kids(){ if(!settings.kids) settings.kids=[]; return settings.kids; }
+function kidById(id){ return kids().find(k=>k.id===id); }
+function pname(id){ const k=kidById(id); return k?k.name:"Player"; }
+function kmeta(id){ return kidById(id)||{emoji:"🐉",color:KID_COLORS[0]}; }
 const STAGES = [
   [0,"🥚","Dragon Egg"],[15,"🐣","Hatchling"],[70,"🐲","Apprentice Dragon"],[180,"🐉","Junior Dragon"],
-  [350,"🐉","Warrior Dragon"],[550,"🐉","Master Dragon"],[780,"🐉","Legendary Word Dragon"]
+  [350,"🐉","Warrior Dragon"],[550,"🐉","Master Dragon"],[900,"🐉","Legendary Word Dragon"]
 ];
 const BADGE_ICONS = ["🥉","🥈","🥇","💎","🔮","🌟","🏆","👑","🐲","⚔️"];
 const DEFAULT_SURPRISES = [
@@ -1073,23 +1224,34 @@ const DEFAULT_SURPRISES = [
 /* ---------- storage ---------- */
 function load(k,d){ try{const v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;} }
 function save(k,v){ try{localStorage.setItem(k,JSON.stringify(v));}catch(e){} }
-function defState(){ return {learned:0,days:[],streak:0,lastDay:null,xp:0,sentences:[],surprises:[]}; }
-let settings = load("dwq_settings",{daily:7,surprises:DEFAULT_SURPRISES.slice()});
-if(!settings.v5){ settings.v5=1; settings.daily=7; save("dwq_settings",settings); }
-let curId = load("dwq_current",null);
+function defState(st){ st=st||0; return {learned:st,start:st,days:[],streak:0,lastDay:null,xp:0,sentences:[],surprises:[]}; }
+let settings = load("blwq_settings",{daily:7,surprises:DEFAULT_SURPRISES.slice()});
+if(!settings.v5){ settings.v5=1; settings.daily=7; }
+if(!settings.kids) settings.kids=[];
+let curId = null; /* 每次打开都先到欢迎页 — 由用户点「继续」进入档案 */
 let S = null; // current profile state
-function loadProfile(id){ curId=id; save("dwq_current",id); S=load("dwq_"+id,defState()); }
-function persist(){ save("dwq_"+curId,S); }
+function loadProfile(id){ curId=id; save("blwq_current",id);
+  const k=kidById(id); S=load("blwq_"+id,defState(k?k.start:0));
+  if(S.start===undefined){ S.start=k?k.start:0; persist(); } }
+function persist(){ save("blwq_"+curId,S); }
 
 /* ---------- utils ---------- */
 const $ = s=>document.querySelector(s);
+function subst(t){
+  if(!t||!curId) return t;
+  const me=pname(curId)||"Alex";
+  let buddy=settings.buddy||((kids().find(k=>k.id!==curId)||{}).name)||"Alex";
+  if(buddy===me) buddy=(me==="Alex")?"Max":"Alex";
+  return String(t).replace(/Carlos/g,me).replace(/Lucas/g,buddy);
+}
 function esc(t){ return String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
 function todayStr(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
 function yesterdayStr(){ const d=new Date(Date.now()-864e5); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
 function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
 function stem(w){ w=w.toLowerCase(); return w.length>5? w.slice(0,w.length-2): (w.length>3? w.slice(0,w.length-1): w); }
 function textUsesWord(text,word){ const t=text.toLowerCase(); return t.includes(word.toLowerCase())||t.includes(stem(word)); }
-function hlWord(sentence,word){
+function hlWord(t,word){ return hlWord_raw(subst(t),word); }
+function hlWord_raw(sentence,word){
   const e=esc(sentence);
   let re=new RegExp("\\b("+word.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"\\w*)","i");
   if(re.test(e)) return e.replace(re,'<span class="hl">$1</span>');
@@ -1108,7 +1270,8 @@ function pickVoice(lang){
   }
   return voices.find(v=>/zh[-_]CN/i.test(v.lang)) || voices.find(v=>/^zh/i.test(v.lang));
 }
-function speak(text,lang,rate){
+function speak(t,lang,rate){ return speak_raw(subst(t),lang,rate); }
+function speak_raw(text,lang,rate){
   if(!("speechSynthesis" in window)) return;
   speechSynthesis.cancel();
   const u=new SpeechSynthesisUtterance(text);
@@ -1149,8 +1312,13 @@ function confetti(n){
 }
 
 /* ---------- helpers on state ---------- */
-function badgeCount(st){ return Math.floor(st.learned/10); }
-function surpriseCount(st){ return Math.floor(badgeCount(st)/5); }
+function kstart(st){ return st.start||0; }
+function eff(st){ return Math.max(0,(st.learned||0)-kstart(st)); }
+function kgoal(st){ return Math.max(1,TOTAL-kstart(st)); }
+function badgeCount(st){ return Math.floor(eff(st)/10); }
+function surpriseCount(st){ return MILESTONES.filter(d=>d<=((st.days||[]).length)).length; }
+function stageEff(st){ return stageOf(Math.round(eff(st)*TOTAL/kgoal(st))); }
+function nextStageEff(st){ return nextStage(Math.round(eff(st)*TOTAL/kgoal(st))); }
 function stageOf(learned){ let s=STAGES[0]; for(const st of STAGES){ if(learned>=st[0]) s=st; } return s; }
 function nextStage(learned){ for(const st of STAGES){ if(learned<st[0]) return st; } return null; }
 function doneToday(){ return S.lastDay===todayStr(); }
@@ -1173,92 +1341,285 @@ $("#modal").addEventListener("click",e=>{ if(e.target.id==="modal") closeModal()
 })();
 
 /* ================= views ================= */
+const LOGO_URI="data:image/webp;base64,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";
 let view="home";
 function nav(v){ view=v; render(); }
 document.querySelectorAll(".navbtn").forEach(b=>b.addEventListener("click",()=>nav(b.dataset.v)));
 
 function render(){
   document.querySelectorAll(".navbtn").forEach(b=>b.classList.toggle("on",b.dataset.v===view));
-  if(!curId){ $("#nav").style.display="none"; renderProfileSelect(); return; }
+  if(!curId){ $("#nav").style.display="none"; renderWelcome(); return; }
   $("#nav").style.display="flex";
-  ({home:renderHome,read:renderRead,badges:renderBadges,works:renderWorks,parent:renderParent})[view]();
+  ({home:renderHome,read:renderRead,badges:renderBadges,parent:renderParent})[view]();
 }
 
-function renderProfileSelect(){
+function renderWelcome(){
   $("#main").innerHTML=`
-  <div class="center" style="padding-top:40px">
-    <div style="font-size:80px">🐉</div>
-    <h1 class="white" style="font-size:34px;margin:8px 0 4px">Dragon WordQuest</h1>
-    <p class="white" style="opacity:.8;font-weight:600;margin-bottom:30px">Raise a word dragon. Conquer the big school!</p>
+  <div class="center" style="padding-top:30px">
+    <img src="${LOGO_URI}" alt="陪伴龙" style="width:170px;display:block;margin:0 auto 4px;filter:drop-shadow(0 8px 24px rgba(0,0,0,.35))">
+    <h1 class="white" style="font-size:32px;margin:8px 0 4px">Dragon WordQuest</h1>
+    <p class="white" style="opacity:.9;font-weight:800;font-size:17px;margin-bottom:2px">60 天单词闯关</p>
+    <p class="white" style="opacity:.7;font-weight:600;font-size:13px;margin-bottom:6px">The 60-Day Word Dragon Challenge</p>
+    <p class="white" style="opacity:.55;font-size:13px;font-weight:600;margin-bottom:26px">陪伴龙 · 一路有你 一路护航</p>
   </div>
-  ${Object.entries(PROFILES).map(([id,p])=>{
-    const st=load("dwq_"+id,defState());
-    return `<div class="pcard" onclick="choose('${id}')">
-      <div class="avatar" style="background:${p.color}">${p.emoji}</div>
-      <div><h2>${esc(pname(id))}</h2><p>${id==="other"&&!settings.p3name?"Tap to join the quest!":`${st.learned} words · ${stageOf(st.learned)[1]} ${stageOf(st.learned)[2]} · ${st.streak}-day streak`}</p></div>
-      <div style="margin-left:auto;font-size:28px">▶️</div>
-    </div>`;}).join("")}
-  <p class="center white" style="opacity:.6;font-size:13px;font-weight:600;margin-top:20px">Each player picks their own name — progress is saved separately on each iPad</p>`;
+  ${kids().length?kids().slice(0,1).map(k=>{
+    const st=load("blwq_"+k.id,defState(k.start));
+    return `<div class="pcard" onclick="choose('${k.id}')" style="border:2px solid rgba(255,216,107,.5);background:rgba(255,255,255,.10)">
+      <div class="avatar" style="background:${k.color}">${k.emoji}</div>
+      <div><h2 style="color:#fff">继续挑战 Continue</h2><p style="color:rgba(255,255,255,.75)">${esc(k.name)} · Day ${st.days.length}/${CHALLENGE} · ${eff(st)} words · 🔥${st.streak}</p></div>
+      <div style="margin-left:auto;font-size:26px">▶️</div>
+    </div>`;}).join(""):`
+  <div class="pcard" onclick="addKid()" style="border:2px dashed rgba(255,255,255,.4);background:rgba(255,255,255,.08)">
+    <div class="avatar" style="background:rgba(255,255,255,.15)">🚀</div>
+    <div><h2 style="color:#fff">开始 Start</h2><p style="color:rgba(255,255,255,.65)">创建挑战者档案 — 输入名字，测个起点</p></div>
+  </div>`}
+  <div class="pcard" onclick="firstGuide()" style="background:rgba(255,255,255,.10);${kids().length?"":"border:2px solid rgba(255,216,107,.55);animation:guidepulse 1.6s ease-in-out infinite"}">
+    <div class="avatar" style="background:rgba(255,255,255,.15)">👪</div>
+    <div><h2 style="color:#fff;font-size:17px">家长使用说明 ${kids().length?"":'<span style="font-size:12px;color:#ffd66b">← 第一次用请先点开看</span>'}</h2><p style="color:rgba(255,255,255,.65)">👆 点这里打开：怎么设置 · 怎么分享给孩子 · 惊喜怎么发(3 分钟)</p></div>
+    <div style="margin-left:auto;font-size:22px;color:#ffd66b">▶</div>
+  </div>
+  ${kids().length?`<p class="center" style="margin-top:14px"><span onclick="newChallenger()" style="color:rgba(255,255,255,.55);font-size:13px;font-weight:600;cursor:pointer;text-decoration:underline">↺ 换一个挑战者(清空当前进度)</span></p>`:""}
+  <p class="center white" style="opacity:.6;font-size:13px;font-weight:600;margin-top:20px">一份游戏陪伴一个孩子 · 进度存在这台设备 — 固定用同一个浏览器图标进入</p>`;
 }
-window.choose=function(id){
-  if(id==="other"&&!settings.p3name){
-    modal(`<div style="font-size:46px">🌟</div><h2>Welcome, new player!</h2>
-    <p class="mut" style="margin:8px 0">What is your name?</p>
-    <input type="text" id="p3n" maxlength="14" placeholder="Type your name" style="max-width:240px;margin:10px auto;display:block;text-align:center;font-size:20px">
-    <button class="btn wide" style="margin-top:8px" onclick="setP3Name()">Start my quest! 🚀</button>`);
-    return;
-  }
-  loadProfile(id); view="home"; render();
+window.newChallenger=function(){
+  modal(`<div style="font-size:44px">⚠️</div><h2>换一个挑战者?</h2>
+  <p class="mut" style="margin:10px 0">当前挑战者的进度会<b>全部清空</b>(建议先在家长区生成备份码保存)。惊喜清单和家长密码会保留。</p>
+  <button class="btn wide" style="background:linear-gradient(135deg,#ff5d73,#e2445c)" onclick="doNewChallenger()">确认清空，换新挑战者</button>
+  <button class="btn ghost wide" style="margin-top:8px" onclick="closeModal()">取消</button>`);
 };
-window.setP3Name=function(){
-  const n=($("#p3n").value||"").trim();
+window.doNewChallenger=function(){
+  (settings.kids||[]).forEach(k=>{ try{localStorage.removeItem("blwq_"+k.id);}catch(e){} });
+  settings.kids=[]; save("blwq_settings",settings);
+  closeModal(); addKid();
+};
+window.choose=function(id){ loadProfile(id); view="home"; render(); };
+
+let _addLv=null,_addName="",_addBuddy="",_addGrade=null;
+const GRADES=[["Kindy",0],["Year 1",60],["Year 2",120],["Year 3",240],["Year 4",390],["Year 5",540],["Year 6",690]];
+window.addKid=function(){
+  _addLv=null; _addName=""; _addBuddy=""; _addGrade=null;
+  stepName();
+};
+window.stepName=function(){
+  modal(`<div style="font-size:44px">🌟</div><h2>New Challenger! 新挑战者</h2>
+  <p class="mut" style="margin:8px 0 4px">What is your name? <span style="font-size:12px">/ 挑战者(孩子)的名字</span></p>
+  <input type="text" id="nkName" maxlength="14" value="${esc(_addName)}" placeholder="Type your name" style="max-width:240px;margin:8px auto;display:block;text-align:center;font-size:20px">
+  <p class="mut" style="margin:10px 0 0;font-size:13px">兄弟姐妹或好朋友的名字(选填，会出现在例句和故事里)</p>
+  <input type="text" id="nkBuddy" maxlength="14" value="${esc(_addBuddy)}" placeholder="Buddy name (optional)" style="max-width:240px;margin:6px auto 0;display:block;text-align:center;font-size:16px">
+  <button class="btn wide" style="margin-top:12px" onclick="nameNext()">Next →</button>`);
+  setTimeout(()=>{ const el=$("#nkName"); if(el) el.focus(); },50);
+};
+window.nameNext=function(){
+  const n=(($("#nkName")||{}).value||"").trim();
   if(!n){ sndWrong(); return; }
-  settings.p3name=n; save("dwq_settings",settings);
-  closeModal(); loadProfile("other"); view="home"; render();
+  _addName=n; _addBuddy=(($("#nkBuddy")||{}).value||"").trim(); askGrade();
+};
+function askGrade(){
+  modal(`<div style="font-size:44px">🏫</div><h2>${esc(_addName)} 读几年级?</h2>
+  <p class="mut" style="font-size:13px;margin:8px 0 10px">测试会按年级难度出题(稍微难一点点)</p>
+  <div id="nkLvs">${GRADES.map((g,i)=>`
+    <button class="lvbtn ${_addGrade===i?"on":""}" id="gr${i}" onclick="pickGrade(${i})"><b>${g[0]}</b></button>`).join("")}</div>
+  <button class="btn ghost wide" style="margin-top:10px" onclick="stepName()">← Back 上一步</button>`);
+}
+window.pickGrade=function(i){ _addGrade=i; askPM(); };
+function askPM(){
+  const g=GRADES[_addGrade||0];
+  modal(`<div style="font-size:44px">📐</div><h2>${esc(_addName)} 的起点</h2>
+  <p style="margin:10px 0 2px;font-size:16px;font-weight:800">你知不知道孩子现在的 PM 阅读级别?</p>
+  <p class="mut" style="font-size:12px;margin-bottom:10px">Do you know your child's PM reading level?</p>
+  <p class="mut" style="font-size:12px;background:#f4f2ff;border-radius:10px;padding:8px 10px;margin-bottom:12px;text-align:left">💡 <b>PM 级别是什么?</b>澳洲小学普遍使用的阅读分级(PM Levels 1–30+)，孩子学校发的分级读物封底通常印着 Level 数字，老师的 reading group 也按它分组。</p>
+  <button class="btn wide" id="pmKnow" onclick="pickLevelUI()">✅ 知道 PM 级别 — 直接选</button>
+  <button class="btn green wide" id="pmTest" style="margin-top:10px" onclick="startLvTest()">🧪 不知道 — 做个小测试(按 ${testGradeLabel()} 难度)</button>
+  <p class="mut" style="font-size:12px;margin-top:10px">10 个单词选中文意思，按<b>比 ${g[0]} 高一个年级</b>的难度出题，答对变难、答错变易，自动找到适合的起点</p>
+  <button class="btn ghost wide" style="margin-top:10px" onclick="askGrade()">← Back 上一步</button>`);
+}
+window.pickLevelUI=function(){
+  modal(`<h2>选择起点</h2>
+  <p class="mut" style="margin:8px 0 2px;font-size:14px">选年级或 PM 阅读级别，单词从这一档开始</p>
+  <div id="nkLvs">${LEVELS.map((l,i)=>`
+    <button class="lvbtn ${i===_addLv?"on":""}" id="lv${i}" onclick="pickLv(${i})">
+      <b>${l.label}</b><small>starts with: ${l.ex}</small>
+    </button>`).join("")}</div>
+  <p class="mut" style="font-size:12px;margin-top:8px">不确定选哪档?选低一档 — 太简单可以随时在 Parents 区调，信心比进度重要。</p>
+  <button class="btn wide" style="margin-top:10px" onclick="lvNext()">Next →</button>
+  <button class="btn ghost wide" style="margin-top:8px" onclick="askPM_()">← Back 上一步</button>`);
+};
+window.lvNext=function(){
+  if(_addLv===null){ sndWrong(); const d=$("#nkLvs"); if(d){ d.style.outline="3px solid var(--red)"; setTimeout(()=>{ d.style.outline=""; },600);} return; }
+  parentIntro();
+};
+window.askPM_=function(){ askPM(); };
+window.pickLv=function(i){ _addLv=i; LEVELS.forEach((_,j)=>{ const b=$("#lv"+j); if(b) b.classList.toggle("on",j===i); }); };
+
+/* ---- PM mini level test(引流免费测试的内置版) ---- */
+let _lvt=null;
+function testGradeLabel(){ const g=_addGrade||0; return g>=6?"Year 6+":GRADES[Math.min(6,g+1)][0]; }
+window.startLvTest=function(){
+  const g=_addGrade||0;
+  const anchor=GRADES[Math.min(6,g+1)][1]+(g>=6?70:35); /* 高一个年级,再稍微上浮 */
+  _lvt={pos:Math.min(TOTAL-80,anchor),step:100,q:0,n:10,right:0,cur:null,used:new Set()};
+  lvtQ();
+};
+/* 各级别起点后 35 词(≈头5天要学的词)不进测试,保证测试和每天打卡不撞词 */
+function lvtBlocked(i){
+  if(_lvt.used.has(i)) return true;
+  return LEVELS.some(l=>i>=l.start && i<l.start+35);
+}
+function lvtPick(pos){
+  const c=Math.max(0,Math.min(TOTAL-1,Math.round(pos)));
+  for(let d=0;d<TOTAL;d++){
+    for(const i of [c+d,c-d]){
+      if(i>=0 && i<TOTAL && !lvtBlocked(i)) return i;
+    }
+  }
+  return c;
+}
+function lvtQ(){
+  const t=_lvt;
+  if(t.q>=t.n){ lvtDone(); return; }
+  const idx=lvtPick(t.pos);
+  t.used.add(idx);
+  const w=FLAT[idx].w;
+  const seen=new Set([w[1]]), ds=[];
+  for(const x of shuffle(FLAT.map(x=>x.w))){
+    if(!seen.has(x[1])){ seen.add(x[1]); ds.push({zh:x[1],en:x[3]}); if(ds.length===3) break; }
+  }
+  const opts=shuffle([{zh:w[1],en:w[3],ok:1},...ds]);
+  t.cur={w:w,opts:opts,ans:opts.findIndex(o=>o.ok)};
+  modal(`<p class="mut" style="font-size:13px">🧪 Level Test · ${t.q+1}/${t.n}</p>
+  <h2 style="font-size:32px;color:var(--purple);margin:6px 0">${esc(w[0])}
+    <button class="spk" style="width:36px;height:36px;font-size:16px" onclick="speak(_lvt.cur.w[0],'en')">🔊</button></h2>
+  <p class="mut" style="font-size:14px;margin-bottom:10px">What does this word mean? <span style="font-size:12px">/ 这个词是什么意思?</span></p>
+  <div id="nkLvs">${opts.map((o,i)=>`<button class="lvbtn" id="lvt${i}" onclick="lvtA(${i})"><b>${esc(o.en)}</b><small>${esc(o.zh)}</small></button>`).join("")}</div>
+  <button class="btn ghost small" style="margin-top:10px" onclick="lvtSkipQ()">这个词没见过 🙈</button>
+  <button class="btn ghost small" style="margin-top:8px;opacity:.7" onclick="askPM_()">← 退出测试</button>`);
+  speak(w[0],"en");
+}
+window.lvtA=function(i){
+  const t=_lvt, ok=(i===t.cur.ans);
+  if(ok){ sndRight(); t.right++; t.pos+=t.step; } else { sndWrong(); t.pos-=t.step; }
+  t.pos=Math.max(0,Math.min(TOTAL-60,t.pos));
+  t.step=Math.max(18,t.step*0.6);
+  t.q++; lvtQ();
+};
+window.lvtSkipQ=function(){
+  const t=_lvt; t.pos=Math.max(0,t.pos-t.step); t.step=Math.max(18,t.step*0.6); t.q++; lvtQ();
+};
+function lvtDone(){
+  const p=_lvt.pos;
+  let lv=0; LEVELS.forEach((l,i)=>{ if(p>=l.start) lv=i; });
+  _addLv=lv;
+  modal(`<div style="font-size:50px">🎯</div><h2>测出来了!</h2>
+  <p style="font-size:17px;font-weight:800;margin:10px 0 2px;color:var(--purple)">${LEVELS[lv].label}</p>
+  <p class="mut" style="font-size:13px;margin-bottom:4px">推荐起点 · starts with: ${LEVELS[lv].ex}</p>
+  <p class="mut" style="font-size:13px;margin-bottom:12px">单词和 storybook 都从这档开始 — 稍微有点挑战才是进步区 💪${(_addGrade!==null&&_addGrade<2&&lv===0)?"<br>Kindy / Year 1 从最基础一档开始很正常，前几周多点 🔊 跟读就好":""}</p>
+  <button class="btn wide" id="lvtGo" onclick="parentIntro()">就从这里开始 →</button>
+  <button class="btn ghost wide" style="margin-top:8px" onclick="pickLevelUI()">我想手动调一档</button>
+  <button class="btn ghost wide" style="margin-top:8px" onclick="startLvTest()">↻ 重新测一次</button>`);
+}
+
+/* ---- 家长引导(新档案第3步 + 首页入口共用) ---- */
+function guideHtml(){
+  return `<div style="text-align:left;font-size:14px;line-height:1.8;color:#4a5070">
+
+  <p style="background:#f4f2ff;border-radius:12px;padding:10px 12px"><b>这是什么?</b> 60 天单词打卡挑战：孩子每天 10–15 分钟自己完成，词汇按澳洲 PM 阅读体系分级，从 Kindy 到 Year 6 共 900 词。你只负责一件事 — <b>兑现惊喜</b>。</p>
+
+  <p style="margin-top:8px"><b>👦 孩子每天：</b>学 7 个新词 → 小测验 → 打卡点亮一格。</p>
+
+  <p style="margin-top:10px"><b>👪 家长设置(5 分钟)：</b></p>
+  <p style="margin-top:4px"><b>1 · 🔑 设密码</b> — 底部菜单进 <b>Parents</b>，首次进入会让你设一个 <b>4 位数字密码</b>，设好后惊喜清单只有你能看。</p>
+  <p style="margin-top:4px"><b>2 · 🎁 亲手布置奖励</b> — 你在家长区的清单里<b>亲手写下要给孩子的奖励</b>(孩子看不到这份清单)。孩子每天完成单词打卡，打到第 <b>${MILESTONES.join("、")}</b> 天时，游戏就从你写的奖励里<b>随机抽一个跳出来</b> — 事先猜不到是什么，这份「开盲盒」的惊喜感，就是孩子每天自己主动来打卡的动力。写 <b>10 条左右</b>小奖励：<i>多玩 30 分钟游戏 🎮、选周末晚餐 🍕、晚睡 15 分钟 🌙…</i>抽到哪个都请当场兑现。</p>
+  <p style="margin-top:4px"><b>3 · 📤 发给孩子</b><br>
+  · <b>iPad</b>：AirDrop 传过去 → Safari 打开 → 分享 →「<b>添加到主屏幕</b>」。微信传的话：点文件 →「用其他应用打开」→ Safari(<b>别在微信里直接玩</b>，存档会丢)。<br>
+  · <b>电脑</b>：传过去后双击用 Chrome / Safari 打开。<br>
+  之后每天<b>固定时间</b>(晚饭后/睡前)督促打卡，并让孩子<b>固定用同一台设备、同一个浏览器</b>玩。</p>
+
+  <p style="margin-top:10px"><b>📖 Storybook</b> — 每学完 30 词解锁一本双语故事书，难度对应孩子真实 PM 水平，稍难一点正合适。</p>
+
+  <p style="margin-top:8px"><b>🔊 不会英文?</b> 每个词、例句、故事都有中英朗读按钮：孩子点英文跟读，你听中文。做完问一句「今天学了哪个词?」就是最好的陪伴。</p>
+
+  <p style="margin-top:8px"><b>❓ 注意</b> — 漏打一天不清零，别批评；难度太深太浅在家长区可调；每周在家长区生成一次<b>备份码</b>防丢进度；故事里的同伴默认叫 Alex，家长区可改名。</p></div>`;
+}
+window.parentIntro=function(){
+  modal(`<div style="font-size:44px">👪</div><h2>家长请看 · For Parents</h2>
+  ${guideHtml()}
+  <button class="btn gold wide" style="margin-top:14px" onclick="createKid()">Start the 60-day challenge! 🚀</button>
+  <button class="btn ghost wide" style="margin-top:8px" onclick="pickLevelUI()">← Back 上一步</button>`);
+};
+window.firstGuide=function(){
+  modal(`<div style="font-size:44px">👪</div><h2>家长使用说明</h2>
+  ${guideHtml()}
+  <button class="btn wide" style="margin-top:14px" onclick="closeModal()">明白了 ✓</button>`);
+};
+window.createKid=function(){
+  const n=_addName||(($("#nkName")||{}).value||"").trim();
+  if(!n){ sndWrong(); closeModal(); addKid(); return; }
+  const id="k"+Date.now().toString(36)+Math.floor(Math.random()*99);
+  const start=LEVELS[_addLv===null?0:_addLv].start;
+  settings.kids=[{id, name:n, emoji:KID_EMOJIS[0], color:KID_COLORS[0], start}];
+  if(_addBuddy) settings.buddy=_addBuddy;
+  save("blwq_settings",settings);
+  save("blwq_"+id, defState(start));
+  closeModal(); loadProfile(id); view="home"; render();
 };
 
 /* ---------- home ---------- */
 function renderHome(){
-  const p=PROFILES[curId], stg=stageOf(S.learned), nxt=nextStage(S.learned);
-  const bc=badgeCount(S), sc=surpriseCount(S);
-  const toNextBadge=10-(S.learned%10);
+  const k=kmeta(curId), stg=stageEff(S), nxt=nextStageEff(S);
+  const bc=badgeCount(S);
   const done=doneToday();
-  const dayN=Math.min(settings.daily, TOTAL-S.learned);
-  const pct=nxt? Math.round((S.learned-stg[0])/(nxt[0]-stg[0])*100) : 100;
+  const dayCount=S.days.length;
+  const wordsLeft=TOTAL-S.learned;
+  const dayN=Math.min(settings.daily, wordsLeft);
+  const goal=kgoal(S);
+  const pct=nxt? Math.round((eff(S)*TOTAL/goal-stg[0])/(nxt[0]-stg[0])*100) : 100;
   const unredeemed=S.surprises.filter(x=>!x.redeemed).length;
+  const nextMile=MILESTONES.find(d=>d>dayCount);
+  let cal="";
+  for(let i=1;i<=CHALLENGE;i++){
+    const isDone=i<=dayCount, isMile=MILESTONES.includes(i);
+    cal+=`<i class="${isDone?"done":""} ${isMile?"mile":""}">${isMile?"🎁":(isDone?"✓":i)}</i>`;
+  }
   $("#main").innerHTML=`
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-    <h1 class="white" style="font-size:24px">${p.emoji} ${esc(pname(curId))}'s Dragon Lair</h1>
-    <button class="btn ghost small" onclick="switchProfile()">Switch player</button>
+    <h1 class="white" style="font-size:24px">${k.emoji} ${esc(pname(curId))}'s Dragon Lair</h1>
+    
   </div>
   <div class="statrow">
-    <div class="stat"><b>${S.learned}</b><span>Words learned</span></div>
-    <div class="stat"><b>🔥${S.streak}</b><span>Day streak</span></div>
+    <div class="stat"><b>${dayCount}<span style="font-size:14px;color:#a6adc6">/${CHALLENGE}</span></b><span>Day</span></div>
+    <div class="stat"><b>🔥${S.streak}</b><span>Streak</span></div>
+    <div class="stat"><b>${eff(S)}</b><span>Words</span></div>
     <div class="stat"><b>🏅${bc}</b><span>Badges</span></div>
-    <div class="stat"><b>🎁${sc}</b><span>Surprises</span></div>
   </div>
   <div class="card dragonbox">
     <div class="dragon">${stg[1]}</div>
     <h2 style="font-size:24px;margin-top:6px">${stg[2]} <span class="mut" style="font-size:15px">Lv.${STAGES.indexOf(stg)+1}</span></h2>
-    ${nxt?`<p class="mut" style="margin-top:4px">Learn <b style="color:#ff8c42">${nxt[0]-S.learned}</b> more words to evolve into ${nxt[1]} ${nxt[2]}</p>`:`<p class="mut">Final form reached — legendary!</p>`}
+    ${nxt?`<p class="mut" style="margin-top:4px">Keep learning to evolve into ${nxt[1]} ${nxt[2]}</p>`:`<p class="mut">Final form reached — legendary!</p>`}
     <div class="lvlbar"><i style="width:${pct}%"></i></div>
   </div>
   ${unredeemed?`<div class="card" style="background:linear-gradient(135deg,#fff6e5,#ffe9f0);cursor:pointer" onclick="nav('badges')">
      <h3>🎁 ${unredeemed} surprise${unredeemed>1?"s":""} waiting to be unboxed!</h3><p class="mut">Check the Badges page →</p></div>`:""}
   <div class="card center">
     ${done
-      ? `<div style="font-size:50px">✅</div><h2 style="margin:6px 0">Checked in today!</h2>
-         <p class="mut" style="margin-bottom:14px">${toNextBadge===10?0:toNextBadge} words until your next badge</p>
+      ? `<div style="font-size:50px">✅</div><h2 style="margin:6px 0">Day ${dayCount} checked in!</h2>
+         <p class="mut" style="margin-bottom:14px">${nextMile?`🎁 Next surprise at Day ${nextMile} — ${nextMile-dayCount} day${nextMile-dayCount>1?"s":""} to go`:"All surprises unlocked!"}</p>
          <button class="btn green wide" onclick="startReview()">🔄 Bonus: Review Challenge</button>`
-      : (S.learned>=TOTAL
-        ? `<div style="font-size:50px">🏆</div><h2>All ${TOTAL} words complete!</h2><button class="btn green wide" style="margin-top:12px" onclick="startReview()">🔄 Review Challenge</button>`
-        : `<div style="font-size:50px">⚔️</div><h2 style="margin:6px 0">Today\'s Quest</h2>
-           <p class="mut" style="margin-bottom:14px">Learn ${dayN} new words → Battle quiz → Sentence builder → Check in</p>
-           <button class="btn gold wide" onclick="startSession()">🚀 Start Today\'s Adventure</button>`)}
+      : (wordsLeft<=0
+        ? `<div style="font-size:50px">🌟</div><h2 style="margin:6px 0">Today's Quest</h2>
+           <p class="mut" style="margin-bottom:14px">All words learned! Beat the Review Challenge to check in Day ${dayCount+1}</p>
+           <button class="btn gold wide" onclick="startReview()">🚀 Review & Check in</button>`
+        : `<div style="font-size:50px">⚔️</div><h2 style="margin:6px 0">Today's Quest</h2>
+           <p class="mut" style="margin-bottom:14px">Learn ${dayN} new words → Battle quiz → Check in Day ${dayCount+1}</p>
+           <button class="btn gold wide" onclick="startSession()">🚀 Start Today's Adventure</button>`)}
   </div>
-  <p class="center white" style="opacity:.55;font-size:13px;font-weight:600">10 words = 1 badge · 5 badges = 1 mystery surprise 🎁</p>`;
+  <div class="card">
+    <h3 style="margin-bottom:2px">📅 60-Day Challenge</h3>
+    <p class="mut" style="font-size:13px">Check in every day · 🎁 marks a surprise day (${MILESTONES.join(" · ")})</p>
+    <div class="cal">${cal}</div>
+  </div>
+  <p class="center white" style="opacity:.55;font-size:13px;font-weight:600">Check in ${CHALLENGE} days to complete the challenge · every 10 words = 1 badge</p>`;
 }
-window.switchProfile=function(){ curId=null; save("dwq_current",null); render(); };
+window.switchProfile=function(){ curId=null; save("blwq_current",null); render(); };
 
 /* ================= learning session ================= */
 let sess=null;
@@ -1276,8 +1637,8 @@ window.startSession=function(){
 };
 
 window.startReview=function(){
-  if(S.learned===0){ modal(`<h2>No words learned yet</h2><p class="mut" style="margin:10px 0">Start today\'s adventure first!</p><button class="btn wide" onclick="closeModal()">OK</button>`); return; }
-  const pool=shuffle(FLAT.slice(0,S.learned)).slice(0,10).map(x=>x.w);
+  if(eff(S)===0){ modal(`<h2>No words learned yet</h2><p class="mut" style="margin:10px 0">Start today\'s adventure first!</p><button class="btn wide" onclick="closeModal()">OK</button>`); return; }
+  const pool=shuffle(FLAT.slice(kstart(S),S.learned)).slice(0,10).map(x=>x.w);
   sess={mode:"review",words:[],review:pool,fi:0,quiz:[],qi:0,rightCount:0,total:0};
   buildQuiz(); showQuiz();
 };
@@ -1298,7 +1659,7 @@ function showFlash(){
       <div class="en">${hlWord(w[4],w[0])} <button class="spk" onclick="speak(sess.words[sess.fi][4],'en')">🔊</button></div>
     </div>
     <div class="sent" style="background:#fbf7ef;margin-top:8px">
-      <div class="zh2" style="margin-top:0"><b>中文</b> · ${esc(w[1])} <button class="spk" style="width:32px;height:32px;font-size:14px" onclick="speak('${esc(w[1]).replace(/'/g,"\\'").replace(/；/g,'，')}','zh')">🔊</button><br>${esc(w[5])} <button class="spk" style="width:32px;height:32px;font-size:14px" onclick="speak(sess.words[sess.fi][5],'zh')">🔊</button></div>
+      <div class="zh2" style="margin-top:0"><b>中文</b> · ${esc(w[1])} <button class="spk" style="width:32px;height:32px;font-size:14px" onclick="speak('${esc(w[1]).replace(/'/g,"\\'").replace(/；/g,'，')}','zh')">🔊</button><br>${esc(subst(w[5]))} <button class="spk" style="width:32px;height:32px;font-size:14px" onclick="speak(sess.words[sess.fi][5],'zh')">🔊</button></div>
     </div>
   </div>
   <div style="display:flex;gap:12px;margin-top:18px">
@@ -1315,8 +1676,11 @@ window.flashNext=function(){
 
 /* ---- quiz build ---- */
 function distractors(correct,field){
-  const pool=FLAT.map(x=>x.w).filter(w=>w[field]!==correct[field]);
-  return shuffle(pool).slice(0,3).map(w=>w[field]);
+  const seen=new Set([correct[field]]), out=[];
+  for(const x of shuffle(FLAT.map(x=>x.w))){
+    if(!seen.has(x[field])){ seen.add(x[field]); out.push(x[field]); if(out.length===3) break; }
+  }
+  return out;
 }
 function buildQuiz(){
   const q=[];
@@ -1333,7 +1697,7 @@ function buildQuiz(){
 
 function showQuiz(){
   if(sess.qi>=sess.quiz.length){
-    if(sess.mode==="review"){ finishReview(); } else { showWrite(); }
+    if(sess.mode==="review"){ finishReview(); } else { finishDay(); }
     return;
   }
   const q=sess.quiz[sess.qi];
@@ -1412,162 +1776,74 @@ window.spellUndo=function(){ const sp=sess.spell; if(sp.filled.length){ sp.fille
 window.spellClear=function(){ sess.spell.filled=[]; drawSpell(); };
 
 /* ---- writing ---- */
-function showWrite(){
-  const chips=sess.words.map(w=>`<button class="chip" data-w="${esc(w[0])}" onclick="insWord('${esc(w[0]).replace(/'/g,"\\'")}')">${esc(w[0])}</button>`).join("");
-  const examples=sess.words.map((w,i)=>`<div class="sent" style="margin-top:8px"><div class="en" style="font-size:16px">${hlWord(w[4],w[0])} <button class="spk" style="width:32px;height:32px;font-size:14px" onclick="speak(sess.words[${i}][4],'en')">🔊</button></div></div>`).join("");
-  ov(`
-  <div class="ovtop"><h2 class="white">✏️ Sentence Builder</h2><button class="xbtn" onclick="closeOv()">✕ Exit</button></div>
-  <div class="card">
-    <h3 style="margin-bottom:6px">Write 2-3 sentences using today\'s new words</h3>
-    <p class="mut" style="font-size:14px;margin-bottom:10px">Use at least <b>2</b> of today\'s words (tap a word to insert it). Mum and Dad will read your writing!</p>
-    <div style="margin-bottom:10px">${chips}</div>
-    <button class="btn ghost small" onclick="toggleEx()" id="exbtn">💡 Show example sentences</button>
-    <div id="exbox" style="display:none;margin-top:4px">${examples}</div>
-    <textarea id="wtext" style="margin-top:10px" placeholder="e.g. I caught a glimpse of a dragon. It gazed at me and I did not even flinch..." oninput="wCheck()"></textarea>
-    <p id="whint" class="mut" style="font-size:14px;margin-top:8px">New words used: 0 / 2</p>
-  </div>
-  <div class="card">
-    <h3 style="margin-bottom:6px">✨ Writing Coach</h3>
-    <p class="mut" style="font-size:14px;margin-bottom:10px">Finished a draft? Get tips to level it up before you check in.</p>
-    <button class="btn small" onclick="runCoach()">✨ Coach my writing</button>
-    <div id="coachout" style="margin-top:10px"></div>
-  </div>
-  <button class="btn gold wide" id="wbtn" disabled onclick="submitWrite()">✅ Finish & Check In!</button>`);
-}
-window.toggleEx=function(){
-  const b=$("#exbox"); const show=b.style.display==="none";
-  b.style.display=show?"block":"none";
-  $("#exbtn").textContent=show?"🙈 Hide example sentences":"💡 Show example sentences";
-};
-
-/* ---- writing coach (runs on this iPad, no internet needed) ---- */
-const BORING={
-  "very":["truly","extremely","incredibly"],"good":["excellent","superb","impressive"],
-  "bad":["dreadful","terrible","awful"],"big":["enormous","gigantic","immense"],
-  "small":["tiny","minuscule","miniature"],"nice":["delightful","wonderful","charming"],
-  "happy":["delighted","elated","jubilant"],"sad":["gloomy","dejected","miserable"],
-  "scared":["terrified","petrified","anxious"],"angry":["furious","indignant","exasperated"],
-  "tired":["weary","exhausted","drowsy"],"funny":["hilarious","amusing","witty"],
-  "ran":["dashed","bolted","sprinted"],"run":["dash","bolt","sprint"],
-  "walked":["strolled","trudged","strode"],"walk":["stroll","trudge","stride"],
-  "said":["exclaimed","declared","muttered"],"looked":["glanced","gazed","peered"],
-  "went":["travelled","hurried","headed"],"got":["received","grabbed","earned"],
-  "pretty":["beautiful","exquisite","lovely"],"fun":["thrilling","exciting","delightful"]
-};
-const OPENERS=["Suddenly,","Later that day,","To my surprise,","Without warning,","Early that morning,","Meanwhile,","After a moment,"];
-window.runCoach=function(){
-  const text=$("#wtext").value.trim();
-  const out=$("#coachout");
-  if(!text){ out.innerHTML=`<p class="mut">Write something first, then I\'ll coach you! 🐉</p>`; return; }
-  const sents=(text.match(/[^.!?]+[.!?]*/g)||[]).map(s=>s.trim()).filter(Boolean);
-  const tips=[]; const wins=[];
-  // mechanics
-  if(sents.length<2) tips.push("📏 Aim for <b>2-3 sentences</b> — you have "+sents.length+" so far.");
-  const noCaps=sents.filter(s=>/^[a-z]/.test(s));
-  if(noCaps.length) tips.push("🔠 Start every sentence with a <b>CAPITAL letter</b> — check: <i>\""+esc(noCaps[0].slice(0,30))+"...\"</i>");
-  if(!/[.!?]$/.test(text)) tips.push("✋ Finish your last sentence with <b>. ! or ?</b>");
-  const longOnes=sents.filter(s=>s.split(/\s+/).length>22);
-  if(longOnes.length) tips.push("✂️ One sentence is very long ("+longOnes[0].split(/\s+/).length+" words). Try splitting it into two.");
-  // repeated openers
-  const starts=sents.map(s=>(s.split(/\s+/)[0]||"").toLowerCase().replace(/[^a-z']/g,""));
-  const dup=starts.find((s,i)=>s&&starts.indexOf(s)!==i);
-  if(dup) tips.push("🔄 More than one sentence starts with \"<b>"+esc(dup)+"</b>\". Vary your openers: <i>"+OPENERS.slice(0,3).join(" / ")+"</i>");
-  // boring word upgrades
-  const low=" "+text.toLowerCase().replace(/[^a-z' ]/g," ")+" ";
-  let bcount=0;
-  for(const k in BORING){
-    if(bcount>=3) break;
-    if(low.includes(" "+k+" ")){ tips.push("💪 Instead of \"<b>"+k+"</b>\", try: <b>"+BORING[k].join("</b> · <b>")+"</b>"); bcount++; }
-  }
-  // praise
-  const used=sess.words.filter(w=>textUsesWord(text,w[0])).length;
-  if(used>=3) wins.push("🌟 Superb — you used <b>"+used+" power words</b> in one go!");
-  else if(used>=2) wins.push("👍 Nice — "+used+" of today\'s words are in there.");
-  if(sents.length>=3) wins.push("📚 Three or more sentences — great stamina!");
-  if(!noCaps.length&&/[.!?]$/.test(text)) wins.push("✅ Capitals and punctuation look sharp.");
-  // upgrade ideas built from THEIR sentence
-  const pick=sents.reduce((a,b)=>b.split(/\s+/).length>a.split(/\s+/).length?b:a,sents[0]||"");
-  const core=pick.replace(/[.!?]+$/,"");
-  const ideas=[];
-  if(core){
-    ideas.push("🕐 <b>Add WHEN or WHERE:</b> <i>\""+esc(OPENERS[Math.floor(Math.random()*OPENERS.length)])+" "+esc(core.charAt(0).toLowerCase()+core.slice(1))+".\"</i>");
-    ideas.push("🔗 <b>Stretch the idea:</b> <i>\""+esc(core)+", which ...\"</i> — finish the thought yourself!");
-    ideas.push("🤔 <b>Give a reason:</b> <i>\""+esc(core)+" because ...\"</i>");
-  }
-  out.innerHTML=
-    (wins.length?`<div style="background:#e9fbf3;border-radius:14px;padding:12px;margin-bottom:8px">${wins.map(w=>`<p style="font-size:15px;margin:4px 0">${w}</p>`).join("")}</div>`:"")+
-    (tips.length?`<div style="background:#fff6e5;border-radius:14px;padding:12px;margin-bottom:8px"><p style="font-weight:800;font-size:14px;margin-bottom:4px">Level-up tips</p>${tips.map(t=>`<p style="font-size:15px;margin:6px 0">${t}</p>`).join("")}</div>`:"")+
-    (ideas.length?`<div style="background:#f0ecff;border-radius:14px;padding:12px"><p style="font-weight:800;font-size:14px;margin-bottom:4px">Try stretching YOUR sentence</p>${ideas.map(t=>`<p style="font-size:15px;margin:6px 0">${t}</p>`).join("")}</div>`:"");
-  if(!tips.length&&wins.length) out.innerHTML+=`<p style="font-size:15px;margin-top:6px">🏆 Hard to fault — a flawless entry for the portfolio!</p>`;
-};
-window.insWord=function(w){
-  const t=$("#wtext"); t.value=(t.value?t.value.replace(/\s*$/," "):"")+w+" "; t.focus(); wCheck();
-};
-window.wCheck=function(){
-  const text=$("#wtext").value;
-  let used=0;
-  document.querySelectorAll(".chip").forEach(c=>{
-    const u=textUsesWord(text,c.dataset.w);
-    c.classList.toggle("used",u); if(u) used++;
-  });
-  const words=text.trim().split(/\s+/).filter(Boolean).length;
-  const ok=used>=2&&words>=10;
-  $("#whint").innerHTML=`New words used: <b style="color:${used>=2?'var(--green)':'var(--red)'}">${used} / 2</b> · Word count: <b style="color:${words>=10?'var(--green)':'var(--red)'}">${words} / 10</b>`;
-  $("#wbtn").disabled=!ok;
-};
-window.submitWrite=function(){
-  const text=$("#wtext").value.trim();
-  S.sentences.unshift({d:todayStr(),text,words:sess.words.map(w=>w[0])});
-  finishDay();
-};
-
-/* ---- finish ---- */
-function finishDay(){
-  const before={badges:badgeCount(S),sur:surpriseCount(S)};
-  S.learned=Math.min(TOTAL,S.learned+sess.words.length);
+function checkInToday(){
+  /* 打卡：更新连胜与天数，按里程碑抽惊喜。返回 {newSurprises, hit60} */
+  const before=surpriseCount(S);
   const t=todayStr();
-  if(S.lastDay!==t){
-    S.streak=(S.lastDay===yesterdayStr())?S.streak+1:1;
-    S.lastDay=t; S.days.push(t);
-  }
-  S.xp+=sess.words.length*10+sess.rightCount*2;
-  const after={badges:badgeCount(S),sur:surpriseCount(S)};
-  const newBadges=after.badges-before.badges;
+  if(S.lastDay===t) return {newSurprises:[],hit60:false};
+  S.streak=(S.lastDay===yesterdayStr())?S.streak+1:1;
+  S.lastDay=t; S.days.push(t);
+  const after=surpriseCount(S);
   let newSurprises=[];
-  for(let i=before.sur;i<after.sur;i++){
+  for(let i=before;i<after;i++){
     const pick=settings.surprises[Math.floor(Math.random()*settings.surprises.length)]||"Mystery prize 🎁";
-    const sObj={n:i+1,text:pick,redeemed:false,d:todayStr()};
+    const sObj={n:i+1,text:pick,redeemed:false,d:t,day:S.days.length};
     S.surprises.push(sObj); newSurprises.push(sObj);
   }
+  return {newSurprises, hit60:S.days.length===CHALLENGE};
+}
+function surpriseHtml(list){
+  return list.length?`<div style="background:linear-gradient(135deg,#fff6e5,#ffe9f0);border-radius:18px;padding:16px;margin-top:12px">
+      <div style="font-size:40px">🎁</div><h3>Day ${S.days.length} Surprise Unlocked!</h3>
+      ${list.map(s=>`<p style="font-size:20px;font-weight:800;margin-top:6px">${esc(s.text)}</p>`).join("")}
+      <p class="mut" style="font-size:13px;margin-top:6px">Go claim it from Mum or Dad!</p></div>`:"";
+}
+function maybe60(hit60){
+  if(!hit60) return "";
+  confetti(240);
+  return `<div style="background:linear-gradient(135deg,#efe7ff,#ffe9f0);border-radius:18px;padding:18px;margin-top:12px">
+    <div style="font-size:52px">🏆👑🐉</div><h2 style="margin:6px 0">60-DAY CHALLENGE COMPLETE!</h2>
+    <p class="mut">${esc(pname(curId))} checked in ${CHALLENGE} days. That is a real habit now — the whole family should celebrate tonight!</p></div>`;
+}
+function finishDay(){
+  const beforeBadges=badgeCount(S);
+  S.learned=Math.min(TOTAL,S.learned+sess.words.length);
+  const ci=checkInToday();
+  S.xp+=sess.words.length*10+sess.rightCount*2;
+  const newBadges=badgeCount(S)-beforeBadges;
   persist();
   $("#overlay").classList.remove("show");
   confetti(120); sndWin();
   const acc=sess.total?Math.round(sess.rightCount/sess.total*100):100;
-  let html=`<div style="font-size:60px">🎉</div><h2 style="margin:8px 0">Quest Complete!</h2>
-    <p class="mut"><b>${sess.words.length}</b> new words learned · Quiz accuracy ${acc}%<br><b>🔥${S.streak}</b>-day streak · <b>${S.learned}</b> words in total</p>`;
+  let html=`<div style="font-size:60px">🎉</div><h2 style="margin:8px 0">Day ${S.days.length} Complete!</h2>
+    <p class="mut"><b>${sess.words.length}</b> new words · Quiz accuracy ${acc}%<br><b>🔥${S.streak}</b>-day streak · <b>${eff(S)}</b> words learned · Day <b>${S.days.length}/${CHALLENGE}</b></p>`;
   if(newBadges>0) html+=`<div style="font-size:40px;margin-top:10px">🏅</div><p><b>${newBadges} new badge${newBadges>1?"s":""} earned!</b></p>`;
-  if(newSurprises.length) html+=`<div style="background:linear-gradient(135deg,#fff6e5,#ffe9f0);border-radius:18px;padding:16px;margin-top:12px">
-      <div style="font-size:40px">🎁</div><h3>Mystery Surprise Unlocked!</h3>
-      ${newSurprises.map(s=>`<p style="font-size:20px;font-weight:800;margin-top:6px">${esc(s.text)}</p>`).join("")}
-      <p class="mut" style="font-size:13px;margin-top:6px">Go claim it from Mum or Dad!</p></div>`;
+  html+=surpriseHtml(ci.newSurprises);
+  html+=maybe60(ci.hit60);
   html+=`<button class="btn wide" style="margin-top:16px" onclick="closeModal();sess=null;render();">Awesome!</button>`;
   modal(html);
-  if(newSurprises.length) sndWin();
+  if(ci.newSurprises.length) sndWin();
 }
 function finishReview(){
   const acc=sess.total?Math.round(sess.rightCount/sess.total*100):100;
-  S.xp+=sess.rightCount; persist();
+  S.xp+=sess.rightCount;
+  let ci={newSurprises:[],hit60:false}, checked=false;
+  if(S.learned>=TOTAL && S.lastDay!==todayStr() && acc>=60){ ci=checkInToday(); checked=true; }
+  persist();
   $("#overlay").classList.remove("show");
-  if(acc>=80) confetti(60);
-  modal(`<div style="font-size:56px">${acc>=80?"🌟":"💪"}</div><h2>Review complete!</h2>
-    <p class="mut" style="margin:8px 0">Accuracy ${acc}%${acc>=80?" — your dragon is proud!":" — keep training!"}</p>
-    <button class="btn wide" onclick="closeModal();sess=null;render();">OK</button>`);
+  if(acc>=80||checked) confetti(80);
+  let html=`<div style="font-size:56px">${acc>=80?"🌟":"💪"}</div><h2>${checked?`Day ${S.days.length} checked in!`:"Review complete!"}</h2>
+    <p class="mut" style="margin:8px 0">Accuracy ${acc}%${acc>=80?" — your dragon is proud!":" — keep training!"}</p>`;
+  html+=surpriseHtml(ci.newSurprises);
+  html+=maybe60(ci.hit60);
+  html+=`<button class="btn wide" onclick="closeModal();sess=null;render();">OK</button>`;
+  modal(html);
 }
 
 /* ================= reading ================= */
 function renderRead(){
   $("#main").innerHTML=`<h1 class="white" style="margin-bottom:6px">📖 Dragon Storybook</h1>
-  <p class="white" style="opacity:.7;font-weight:600;font-size:14px;margin-bottom:16px">Finish a week\'s 30 words to unlock a story written with those very words!</p>
+  <p class="white" style="opacity:.7;font-weight:600;font-size:14px;margin-bottom:16px">每学完 30 个词解锁一本 storybook — 用刚学的词写成的双语故事。难度跟着孩子真实 PM 水平走，稍微难一点点正合适。</p>
   ${VOCAB.map(wk=>{
     const un=weekUnlocked(wk.n);
     const prog=Math.max(0,Math.min(30,S.learned-(wk.n-1)*30));
@@ -1583,7 +1859,7 @@ window.lockedMsg=function(n,prog){
 };
 window.openArticle=function(n){
   const wk=VOCAB[n-1]; const art=wk.article;
-  let en=esc(art.en);
+  let en=esc(subst(art.en));
   wk.words.forEach((w,wi)=>{
     let re=new RegExp("\\b("+w[0].replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"\\w*)","i");
     if(!re.test(en)) re=new RegExp("\\b("+stem(w[0]).replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"\\w*)","i");
@@ -1598,10 +1874,11 @@ window.openArticle=function(n){
     <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap">
       <button class="btn small" onclick="speak(VOCAB[${n-1}].article.en,'en',0.88)">🔊 Read Aloud</button>
       <button class="btn ghost small" onclick="speechSynthesis.cancel()">⏹ Stop</button>
+      <button class="btn small" style="background:linear-gradient(135deg,#2ecc8f,#1aab74)" onclick="const a=$('#azh');if(a&&a.style.display==='none')toggleZh();speak(VOCAB[${n-1}].article.zh,'zh',0.98)">🔊 中文朗读</button>
       <button class="btn ghost small" id="zhbtn" onclick="toggleZh()">Show Chinese 👁</button>
     </div>
     <div class="article-en">${en}</div>
-    <div class="article-zh" id="azh" style="display:none">${esc(art.zh)}</div>
+    <div class="article-zh" id="azh" style="display:none">${esc(subst(art.zh))}</div>
   </div>
   <p class="center white" style="opacity:.6;font-size:13px;font-weight:600">Purple words are this week\'s new words — tap one for meaning + audio</p>`);
 };
@@ -1616,16 +1893,19 @@ window.wordPop=function(n,wi){
     <button class="btn small" onclick="speak('${esc(w[0]).replace(/'/g,"\\'")}','en')">🔊 English</button>
     <button class="btn ghost small" onclick="speak('${esc(w[1]).replace(/'/g,"\\'").replace(/；/g,'，')}','zh')">🔊 Chinese</button>
   </div>
-  <div class="sent"><div class="en">${hlWord(w[4],w[0])}</div><div class="zh2">${esc(w[5])}</div></div>
+  <div class="sent"><div class="en">${hlWord(w[4],w[0])} <button class="spk" style="width:32px;height:32px;font-size:14px" onclick="speak(VOCAB[${n-1}].words[${wi}][4],'en')">🔊</button></div><div class="zh2">${esc(subst(w[5]))} <button class="spk" style="width:32px;height:32px;font-size:14px" onclick="speak(VOCAB[${n-1}].words[${wi}][5],'zh')">🔊</button></div></div>
   <button class="btn wide" style="margin-top:14px" onclick="closeModal()">Close</button>`);
   speak(w[0],"en");
 };
 
 /* ================= badges ================= */
 function renderBadges(){
-  const bc=badgeCount(S), sc=surpriseCount(S);
-  const toNext=10-(S.learned%10);
-  const bTo5=bc%5, toSurprise=5-bTo5;
+  const bc=badgeCount(S);
+  const toNext=10-(eff(S)%10);
+  const dayCount=S.days.length;
+  const nextMile=MILESTONES.find(d=>d>dayCount);
+  const prevMile=[0].concat(MILESTONES.filter(d=>d<=dayCount)).pop();
+  const milePct=nextMile? Math.round((dayCount-prevMile)/(nextMile-prevMile)*100) : 100;
   let grid="";
   const show=Math.max(bc+3,8);
   for(let i=0;i<show;i++){
@@ -1633,15 +1913,17 @@ function renderBadges(){
     grid+=`<div class="badge ${got?"":"locked"}"><div class="bi">${BADGE_ICONS[i%BADGE_ICONS.length]}</div><div class="bn">${got?"No. "+(i+1):"Locked"}</div></div>`;
   }
   $("#main").innerHTML=`
-  <h1 class="white" style="margin-bottom:14px">🏅 ${esc(pname(curId))}\'s Hall of Fame</h1>
+  <h1 class="white" style="margin-bottom:14px">🏅 ${esc(pname(curId))}'s Hall of Fame</h1>
   <div class="card">
     <h3>🎁 Surprise Progress</h3>
-    <p class="mut" style="font-size:14px;margin:6px 0"><b style="color:#ff8c42">${toSurprise}</b> more badge${toSurprise>1?"s":""} (about ${toSurprise*10-(S.learned%10)} words) until the next surprise</p>
-    <div class="lvlbar"><i style="width:${bTo5/5*100}%"></i></div>
+    ${nextMile
+      ?`<p class="mut" style="font-size:14px;margin:6px 0">Check in <b style="color:#ff8c42">${nextMile-dayCount}</b> more day${nextMile-dayCount>1?"s":""} — next surprise unlocks on <b>Day ${nextMile}</b></p>`
+      :`<p class="mut" style="font-size:14px;margin:6px 0">All ${MILESTONES.length} surprise days unlocked — legendary!</p>`}
+    <div class="lvlbar"><i style="width:${milePct}%"></i></div>
     ${S.surprises.length?`<div style="margin-top:14px">${S.surprises.map((s,i)=>`
-      <div class="prow"><div><b>🎁 Surprise ${s.n}</b>: ${esc(s.text)} <span class="mut" style="font-size:12px">${s.d}</span></div>
+      <div class="prow"><div><b>🎁 Day ${s.day||"?"}</b>: ${esc(s.text)} <span class="mut" style="font-size:12px">${s.d}</span></div>
       ${s.redeemed?'<span style="color:var(--green);font-weight:800">Claimed ✓</span>':`<button class="btn green small" onclick="redeem(${i})">Claim!</button>`}</div>`).join("")}</div>`
-    :`<p class="mut" style="margin-top:10px;font-size:14px">No surprises yet — keep collecting badges!</p>`}
+    :`<p class="mut" style="margin-top:10px;font-size:14px">Surprise days: ${MILESTONES.join(" · ")} — keep checking in!</p>`}
   </div>
   <div class="card">
     <h3 style="margin-bottom:4px">Badges (${bc})</h3>
@@ -1654,128 +1936,228 @@ window.redeem=function(i){
 };
 
 /* ================= works ================= */
-function renderWorks(){
-  $("#main").innerHTML=`
-  <h1 class="white" style="margin-bottom:14px">✏️ ${esc(pname(curId))}\'s Writing Portfolio</h1>
-  ${S.sentences.length? S.sentences.map(s=>`
-    <div class="card" style="padding:16px">
-      <p class="mut" style="font-size:13px;margin-bottom:6px">${s.d} · Words: ${s.words.map(esc).join(", ")}</p>
-      <p style="font-size:18px;line-height:1.6;user-select:text;-webkit-user-select:text">${esc(s.text)}</p>
-      <button class="spk" style="margin-top:8px" onclick="speakWork(${S.sentences.indexOf(s)})">🔊</button>
-    </div>`).join("")
-  : `<div class="card center"><div style="font-size:46px">📝</div><p class="mut" style="margin-top:8px">Nothing here yet. Finish the Sentence Builder in today\'s quest and your writing will appear here!</p></div>`}`;
-}
-
-window.speakWork=function(i){ if(S.sentences[i]) speak(S.sentences[i].text,"en"); };
-
 /* ================= parent ================= */
 let parentOK=false;
 function renderParent(){
   if(!parentOK){
-    const b=Math.floor(Math.random()*60)+17, a=Math.floor(Math.random()*60)+17;
-    window._pAns=b;
-    $("#main").innerHTML=`<h1 class="white" style="margin-bottom:14px">👪 Parent Zone</h1>
-    <div class="card center">
-      <div style="font-size:40px">🔐</div>
-      <p class="mut" style="margin:8px 0 6px">Parents only — solve to enter</p>
-      <h2 style="font-size:30px">${a*b} ÷ ${a} = ?</h2>
-      <input type="number" id="pin" style="max-width:160px;margin:14px auto 12px;display:block;text-align:center;font-size:22px">
-      <button class="btn wide" onclick="pCheck()">Enter</button>
-    </div>`;
+    if(settings.ppass){
+      $("#main").innerHTML=`<h1 class="white" style="margin-bottom:14px">👪 家长区 Parent Zone</h1>
+      <div class="card center">
+        <div style="font-size:40px">🔐</div>
+        <p style="font-size:14px;color:#6b7192;margin:2px 0 10px;line-height:1.7">🎁 进入这里，<b>设置你想给小朋友的惊喜</b>，让他们连续打卡</p>
+        <p class="mut" style="margin:8px 0 6px">输入 4 位家长密码 / Enter parent PIN</p>
+        <input type="password" id="pin" inputmode="numeric" maxlength="4" style="max-width:200px;margin:14px auto 12px;display:block;text-align:center;font-size:22px;letter-spacing:8px">
+        <button class="btn wide" onclick="pCheck()">进入 Enter</button>
+        <p class="mut" style="font-size:12px;margin-top:10px"><b style="cursor:pointer;color:var(--purple)" onclick="forgotPass()">忘记密码?</b></p>
+      </div>`;
+    } else { setupGate(); }
     return;
   }
-  const kids=[["Carlos",load("dwq_carlos",defState())],["Lucas",load("dwq_lucas",defState())]];
-  if(settings.p3name) kids.push([settings.p3name,load("dwq_other",defState())]);
+  const ks=kids();
+  const rows=ks.map(k=>{
+    const s=load("blwq_"+k.id,defState(k.start));
+    return {k,s};
+  });
   $("#main").innerHTML=`
-  <h1 class="white" style="margin-bottom:14px">👪 Parent Zone</h1>
+  <h1 class="white" style="margin-bottom:14px">👪 家长区 Parent Zone</h1>
+
   <div class="card">
-    <h3 style="margin-bottom:8px">📊 Progress</h3>
-    ${kids.map(([n,s])=>`<div class="prow"><b>${esc(n)}</b>
-      <span class="mut" style="font-size:14px">${s.learned}/${TOTAL} words · 🔥${s.streak} days · 🏅${badgeCount(s)} badges · ${s.days.length} check-ins · ${s.sentences.length} writings</span></div>`).join("")}
-    <p class="mut" style="font-size:13px;margin-top:8px">At ${settings.daily} words/day, finishing all ${TOTAL} takes about ${Math.ceil(TOTAL/settings.daily)} days (26 weeks ≈ 6 months).</p>
+    <h3 style="margin-bottom:8px">📖 这个游戏怎么用(请先读一遍)</h3>
+    <div style="font-size:14px;line-height:1.8;color:#4a5070">
+      <p><b>目标:60 天打卡。</b>每天孩子学 ${settings.daily} 个新词 → 打一场词汇战斗(选义题)→ 完成即打卡一天。全程 10–15 分钟。</p>
+      <p style="margin-top:8px"><b>🎁 惊喜机制：</b>你在下面「布置奖励」里亲手写下奖励，孩子每天单词打卡，打到第 <b>${MILESTONES.join("、")}</b> 天时游戏<b>随机抽一个跳出来</b>制造惊喜，孩子会拿着屏幕来找你兑现 —— 兑现要痛快，这是整个系统的燃料。</p>
+      <p style="margin-top:8px"><b>🔥 连胜(streak)与天数(Day)是两回事：</b>漏打一天，连胜会归零，但 <b>Day 计数不清零</b> —— 60 天挑战不会因为漏一天而失败。孩子漏打了别批评，第二天接着来就行。</p>
+      <p style="margin-top:8px"><b>📐 起点分级：</b>每个孩子按年级 / PM 阅读级别从不同难度的词开始(Year 1–2 从头开始,Year 4 从 sinister 这一档开始)。觉得太难或太易，在下面「调整进度」里改。</p>
+      <p style="margin-top:8px"><b>📖 Storybook：</b>每学完 30 个词解锁一本用这些词写成的双语故事书(Read 页)。书和单词的难度都对应孩子<b>真实 PM 水平</b>，稍微难一点点正合适 — 那正是进步区。</p>
+      <p style="margin-top:8px"><b>🔊 中英发音：</b>单词、释义、例句、故事书都能点 🔊 朗读(英文 + 中文)。你不需要会英文 — 让孩子点英文跟读，你听中文就能辅导。</p>
+      <p style="margin-top:8px"><b>⚠️ 进度存在这台设备的浏览器里。</b>请让孩子固定用同一台 iPad、从主屏幕同一个图标进入；每周在下面「备份与恢复」里生成一次备份码，存到你的备忘录。</p>
+      <p style="margin-top:8px"><b>建议：</b>固定时间(晚饭后 / 睡前)做，比"有空再做"的完成率高得多。做完顺口问一句"今天学了哪个词？" —— 你不需要懂那个词，听他讲就是陪伴。</p>
+    </div>
   </div>
+
   <div class="card">
-    <h3 style="margin-bottom:8px">⚙️ New words per day (5-10)</h3>
+    <h3 style="margin-bottom:8px">📊 孩子进度</h3>
+    ${rows.length?rows.map(({k,s})=>`<div class="prow"><b>${k.emoji} ${esc(k.name)}</b>
+      <span class="mut" style="font-size:14px">Day ${s.days.length}/${CHALLENGE} · ${eff(s)}/${kgoal(s)} 词 · 🔥${s.streak} 连胜 · 🏅${badgeCount(s)} 徽章 · 🎁${(s.surprises||[]).filter(x=>!x.redeemed).length} 个未兑现</span></div>`).join("")
+    :'<p class="mut" style="font-size:14px">还没有玩家 — 回到首页点 Add a player</p>'}
+  </div>
+
+  <div class="card">
+    <h3 style="margin-bottom:8px">🔑 家长密码</h3>
+    <p class="mut" style="font-size:13px;margin-bottom:10px">已设置。要换密码，输入新的 4 位数字并保存。</p>
+    <input type="password" id="pp1" inputmode="numeric" maxlength="4" placeholder="4 位数字密码" style="max-width:220px;display:inline-block;font-size:16px;padding:8px">
+    <button class="btn small" onclick="setPPass()">保存密码</button>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-bottom:8px">🎁 布置奖励(孩子看不到这里)</h3>
+    <p class="mut" style="font-size:13px;margin-bottom:8px">每行写一个奖励。孩子打卡到第 ${MILESTONES.join("、")} 天时，游戏从这里<b>随机抽一个跳出来</b>给他惊喜 — 事先猜不到，才有开盲盒的期待感。写孩子真正想要的：半小时游戏时间、选周末晚餐、和爸爸打水仗……<b>成本低、兑现快</b>的最有效，建议 10 条左右。</p>
+    <textarea id="surList" style="min-height:150px;font-size:16px">${esc(settings.surprises.join("\n"))}</textarea>
+    <button class="btn small" style="margin-top:10px" onclick="saveSur()">保存清单</button>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-bottom:8px">👫 故事同伴名字</h3>
+    <p class="mut" style="font-size:13px;margin-bottom:8px">例句和故事里有两个孩子：主角是你家孩子，同伴默认叫 Alex — 可以改成兄弟姐妹或好朋友的名字。</p>
+    <input type="text" id="buddyName" maxlength="14" value="${esc(settings.buddy||"")}" placeholder="Alex" style="max-width:220px;display:inline-block;font-size:16px;padding:8px">
+    <button class="btn small" onclick="saveBuddy()">保存</button>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-bottom:8px">⚙️ 每天学几个新词(5–10)</h3>
     <div style="display:flex;gap:8px;flex-wrap:wrap">
       ${[5,6,7,8,9,10].map(x=>`<button class="btn small ${settings.daily===x?"":"ghost"}" onclick="setDaily(${x})">${x}</button>`).join("")}
     </div>
-    <p class="mut" style="font-size:13px;margin-top:8px">Default is 7. More words = longer daily sessions.</p>
+    <p class="mut" style="font-size:13px;margin-top:8px">默认 7 个。60 天 × 7 词 ≈ 420 词。词越多每天时间越长。</p>
   </div>
+
   <div class="card">
-    <h3 style="margin-bottom:8px">🎁 Surprise rewards (one per line, drawn at random)</h3>
-    <textarea id="surList" style="min-height:170px;font-size:16px">${esc(settings.surprises.join("\n"))}</textarea>
-    <button class="btn small" style="margin-top:10px" onclick="saveSur()">Save list</button>
+    <h3 style="margin-bottom:8px">🛠 调整进度 / 起点</h3>
+    <p class="mut" style="font-size:13px;margin-bottom:10px">「起点」改的是从哪一档词开始(0=Week1 / 120=Year3 / 270=Year4 / 420=Year5 / 570=Year6);「已学到」是绝对词序号，须 ≥ 起点。误清数据后也在这里恢复。</p>
+    ${rows.map(({k,s})=>`
+    <div class="prow" style="flex-wrap:wrap;gap:6px"><b style="min-width:70px">${esc(k.name)}</b>
+      <span style="font-size:13px">起点 <input type="number" id="rst_${k.id}" value="${s.start||0}" min="0" max="${TOTAL-30}" step="30" style="width:70px;display:inline-block;padding:6px;font-size:15px"></span>
+      <span style="font-size:13px">已学到 <input type="number" id="rp_${k.id}" value="${s.learned}" min="0" max="${TOTAL}" style="width:76px;display:inline-block;padding:6px;font-size:15px"></span>
+      <span style="font-size:13px">连胜 <input type="number" id="rs_${k.id}" value="${s.streak}" min="0" max="999" style="width:60px;display:inline-block;padding:6px;font-size:15px"></span>
+      <span style="font-size:13px">打卡天数 <input type="number" id="rd_${k.id}" value="${s.days.length}" min="0" max="${CHALLENGE}" style="width:60px;display:inline-block;padding:6px;font-size:15px"></span>
+      <button class="btn small" onclick="applyProg('${k.id}')">应用</button></div>`).join("")}
   </div>
+
   <div class="card">
-    <h3 style="margin-bottom:8px">📝 Kids\' sentences (latest 10)</h3>
-    ${kids.map(([n,s])=>`<h4 style="margin:10px 0 4px">${esc(n)}</h4>`+
-      (s.sentences.length? s.sentences.slice(0,10).map(x=>`<p style="font-size:15px;background:#f6f7ff;border-radius:10px;padding:8px 12px;margin-bottom:6px;user-select:text;-webkit-user-select:text"><span class="mut" style="font-size:12px">${x.d}</span><br>${esc(x.text)}</p>`).join("")
-      : '<p class="mut" style="font-size:14px">None yet</p>')).join("")}
+    <h3 style="margin-bottom:8px">💾 备份与恢复</h3>
+    <p class="mut" style="font-size:13px;margin-bottom:10px">进度只存在这台设备的浏览器里。<b>每周点一次「生成备份码」，把整段码存到你手机备忘录。</b>换设备/数据丢失时，把码粘贴到框里点「恢复」。</p>
+    <button class="btn ghost small" onclick="doExport()">生成备份码</button>
+    <textarea id="bak" style="min-height:80px;font-size:12px;margin-top:10px" placeholder="备份码会出现在这里；恢复时把码粘贴到这里"></textarea>
+    <button class="btn small" style="margin-top:8px" onclick="doImport()">从备份码恢复</button>
   </div>
+
   <div class="card">
-    <h3 style="margin-bottom:8px">💾 Backup & Restore</h3>
-    <p class="mut" style="font-size:13px;margin-bottom:10px">Progress is saved in this iPad\'s browser. Before switching devices, create a backup code and save it somewhere; paste it on the new device and tap Restore.</p>
-    <button class="btn ghost small" onclick="doExport()">Create backup code</button>
-    <textarea id="bak" style="min-height:80px;font-size:12px;margin-top:10px" placeholder="The backup code appears here; to restore, paste a code here"></textarea>
-    <button class="btn small" style="margin-top:8px" onclick="doImport()">Restore from code</button>
+    <h3 style="margin-bottom:8px">⚠️ 重置 / 移除</h3>
+    ${rows.map(({k})=>`<span style="display:inline-block;margin:0 6px 6px 0">
+      <button class="btn ghost small" onclick="resetProfile('${k.id}')">清空 ${esc(k.name)} 的进度</button>
+      <button class="btn ghost small" style="color:var(--red)" onclick="removeKid('${k.id}')">移除 ${esc(k.name)}</button></span>`).join("")}
   </div>
-  <div class="card">
-    <h3 style="margin-bottom:8px">🛠 Restore / adjust progress</h3>
-    <p class="mut" style="font-size:13px;margin-bottom:10px">If progress was ever lost (browser data cleared, new device), set it back here. Badges and story unlocks recalculate automatically; today\'s quest stays playable.</p>
-    ${kids.map(([n,s],i)=>{const id=["carlos","lucas","other"][i];return `
-    <div class="prow" style="flex-wrap:wrap;gap:6px"><b style="min-width:70px">${esc(n)}</b>
-      <span style="font-size:14px">Words: <input type="number" id="rp_${id}" value="${s.learned}" min="0" max="${TOTAL}" style="width:80px;display:inline-block;padding:6px;font-size:16px"></span>
-      <span style="font-size:14px">Streak: <input type="number" id="rs_${id}" value="${s.streak}" min="0" max="999" style="width:70px;display:inline-block;padding:6px;font-size:16px"></span>
-      <button class="btn small" onclick="applyProg('${id}')">Apply</button></div>`;}).join("")}
-  </div>
-  <div class="card">
-    <h3 style="margin-bottom:8px">⚠️ Reset</h3>
-    <button class="btn ghost small" onclick="resetProfile('carlos')">Reset Carlos</button>
-    <button class="btn ghost small" onclick="resetProfile('lucas')">Reset Lucas</button>
-    ${settings.p3name?`<button class="btn ghost small" onclick="resetProfile('other')">Reset ${esc(settings.p3name)}</button>`:""}
-  </div>`;
+  <p class="center" style="opacity:.5;font-size:12px;color:#fff;font-weight:600;margin-top:6px">陪伴龙 · 一路有你 一路护航</p>`;
 }
+window.setupGate=function(){
+  $("#main").innerHTML=`<h1 class="white" style="margin-bottom:14px">👪 家长区 Parent Zone</h1>
+  <div class="card center">
+    <div style="font-size:40px">🔑</div>
+    <h2 style="margin:6px 0">首次进入 — 请设置家长密码</h2>
+    <p style="font-size:14px;color:#6b7192;margin:2px 0 10px;line-height:1.7">设一个 <b>4 位数字密码</b>(比如 2688)。设好后只有你能进家长区，孩子看不到惊喜清单。</p>
+    <input type="password" id="sp1" inputmode="numeric" maxlength="4" placeholder="4 位数字" style="max-width:200px;margin:10px auto 8px;display:block;text-align:center;font-size:22px;letter-spacing:8px">
+    <input type="password" id="sp2" inputmode="numeric" maxlength="4" placeholder="再输一遍确认" style="max-width:200px;margin:0 auto 12px;display:block;text-align:center;font-size:22px;letter-spacing:8px">
+    <button class="btn wide" onclick="setupPass()">设置并进入 →</button>
+  </div>`;
+};
+window.setupPass=function(){
+  const a=(($("#sp1")||{}).value||"").trim(), b=(($("#sp2")||{}).value||"").trim();
+  if(!/^\d{4}$/.test(a)){ sndWrong(); modal(`<h2>请用 4 位数字</h2><p class="mut" style="margin:8px 0">密码需要恰好 4 位数字，例如 2688</p><button class="btn wide" onclick="closeModal()">OK</button>`); return; }
+  if(a!==b){ sndWrong(); modal(`<h2>两次输入不一致</h2><p class="mut" style="margin:8px 0">请再试一次</p><button class="btn wide" onclick="closeModal()">OK</button>`); return; }
+  settings.ppass=a; save("blwq_settings",settings);
+  parentOK=true; renderParent();
+};
+window.forgotPass=function(){
+  modal(`<div style="font-size:44px">🔓</div><h2>重置家长密码</h2>
+  <p class="mut" style="margin:10px 0">为防止小朋友自己重置：请在下面<b>用中文输入「我是家长」</b>四个字，密码会清除，然后重新设置。孩子的进度不受影响。</p>
+  <input type="text" id="rst" placeholder="我是家长" style="max-width:220px;margin:8px auto;display:block;text-align:center;font-size:18px">
+  <button class="btn wide" onclick="doForgot()">确认重置</button>
+  <button class="btn ghost wide" style="margin-top:8px" onclick="closeModal()">取消</button>`);
+};
+window.doForgot=function(){
+  if(((($("#rst")||{}).value)||"").trim()!=="我是家长"){ sndWrong(); return; }
+  delete settings.ppass; save("blwq_settings",settings);
+  closeModal(); parentOK=false; renderParent();
+};
 window.pCheck=function(){
-  if(parseInt($("#pin").value,10)===window._pAns){ parentOK=true; renderParent(); }
+  if(($("#pin").value||"")===settings.ppass){ parentOK=true; renderParent(); }
   else { sndWrong(); $("#pin").value=""; }
 };
+window.pCheckMath=function(){ /* deprecated */
+  if(false){ parentOK=true; renderParent(); }
+  else { sndWrong(); $("#pin").value=""; }
+};
+window.setPPass=function(){
+  const v=($("#pp1").value||"").trim();
+  if(!/^\d{4}$/.test(v)){ modal(`<h2>请用 4 位数字</h2><p class="mut" style="margin:8px 0">密码需要恰好 4 位数字，例如 2688</p><button class="btn wide" onclick="closeModal()">OK</button>`); return; }
+  settings.ppass=v;
+  save("blwq_settings",settings);
+  modal(`<h2>密码已设置 ✓</h2><button class="btn wide" style="margin-top:12px" onclick="closeModal();renderParent();">OK</button>`);
+};
+window.saveBuddy=function(){
+  const v=(($("#buddyName")||{}).value||"").trim();
+  if(v) settings.buddy=v; else delete settings.buddy;
+  save("blwq_settings",settings);
+  modal(`<h2>同伴名字已保存 ✓</h2><p class="mut" style="margin:8px 0">${esc(v||"Alex")} 会出现在例句和故事里</p><button class="btn wide" onclick="closeModal();renderParent();">OK</button>`);
+};
 window.applyProg=function(id){
-  const n=Math.max(0,Math.min(TOTAL,parseInt($("#rp_"+id).value,10)||0));
+  const st=load("blwq_"+id,defState());
+  const start=Math.max(0,Math.min(TOTAL-30,Math.round((parseInt($("#rst_"+id).value,10)||0)/30)*30));
+  const n=Math.max(start,Math.min(TOTAL,parseInt($("#rp_"+id).value,10)||start));
   const sk=Math.max(0,Math.min(999,parseInt($("#rs_"+id).value,10)||0));
-  const st=load("dwq_"+id,defState());
-  st.learned=n; st.streak=sk;
+  const dd=Math.max(0,Math.min(CHALLENGE,parseInt($("#rd_"+id).value,10)||0));
+  st.start=start; st.learned=n; st.streak=sk;
+  const k=kidById(id); if(k){ k.start=start; save("blwq_settings",settings); }
+  while(st.days.length>dd) st.days.pop();
+  while(st.days.length<dd) st.days.unshift("(restored)");
   if(sk>0 && st.lastDay!==todayStr()) st.lastDay=yesterdayStr();
   if(sk===0 && st.lastDay!==todayStr()) st.lastDay=null;
-  while(st.surprises.length<surpriseCount(st)) st.surprises.push({n:st.surprises.length+1,text:"Earned earlier 🎁",redeemed:true,d:todayStr()});
-  save("dwq_"+id,st);
+  st.surprises=st.surprises||[];
+  while(st.surprises.length<surpriseCount(st)) st.surprises.push({n:st.surprises.length+1,text:"之前获得 🎁",redeemed:true,d:todayStr(),day:MILESTONES[st.surprises.length]});
+  save("blwq_"+id,st);
   if(curId===id) S=st;
-  modal(`<h2>Progress restored ✓</h2><p class="mut" style="margin:8px 0">${esc(pname(id))}: ${n} words · 🔥${sk} streak · 🏅${badgeCount(st)} badges. Today\'s quest is ready to play.</p><button class="btn wide" onclick="closeModal();renderParent();">OK</button>`);
+  modal(`<h2>已应用 ✓</h2><p class="mut" style="margin:8px 0">${esc(pname(id))}:Day ${st.days.length}/${CHALLENGE} · ${eff(st)} 词 · 🔥${sk}</p><button class="btn wide" onclick="closeModal();renderParent();">OK</button>`);
 };
-window.setDaily=function(x){ settings.daily=x; save("dwq_settings",settings); renderParent(); };
+window.setDaily=function(x){ settings.daily=x; save("blwq_settings",settings); renderParent(); };
 window.saveSur=function(){
   settings.surprises=$("#surList").value.split("\n").map(s=>s.trim()).filter(Boolean);
   if(!settings.surprises.length) settings.surprises=DEFAULT_SURPRISES.slice();
-  save("dwq_settings",settings); modal(`<h2>Saved ✓</h2><button class="btn wide" style="margin-top:12px" onclick="closeModal()">OK</button>`);
+  save("blwq_settings",settings); modal(`<h2>已保存 ✓</h2><button class="btn wide" style="margin-top:12px" onclick="closeModal()">OK</button>`);
 };
 window.doExport=function(){
-  const data={carlos:load("dwq_carlos",defState()),lucas:load("dwq_lucas",defState()),other:load("dwq_other",defState()),settings};
+  const profiles={};
+  kids().forEach(k=>{ profiles[k.id]=load("blwq_"+k.id,defState(k.start)); });
+  const data={v:2,settings,profiles};
   $("#bak").value=btoa(unescape(encodeURIComponent(JSON.stringify(data))));
 };
 window.doImport=function(){
   try{
     const data=JSON.parse(decodeURIComponent(escape(atob($("#bak").value.trim()))));
-    if(data.carlos) save("dwq_carlos",data.carlos);
-    if(data.lucas) save("dwq_lucas",data.lucas);
-    if(data.other) save("dwq_other",data.other);
-    if(data.settings){ settings=data.settings; save("dwq_settings",settings); }
-    if(curId) S=load("dwq_"+curId,defState());
-    modal(`<h2>Restored ✓</h2><button class="btn wide" style="margin-top:12px" onclick="closeModal();render();">OK</button>`);
-  }catch(e){ modal(`<h2>That code doesn\'t look right</h2><p class="mut" style="margin:8px 0">Check it was pasted completely</p><button class="btn wide" onclick="closeModal()">OK</button>`); }
+    if(data.v===2){
+      if(data.settings){ settings=data.settings; save("blwq_settings",settings); }
+      Object.entries(data.profiles||{}).forEach(([id,st])=>save("blwq_"+id,st));
+    }else{ /* 旧版备份码兼容 */
+      if(data.carlos) save("blwq_carlos",data.carlos);
+      if(data.lucas) save("blwq_lucas",data.lucas);
+      if(data.other) save("blwq_other",data.other);
+      if(data.settings){ const kd=settings.kids; settings=data.settings; settings.kids=settings.kids||kd; delete settings.v6; save("blwq_settings",settings); }
+      settings.v6=0; /* 触发下次刷新时的迁移 */
+    }
+    if(curId) { const k=kidById(curId); S=load("blwq_"+curId,defState(k?k.start:0)); }
+    modal(`<h2>恢复完成 ✓</h2><p class="mut" style="margin:8px 0">如果是旧版备份码，刷新一次页面后老档案会出现在首页。</p><button class="btn wide" style="margin-top:12px" onclick="closeModal();render();">OK</button>`);
+  }catch(e){ modal(`<h2>这段码好像不对</h2><p class="mut" style="margin:8px 0">检查是否完整粘贴了</p><button class="btn wide" onclick="closeModal()">OK</button>`); }
 };
 window.resetProfile=function(id){
-  modal(`<h2>Reset ${esc(pname(id))}?</h2><p class="mut" style="margin:10px 0">All progress, badges and writing will be wiped!</p>
-  <div style="display:flex;gap:10px"><button class="btn ghost" style="flex:1" onclick="closeModal()">Cancel</button>
-  <button class="btn" style="flex:1;background:var(--red)" onclick="localStorage.removeItem('dwq_${id}');if(curId==='${id}')S=defState();closeModal();renderParent();">Reset</button></div>`);
+  modal(`<h2>清空 ${esc(pname(id))} 的进度？</h2><p class="mut" style="margin:10px 0">词、打卡、徽章、惊喜全部清零，从当前起点重新开始。</p>
+  <div style="display:flex;gap:10px"><button class="btn ghost" style="flex:1" onclick="closeModal()">取消</button>
+  <button class="btn" style="flex:1;background:var(--red)" onclick="doResetProfile('${id}')">清空</button></div>`);
+};
+window.doResetProfile=function(id){
+  const k=kidById(id);
+  save("blwq_"+id, defState(k?k.start:0));
+  if(curId===id) S=load("blwq_"+id,defState(k?k.start:0));
+  closeModal(); renderParent();
+};
+window.removeKid=function(id){
+  modal(`<h2>移除 ${esc(pname(id))}?</h2><p class="mut" style="margin:10px 0">档案会从首页消失(进度数据保留在本机，重新添加同名孩子不会自动恢复 — 移除前建议先生成备份码)。</p>
+  <div style="display:flex;gap:10px"><button class="btn ghost" style="flex:1" onclick="closeModal()">取消</button>
+  <button class="btn" style="flex:1;background:var(--red)" onclick="doRemoveKid('${id}')">移除</button></div>`);
+};
+window.doRemoveKid=function(id){
+  settings.kids=kids().filter(k=>k.id!==id);
+  save("blwq_settings",settings);
+  if(curId===id){ curId=null; save("blwq_current",null); }
+  closeModal(); parentOK=true; view="parent"; render();
 };
 
 /* ---------- boot ---------- */
