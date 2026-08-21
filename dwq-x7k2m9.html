@@ -1360,26 +1360,26 @@ function renderWelcome(){
     <h1 class="white" style="font-size:32px;margin:8px 0 4px">Dragon WordQuest</h1>
     <p class="white" style="opacity:.9;font-weight:800;font-size:17px;margin-bottom:2px">60 天单词闯关</p>
     <p class="white" style="opacity:.7;font-weight:600;font-size:13px;margin-bottom:6px">The 60-Day Word Dragon Challenge</p>
-    <p class="white" style="opacity:.55;font-size:13px;font-weight:600;margin-bottom:26px">陪伴龙 · 一路有你 一路护航</p>
+    <p class="white" style="opacity:.55;font-size:13px;font-weight:600;margin-bottom:26px">陪伴龙 · 一路有你 一路护航 · By your side, all the way</p>
   </div>
   ${kids().length?kids().slice(0,1).map(k=>{
     const st=load("blwq_"+k.id,defState(k.start));
     return `<div class="pcard" onclick="choose('${k.id}')" style="border:2px solid rgba(255,216,107,.5);background:rgba(255,255,255,.10)">
       <div class="avatar" style="background:${k.color}">${k.emoji}</div>
-      <div><h2 style="color:#fff">继续挑战 Continue</h2><p style="color:rgba(255,255,255,.75)">${esc(k.name)} · Day ${st.days.length}/${CHALLENGE} · ${eff(st)} words · 🔥${st.streak}</p></div>
+      <div><h2 style="color:#fff">Continue 继续挑战</h2><p style="color:rgba(255,255,255,.75)">${esc(k.name)} · Day ${st.days.length}/${CHALLENGE} · ${eff(st)} words · 🔥${st.streak}</p></div>
       <div style="margin-left:auto;font-size:26px">▶️</div>
     </div>`;}).join(""):`
   <div class="pcard" onclick="addKid()" style="border:2px dashed rgba(255,255,255,.4);background:rgba(255,255,255,.08)">
     <div class="avatar" style="background:rgba(255,255,255,.15)">🚀</div>
-    <div><h2 style="color:#fff">开始 Start</h2><p style="color:rgba(255,255,255,.65)">创建挑战者档案 — 输入名字，测个起点</p></div>
+    <div><h2 style="color:#fff">Start 开始</h2><p style="color:rgba(255,255,255,.65)">Create your challenger 创建挑战者 — 输入名字，测个起点</p></div>
   </div>`}
   <div class="pcard" onclick="firstGuide()" style="background:rgba(255,255,255,.10);${kids().length?"":"border:2px solid rgba(255,216,107,.55);animation:guidepulse 1.6s ease-in-out infinite"}">
     <div class="avatar" style="background:rgba(255,255,255,.15)">👪</div>
-    <div><h2 style="color:#fff;font-size:17px">家长使用说明 ${kids().length?"":'<span style="font-size:12px;color:#ffd66b">← 第一次用请先点开看</span>'}</h2><p style="color:rgba(255,255,255,.65)">👆 点这里打开：怎么设置 · 怎么分享给孩子 · 惊喜怎么发(3 分钟)</p></div>
+    <div><h2 style="color:#fff;font-size:17px">Parent Guide 家长使用说明 ${kids().length?"":'<span style="font-size:12px;color:#ffd66b">← 第一次用请先点开</span>'}</h2><p style="color:rgba(255,255,255,.65)">👆 Tap to open 点开看：怎么设置 · 怎么分享给孩子 · 惊喜怎么发(3 分钟)</p></div>
     <div style="margin-left:auto;font-size:22px;color:#ffd66b">▶</div>
   </div>
-  ${kids().length?`<p class="center" style="margin-top:14px"><span onclick="newChallenger()" style="color:rgba(255,255,255,.55);font-size:13px;font-weight:600;cursor:pointer;text-decoration:underline">↺ 换一个挑战者(清空当前进度)</span></p>`:""}
-  <p class="center white" style="opacity:.6;font-size:13px;font-weight:600;margin-top:20px">一份游戏陪伴一个孩子 · 进度存在这台设备 — 固定用同一个浏览器图标进入</p>`;
+  ${kids().length?`<p class="center" style="margin-top:14px"><span onclick="newChallenger()" style="color:rgba(255,255,255,.55);font-size:13px;font-weight:600;cursor:pointer;text-decoration:underline">↺ New challenger 换一个挑战者(清空当前进度)</span></p>`:""}
+  <p class="center white" style="opacity:.6;font-size:13px;font-weight:600;margin-top:20px">One game, one child · 一份游戏陪伴一个孩子<br>Progress saves on this device 进度存在这台设备 — 固定用同一个浏览器图标进入</p>`;
 }
 window.newChallenger=function(){
   modal(`<div style="font-size:44px">⚠️</div><h2>换一个挑战者?</h2>
@@ -1416,7 +1416,7 @@ window.nameNext=function(){
 };
 function askGrade(){
   modal(`<div style="font-size:44px">🏫</div><h2>${esc(_addName)} 读几年级?</h2>
-  <p class="mut" style="font-size:13px;margin:8px 0 10px">测试会按年级难度出题(稍微难一点点)</p>
+  <p class="mut" style="font-size:13px;margin:8px 0 10px">Which year is your child in? · 测试会按年级难度出题(稍微难一点点)</p>
   <div id="nkLvs">${GRADES.map((g,i)=>`
     <button class="lvbtn ${_addGrade===i?"on":""}" id="gr${i}" onclick="pickGrade(${i})"><b>${g[0]}</b></button>`).join("")}</div>
   <button class="btn ghost wide" style="margin-top:10px" onclick="stepName()">← Back 上一步</button>`);
@@ -1428,13 +1428,13 @@ function askPM(){
   <p style="margin:10px 0 2px;font-size:16px;font-weight:800">你知不知道孩子现在的 PM 阅读级别?</p>
   <p class="mut" style="font-size:12px;margin-bottom:10px">Do you know your child's PM reading level?</p>
   <p class="mut" style="font-size:12px;background:#f4f2ff;border-radius:10px;padding:8px 10px;margin-bottom:12px;text-align:left">💡 <b>PM 级别是什么?</b>澳洲小学普遍使用的阅读分级(PM Levels 1–30+)，孩子学校发的分级读物封底通常印着 Level 数字，老师的 reading group 也按它分组。</p>
-  <button class="btn wide" id="pmKnow" onclick="pickLevelUI()">✅ 知道 PM 级别 — 直接选</button>
-  <button class="btn green wide" id="pmTest" style="margin-top:10px" onclick="startLvTest()">🧪 不知道 — 做个小测试(按 ${testGradeLabel()} 难度)</button>
+  <button class="btn wide" id="pmKnow" onclick="pickLevelUI()">✅ I know it — 知道，直接选</button>
+  <button class="btn green wide" id="pmTest" style="margin-top:10px" onclick="startLvTest()">🧪 Quick test — 不知道，做个小测试 <span style="font-size:12px">(${testGradeLabel()} 难度)</span></button>
   <p class="mut" style="font-size:12px;margin-top:10px">10 个单词选中文意思，按<b>比 ${g[0]} 高一个年级</b>的难度出题，答对变难、答错变易，自动找到适合的起点</p>
   <button class="btn ghost wide" style="margin-top:10px" onclick="askGrade()">← Back 上一步</button>`);
 }
 window.pickLevelUI=function(){
-  modal(`<h2>选择起点</h2>
+  modal(`<h2>Choose a level 选择起点</h2>
   <p class="mut" style="margin:8px 0 2px;font-size:14px">选年级或 PM 阅读级别，单词从这一档开始</p>
   <div id="nkLvs">${LEVELS.map((l,i)=>`
     <button class="lvbtn ${i===_addLv?"on":""}" id="lv${i}" onclick="pickLv(${i})">
@@ -1491,8 +1491,8 @@ function lvtQ(){
     <button class="spk" style="width:36px;height:36px;font-size:16px" onclick="speak(_lvt.cur.w[0],'en')">🔊</button></h2>
   <p class="mut" style="font-size:14px;margin-bottom:10px">What does this word mean? <span style="font-size:12px">/ 这个词是什么意思?</span></p>
   <div id="nkLvs">${opts.map((o,i)=>`<button class="lvbtn" id="lvt${i}" onclick="lvtA(${i})"><b>${esc(o.en)}</b><small>${esc(o.zh)}</small></button>`).join("")}</div>
-  <button class="btn ghost small" style="margin-top:10px" onclick="lvtSkipQ()">这个词没见过 🙈</button>
-  <button class="btn ghost small" style="margin-top:8px;opacity:.7" onclick="askPM_()">← 退出测试</button>`);
+  <button class="btn ghost small" style="margin-top:10px" onclick="lvtSkipQ()">I don't know this word 🙈 <span style="font-size:12px">没见过</span></button>
+  <button class="btn ghost small" style="margin-top:8px;opacity:.7" onclick="askPM_()">← Exit test <span style="font-size:12px">退出测试</span></button>`);
   speak(w[0],"en");
 }
 window.lvtA=function(i){
@@ -1509,13 +1509,13 @@ function lvtDone(){
   const p=_lvt.pos;
   let lv=0; LEVELS.forEach((l,i)=>{ if(p>=l.start) lv=i; });
   _addLv=lv;
-  modal(`<div style="font-size:50px">🎯</div><h2>测出来了!</h2>
+  modal(`<div style="font-size:50px">🎯</div><h2>Got it! 测出来了!</h2>
   <p style="font-size:17px;font-weight:800;margin:10px 0 2px;color:var(--purple)">${LEVELS[lv].label}</p>
   <p class="mut" style="font-size:13px;margin-bottom:4px">推荐起点 · starts with: ${LEVELS[lv].ex}</p>
   <p class="mut" style="font-size:13px;margin-bottom:12px">单词和 storybook 都从这档开始 — 稍微有点挑战才是进步区 💪${(_addGrade!==null&&_addGrade<2&&lv===0)?"<br>Kindy / Year 1 从最基础一档开始很正常，前几周多点 🔊 跟读就好":""}</p>
-  <button class="btn wide" id="lvtGo" onclick="parentIntro()">就从这里开始 →</button>
-  <button class="btn ghost wide" style="margin-top:8px" onclick="pickLevelUI()">我想手动调一档</button>
-  <button class="btn ghost wide" style="margin-top:8px" onclick="startLvTest()">↻ 重新测一次</button>`);
+  <button class="btn wide" id="lvtGo" onclick="parentIntro()">Start here! 就从这里开始 →</button>
+  <button class="btn ghost wide" style="margin-top:8px" onclick="pickLevelUI()">Choose manually 手动选一档</button>
+  <button class="btn ghost wide" style="margin-top:8px" onclick="startLvTest()">↻ Test again 重新测一次</button>`);
 }
 
 /* ---- 家长引导(新档案第3步 + 首页入口共用) ---- */
