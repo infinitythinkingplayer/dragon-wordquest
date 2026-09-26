@@ -276,8 +276,19 @@
     };
   }
 
-  /* ---------- 在欢迎页插入「添加到桌面」卡片 ---------- */
+  /* ---------- 在欢迎页插入「添加到桌面」卡片 + 底部「找回链接」提示 ---------- */
+  function addRestoreHint() {
+    var main = document.getElementById("main");
+    if (!main || !main.querySelector(".pcard") || main.querySelector(".dwq-restore")) return;
+    var p = document.createElement("p");
+    p.className = "dwq-restore";
+    p.style.cssText = "text-align:center;color:rgba(255,255,255,.55);font-size:13px;font-weight:600;margin-top:14px;line-height:1.6";
+    p.innerHTML = '🔗 链接找不到了？打开 <a href="https://www.deskmatehq.com/restore" target="_blank" rel="noopener" style="color:#ffd66b;text-decoration:underline">deskmatehq.com/restore</a>，输入付款邮箱就能找回' +
+      '<br><span style="font-size:12px;opacity:.8">Lost your link? Enter your payment email at deskmatehq.com/restore</span>';
+    main.appendChild(p);
+  }
   function addCard() {
+    addRestoreHint();
     if (standalone) return;
     var main = document.getElementById("main");
     if (!main || main.querySelector(".dwq-inst")) return;
