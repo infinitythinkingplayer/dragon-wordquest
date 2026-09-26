@@ -248,6 +248,24 @@
   }
   window.dwqInstall = install;
 
+  /* ---------- 链接带 ?add=1：打开就自动弹出安装（发给家长的「一个链接搞定」） ---------- */
+  function autoAdd() {
+    if (standalone || !/[?&]add=1\b/.test(location.search)) return;
+    // 每台设备只自动弹一次；之后想装，首页的「添加到桌面」卡片一直都在
+    try { if (localStorage.getItem("dwq_autoadd")) return; localStorage.setItem("dwq_autoadd", "1"); } catch (e) {}
+    if (appleHome || inAppName) { install(); return; } // 苹果 / App 内：直接弹图示引导
+    // Chrome / Edge / 安卓：浏览器要求安装必须由点击触发，所以给一个大按钮，点一下就弹系统安装框
+    var dev = isAndroid ? "手机" : "电脑";
+    sheet(head("把 LexiPath 装到这台" + dev, "装好后桌面上会出现小龙图标，一点就开") +
+      '<div class="tip">🐉 全屏打开、没有地址栏，孩子更专注；进度一直保存在这台' + dev + "上。</div>" +
+      '<button class="dwq-btn" id="dwqAutoBtn">一键安装</button>' +
+      '<button class="dwq-btn ghost" onclick="__dwqClose()">先不装，直接开始玩</button>');
+    document.getElementById("dwqAutoBtn").onclick = function () {
+      if (deferred) { var d = deferred; d.prompt(); d.userChoice.then(function () { deferred = null; }).catch(function () {}); closeSheet(); }
+      else install(); // 浏览器还没准备好一键安装 → 显示手动步骤
+    };
+  }
+
   /* ---------- 在欢迎页插入「添加到桌面」卡片 ---------- */
   function addCard() {
     if (standalone) return;
@@ -275,6 +293,7 @@
       window.render = wrapped;
     }
     try { addCard(); snapshot(); } catch (e) {}
+    if (!window.__dwqImported) setTimeout(autoAdd, 500);
     if (window.__dwqImported && typeof window.modal === "function") {
       window.modal('<div style="font-size:44px">🐉</div><h2>进度已恢复 ✓</h2><p class="mut" style="margin:10px 0">孩子之前的单词、打卡和龙蛋都搬过来了，接着玩就行。</p><button class="btn wide" onclick="closeModal()">好的</button>');
     }
