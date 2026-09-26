@@ -1,0 +1,18 @@
+{
+  "id": "./dwq-trial-k4m8p2.html",
+  "name": "LexiPath 词径 · 3 天体验版",
+  "short_name": "LexiPath",
+  "description": "60 天单词闯关 · 3 天体验版",
+  "lang": "zh-CN",
+  "start_url": "./dwq-trial-k4m8p2.html?source=app",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0f1b3d",
+  "theme_color": "#0f1b3d",
+  "icons": [
+    { "src": "dwq-icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "dwq-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "dwq-icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

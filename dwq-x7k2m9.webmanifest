@@ -1,0 +1,18 @@
+{
+  "id": "./dwq-x7k2m9.html",
+  "name": "LexiPath 词径 · 60 天单词闯关",
+  "short_name": "LexiPath",
+  "description": "60 天单词闯关 · 每天 15 分钟，孵出你的词龙",
+  "lang": "zh-CN",
+  "start_url": "./dwq-x7k2m9.html?source=app",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0f1b3d",
+  "theme_color": "#0f1b3d",
+  "icons": [
+    { "src": "dwq-icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "dwq-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "dwq-icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
