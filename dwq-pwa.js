@@ -241,9 +241,9 @@
         "选 <b>「应用」→「将此站点作为应用安装」</b>",
         "点 <b>「安装」</b>"
       ] : [
-        "看地址栏最右边有没有 " + INSTALL + " 安装图标，有就直接点它",
-        "没有的话：点右上角 " + KEBAB + " → <b>「投放、保存和分享」</b> → <b>「将页面作为应用安装」</b>",
-        "点 <b>「安装」</b>，桌面会出现小龙图标"
+        "先看<b>地址栏最右边</b>有没有 " + INSTALL + " 安装小图标，有的话直接点它 → <b>「安装」</b>，就完成了",
+        "没有的话：点右上角 " + KEBAB + "，鼠标<b>移到</b>「投放、保存和分享」上（⚠️ 不要点「投放」，那是投屏到电视用的）",
+        "在右边展开的小菜单里点 <b>「将页面作为应用安装…」</b>（有的版本叫「安装页面」）→ <b>「安装」</b>"
       ]) + OK);
   }
   window.dwqInstall = install;
@@ -254,7 +254,17 @@
     // 每台设备只自动弹一次；之后想装，首页的「添加到桌面」卡片一直都在
     try { if (localStorage.getItem("dwq_autoadd")) return; localStorage.setItem("dwq_autoadd", "1"); } catch (e) {}
     if (appleHome || inAppName) { install(); return; } // 苹果 / App 内：直接弹图示引导
-    // Chrome / Edge / 安卓：浏览器要求安装必须由点击触发，所以给一个大按钮，点一下就弹系统安装框
+    // Chrome / Edge / 安卓：浏览器允许一键安装时给大按钮；Chrome 要求访客先和页面互动一会儿才放行，
+    // 所以等 2.5 秒，还没放行就直接显示手动步骤；之后一旦放行，自动换成「一键安装」
+    var waited = 0;
+    (function tick() {
+      if (deferred) { oneClickSheet(); return; }
+      if ((waited += 250) < 2500) { setTimeout(tick, 250); return; }
+      install();
+      window.__dwqManualShown = true;
+    })();
+  }
+  function oneClickSheet() {
     var dev = isAndroid ? "手机" : "电脑";
     sheet(head("把 LexiPath 装到这台" + dev, "装好后桌面上会出现小龙图标，一点就开") +
       '<div class="tip">🐉 全屏打开、没有地址栏，孩子更专注；进度一直保存在这台' + dev + "上。</div>" +
@@ -262,7 +272,7 @@
       '<button class="dwq-btn ghost" onclick="__dwqClose()">先不装，直接开始玩</button>');
     document.getElementById("dwqAutoBtn").onclick = function () {
       if (deferred) { var d = deferred; d.prompt(); d.userChoice.then(function () { deferred = null; }).catch(function () {}); closeSheet(); }
-      else install(); // 浏览器还没准备好一键安装 → 显示手动步骤
+      else install();
     };
   }
 
@@ -301,5 +311,7 @@
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", hook); else hook();
   window.addEventListener("beforeinstallprompt", function () {
     var go = document.querySelector(".dwq-inst .go"); if (go) go.textContent = "一键添加";
+    // 手动步骤还开着时，Chrome 放行了一键安装 → 换成一键按钮
+    if (window.__dwqManualShown && document.getElementById("dwqSheet")) { window.__dwqManualShown = false; oneClickSheet(); }
   });
 })();
